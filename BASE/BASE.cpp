@@ -3194,8 +3194,19 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 			takeOff = h.fullName["takeOff"];
 		}
 
-		double takeOffGain = toCoef(min(getParameterFromVector(vector<point>{ { 0, -12 }, { 8, -5 }, { 16, 0 }}, step),
-			getParameterFromVector(vector<point>{ { 0, 0 }/*, { 4, -2.5 }*/, { 8, -12 } }, hight)))
+		//Значение шага номинальной громкости отрыва
+		double stepNominal = 0;
+		if (h.modelName == "mi_8_amtsh")
+		{
+			stepNominal = 7;
+		}
+		else if (h.modelName == "mi_8_mtv5")
+		{
+			stepNominal = 6;
+		}
+
+		double takeOffGain = toCoef(min(getParameterFromVector(vector<point>{ { 0, -12 }, { 3, -5 }, { 7, 0 }}, stepNominal),
+			getParameterFromVector(vector<point>{ { 0, 0 }, { 8, -12 } }, hight)))
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor);
 
 		alSourcef(source[2], AL_GAIN, sm.delay(takeOffGain, deltaTime) * masterGain);
@@ -3611,6 +3622,20 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		double harmPitch = sr.reduktor_gl_obor / h.redTurnoverAvt /*1 + (sr.reduktor_gl_obor - h.redTurnoverAvt) * 0.0085556*/;
 		alSourcef(source[2], AL_PITCH, harmPitch);
 
+		//добавляем отдельный звук взлета
+		if (takeOff != h.fullName["takeOff"])
+		{
+			setAndDeploySound(&buffer[3], &source[3], 0, h.fullName["takeOff"]);
+			alSourcei(source[3], AL_LOOPING, AL_TRUE);
+			takeOff = h.fullName["takeOff"];
+		}
+
+		double takeOffGain = toCoef(min(getParameterFromVector(vector<point>{ { 0, -12 }, { 9, 0 }}, step),//
+			getParameterFromVector(vector<point>{ { 0, 0 }, { 8, -12 } }, hight)))
+			* getParameterFromVector(vector<point>{ { 0, 0 }, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor);
+
+		alSourcef(source[3], AL_GAIN, sm.delay(takeOffGain, deltaTime) * masterGain);
+
 		//
 		double avrEngTurns = (sr.eng1_obor > sr.eng2_obor) ? sr.eng1_obor - getAverange(vectorAvrEng1Turn, 2) : sr.eng2_obor - getAverange(vectorAvrEng2Turn, 2);
 
@@ -3659,7 +3684,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		//0.1 -> 2дб
 		double lowFreqAccGain = (accelerationVectorXZ <= -0.56) ? (((abs(accelerationVectorXZ) - 0.56) * 20) * getParameterFromVector(vector<point>{ { 4, 1 }, { 9, 0 } }, step) * getParameterFromVector(vector<point>{ { 8, 0 }, { 16, 1 } }, hight) * flapOn) : 0;
 
-		lowFreqGain = toCoef(lowFreqStepGain1 + lowFreqStepGain2 + hoveringGain + lowFreqAccGain);
+		lowFreqGain = toCoef(/*lowFreqStepGain1 +*/ lowFreqStepGain2 + hoveringGain + lowFreqAccGain);
 		highFreqGain = toCoef(highFreqStepGain);
 
 		lowFreqGain = (lowFreqGain <= 1) ? 1 : lowFreqGain;
