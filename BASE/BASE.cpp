@@ -3661,7 +3661,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		double highFreqStepGain = getParameterFromVector(vector<point>{ { 0, 0 }, { 5, 2 }, { 9, 3 }, { 12, 5 } }, step);
 
 		//усиление по шагу в НЧ (1) (призма)
-		double lowFreqStepGain1 = getParameterFromVector(vector<point>{ { 0, 0 }, { 9, 15 }, { 16, 26.66 } }, step) * getParameterFromVector(vector<point>{ { 0, 1 }, { 8, 0 } }, hight);
+		//double lowFreqStepGain1 = getParameterFromVector(vector<point>{ { 0, 0 }, { 9, 15 }, { 16, 26.66 } }, step) * getParameterFromVector(vector<point>{ { 0, 1 }, { 8, 0 } }, hight);
 
 		//усиление по шагу в НЧ (2)
 		double lowFreqStepGain2 = getParameterFromVector(vector<point>{ { 0, 0 }, { 12, 14 } }, step) * getParameterFromVector(vector<point>{ { 0, 0 }, { 28, 1 } }, abs(velocityVectorXZ));
