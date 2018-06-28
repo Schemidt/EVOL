@@ -5001,9 +5001,14 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 			flapCGainAccX = interpolation({ 0.56, 0 }, { 1, 1 }, abs(accelerationVectorXZ))
 				* interpolation({ -0.25, 1 }, { 0, 0.5 }, { 0.25, 0 }, velocityY);//переходит в усиление нч по vy
 		}
+		
+		// только для 1-го условия хлопков добавляем огибающую по Vy: при изменении Vy от -4 м/с до -2 м/с громкость хлопков падает на ~10 dB
+		double envelopVelY = 1;
+		envelopVelY = (flapIndicator == 1 || !flapIndicator) ? getValue ({ -4, 1 }, { -2, 0.263 }, velocityY, 0.263, 1) : 1;
+
 		//рассчитываем результирующую громкость хлопков в каждый момент времени
-		double flapAGain = flapA * flapOn * off * masterGain * h.vintFlapFactor * flapABStep * flapABVX * pow(10, turnsGain*0.05);
-		double flapBGain = flapB * flapOn * off * masterGain * h.vintFlapFactor * flapABStep * flapABVX * pow(10, turnsGain*0.05);
+		double flapAGain = flapA * flapOn * off * masterGain * h.vintFlapFactor * flapABStep * flapABVX * pow(10, turnsGain*0.05) * envelopVelY;
+		double flapBGain = flapB * flapOn * off * masterGain * h.vintFlapFactor * flapABStep * flapABVX * pow(10, turnsGain*0.05) * envelopVelY;
 		double flapCGain = ((flapIndicator) ?
 			(flapCGainAccX * flapCStep * flapCVX * flapOn * off * pow(10, turnsGain*0.05)
 				* masterGain
