@@ -1655,8 +1655,8 @@ int main(int argc, char* argv[])
 						soundFFT.styk_r = 0;
 					}
 				}
-			}
-			soundFFT.time = currentTime;*/
+			}*/
+			soundFFT.time = currentTime;
 		}
 		else
 		{
