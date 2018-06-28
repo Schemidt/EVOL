@@ -561,6 +561,7 @@ int main(int argc, char *argv[])
 	Sound *sturm[50] = { nullptr };
 	Sound *igla[50] = { nullptr };
 	Sound *rocket[50] = { nullptr };
+	Sound *bullet[50] = { nullptr };
 	Sound *ppu = nullptr;
 	Sound *upk = nullptr;
 	Sound *nar8[50] = { nullptr };
@@ -575,7 +576,7 @@ int main(int argc, char *argv[])
 	Sound *shock[4][50] = { nullptr };
 	Sound *trim = nullptr;
 	Sound *frict = nullptr;
-
+	
 	SOUNDREAD localdata = soundread;//локальная копия общего с USPO файла
 
 	double timerPodk = 0;
@@ -598,6 +599,9 @@ int main(int argc, char *argv[])
 
 	int rocketHitLocker = 0;
 	int counterRocketHit = 0;
+
+	int bulletHitLocker = 0;
+	int counterBulletHit = 0;
 
 	double timerAvr = 0;
 	const double window = 1;//При вычислении приближенной производной берем изменение значения за секунду 
@@ -654,13 +658,7 @@ int main(int argc, char *argv[])
 		}
 		if (IsProcessPresent("USPO.exe") && !localdata.p_model_stop && noDataFactor < 1 && !stop)//цикл работает пока uspo активно, и признак остановки модели не активен
 		{
-			/*cout << fixed
-				<< " SOIU: " << Sound::sourcesInUse
-				<< " ESIU: " << Sound::effectSlotsInUse
-				<< " CUTI: " << Sound::currentTime
-				<< "\t\t\r";*/
-
-				//Плавно нагоняем актуальную громкость
+			//Плавно нагоняем актуальную громкость
 			if (Sound::masterGain < localdata.master_gain)
 			{
 				Sound::masterGain += Sound::deltaTime;
@@ -671,6 +669,8 @@ int main(int argc, char *argv[])
 				Sound::masterGain -= Sound::deltaTime;
 				Sound::masterGain = (Sound::masterGain < localdata.master_gain) ? localdata.master_gain : Sound::masterGain;
 			}
+
+			//printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tEIU: %i\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, Sound::effectSlotsInUse);
 
 			printf(" Time: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
 
@@ -772,6 +772,7 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			//Звуки устройств эффектов и агрегатов
 			//ВСУ
 			if (helicopter.vsuFactor)//Если ВСУ включено в проект
 			{
@@ -1059,9 +1060,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
-			//Топливна система
-
 			//Если насосы подкачки присутствуют на Борту
 			if (helicopter.pumpLeftFactor)
 			{
@@ -1349,9 +1347,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
-			//Движение по ВПП и РД
-
 			//Если звуки движения по ВПП включены в проект борта
 			if (helicopter.runwayFactor)
 			{
@@ -1365,7 +1360,6 @@ int main(int argc, char *argv[])
 						Free(runway);//Удаляем объект
 				}
 			}
-
 			//Винт
 			if (helicopter.vintSwishFactor)
 			{
@@ -1478,7 +1472,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
 			//Дождь
 			if (true)
 			{
@@ -1522,23 +1515,7 @@ int main(int argc, char *argv[])
 				{
 					if (rocket[i])
 					{
-						switch (rocketHitLocker)
-						{
-						case 1:
-							rocket[i]->channel[0] = 1;//L
-							rocket[i]->channel[1] = 0;
-							break;
-						case 2:
-							rocket[i]->channel[0] = 0;//R
-							rocket[i]->channel[1] = 1;
-							break;
-						case 3:
-							rocket[i]->channel[0] = 1;//centre
-							rocket[i]->channel[1] = 1;
-							break;
-						}
-
-						rocket[i]->play(rocketHitLocker, helicopter.fullName["rocket"], "NULL", "NULL", helicopter.rocketSturmFactor);
+						rocket[i]->play(rocketHitLocker, helicopter.fullName["rocket"], "NULL", "NULL", helicopter.rocketHitFactor);
 
 						if (rocket[i]->sourceStatus[rocket[i]->id] != AL_PLAYING)
 						{
@@ -1547,7 +1524,50 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
+			//Если звук попадания ракеты включен в проект
+			if (helicopter.bulletHitFactor)
+			{
+				if (localdata.p_bullet_hit)//Условие создания объекта
+				{
+					if (!bullet[counterBulletHit] && !bulletHitLocker)
+					{
+						bullet[counterBulletHit] = new Sound;//Создаем объект
+						counterBulletHit++;
+						bulletHitLocker = localdata.p_bullet_hit;
+					}
+					if (counterBulletHit >= 50)
+					{
+						counterBulletHit = 0;
+					}
+				}
+				else
+				{
+					bulletHitLocker = 0;
+				}
 
+				for (size_t i = 0; i < 50; i++)
+				{
+					if (bullet[i])
+					{
+						string type = 0;
+						if (rand()%10 > 5)
+						{
+							type = helicopter.fullName["bullet0"];
+						}
+						else
+						{
+							type = helicopter.fullName["bullet1"];
+						}
+
+						bullet[i]->play(bulletHitLocker, type, "NULL", "NULL", helicopter.bulletHitFactor);
+
+						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
+						{
+							Free(bullet[i]);
+						}
+					}
+				}
+			}
 			//Если НАР8 имеется на борту
 			if (helicopter.rocketNar8Factor)
 			{
@@ -1607,7 +1627,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
 			//Если НАР13 имеется на борту
 			if (helicopter.rocketNar13Factor)
 			{
@@ -1668,7 +1687,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
 			//Если ППУ имеется на борту
 			if (helicopter.ppuFactor)
 			{
@@ -1787,7 +1805,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
 			//Если УР ИГЛА имеется на борту
 			if (helicopter.rocketIglaFactor)
 			{
@@ -1872,15 +1889,12 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
 			//Удар при проходе плит
 			double shockInten[4] = {
 					localdata.styk_l,
 					localdata.styk_hv,
 					localdata.styk_nos,
 					localdata.styk_r };
-
-			//Удар при проходе стыка плит
 			if (helicopter.shock)
 			{
 				for (size_t i = 0; i < 4; i++)
@@ -1930,7 +1944,6 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-
 			//Скоростная добавка
 			if (helicopter.vadd)
 			{
@@ -2325,7 +2338,6 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
-
 	}
 	atexit(freeOpenAL);//Выполнение функции KillALData на завершении программы
 	StopRealTime();
