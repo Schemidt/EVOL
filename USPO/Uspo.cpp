@@ -1237,7 +1237,34 @@ int main(int argc, char* argv[])
 					}
 					if (helicopter.modelName == "mi_8_amtsh")
 					{
-						//printf(" TEST:\n 1) 0 - 200\n 2) 201 - 291\n 3) 292 - 432\n 4) 433 - 583\n 5) 584 - 684\n 6) 685 - 1095\n 7) 1096 - 1316\n 8) 1317 - 1582\n 9) [custom]\n");
+						if (hovering)
+						{
+							tests =
+							{
+								{ 0, 0 }
+							};
+						}
+						else if (skv)
+						{
+							tests =
+							{
+								{ 0, 0 }
+							};
+						}
+						else
+						{
+							tests =
+							{
+								{ 0, 200 },
+								{ 201, 291 },
+								{ 292, 432 },
+								{ 433, 583 },
+								{ 584, 684 },
+								{ 685, 1095 },
+								{ 1096, 1316 },
+								{ 1317, 1582 }
+							};
+						}
 					}
 					if (helicopter.modelName == "mi_28")
 					{
