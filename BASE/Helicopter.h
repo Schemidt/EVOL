@@ -62,8 +62,8 @@ public:
 	double rocketSturmFactor = 0;//!<Множитель громкости ракеты штурм
 	double rocketNar8Factor = 0;//!<Множитель громкости НАР 8
 	double rocketNar13Factor = 0;//!<Множитель громкости НАР 13
-	double rocketHitFactor = 0;//!<Множитель громкости попадания ракеты
-	double bulletHitFactor = 0;//!<Множитель громкости попадания пули
+	double rocketHitFactor = 1;//!<Множитель громкости попадания ракеты
+	double bulletHitFactor = 1;//!<Множитель громкости попадания пули
 	double upkFactor = 0;//!<Множитель громкости выстрелов УПК
 	double ppuFactor = 0;//!<Множитель громкости выстрелов ППУ
 	double vintSwishFactor = 0;//!<Множитель громкости винта на низких обортах

@@ -576,7 +576,7 @@ int main(int argc, char *argv[])
 	Sound *shock[4][50] = { nullptr };
 	Sound *trim = nullptr;
 	Sound *frict = nullptr;
-	
+
 	SOUNDREAD localdata = soundread;//локальная копия общего с USPO файла
 
 	double timerPodk = 0;
@@ -602,6 +602,7 @@ int main(int argc, char *argv[])
 
 	int bulletHitLocker = 0;
 	int counterBulletHit = 0;
+	string type[50];
 
 	double timerAvr = 0;
 	const double window = 1;//При вычислении приближенной производной берем изменение значения за секунду 
@@ -1524,7 +1525,7 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-			//Если звук попадания ракеты включен в проект
+			//Если звук попадания пули включен в проект
 			if (helicopter.bulletHitFactor)
 			{
 				if (localdata.p_bullet_hit)//Условие создания объекта
@@ -1549,17 +1550,19 @@ int main(int argc, char *argv[])
 				{
 					if (bullet[i])
 					{
-						string type = 0;
-						if (rand()%10 > 5)
+						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
 						{
-							type = helicopter.fullName["bullet0"];
-						}
-						else
-						{
-							type = helicopter.fullName["bullet1"];
+							if (rand() % 10 > 5)
+							{
+								type[i] = helicopter.fullName["bullet0"];
+							}
+							else
+							{
+								type[i] = helicopter.fullName["bullet1"];
+							}
 						}
 
-						bullet[i]->play(bulletHitLocker, type, "NULL", "NULL", helicopter.bulletHitFactor);
+						bullet[i]->play(bulletHitLocker, type[i], "NULL", "NULL", helicopter.bulletHitFactor);
 
 						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
 						{
