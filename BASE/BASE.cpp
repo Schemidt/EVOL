@@ -602,6 +602,7 @@ int main(int argc, char *argv[])
 
 	int bulletHitLocker = 0;
 	int counterBulletHit = 0;
+	string type[50];
 
 	double timerAvr = 0;
 	const double window = 1;//При вычислении приближенной производной берем изменение значения за секунду 
@@ -629,6 +630,7 @@ int main(int argc, char *argv[])
 	double noDataFactor = 0;//Индикатор прекращения поступления данных
 	bool stop = 0;//Признак крушения
 
+	int a = 0;int b = 0;
 	//Опрашиваем все блоки программы в бесконечном цикле
 	while (true)
 	{
@@ -672,7 +674,7 @@ int main(int argc, char *argv[])
 
 			//printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tEIU: %i\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, Sound::effectSlotsInUse);
 
-			printf(" Time: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
+			//printf(" Time: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
 
 			//Среднее время цикла
 			avrDeltaTime = 0;
@@ -1524,7 +1526,7 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
-			//Если звук попадания ракеты включен в проект
+			//Если звук попадания пули включен в проект
 			if (helicopter.bulletHitFactor)
 			{
 				if (localdata.p_bullet_hit)//Условие создания объекта
@@ -1549,17 +1551,23 @@ int main(int argc, char *argv[])
 				{
 					if (bullet[i])
 					{
-						string type = 0;
-						if (rand()%10 > 5)
+						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
 						{
-							type = helicopter.fullName["bullet0"];
+							if (rand() % 10 > 5)
+							{
+								type[i] = helicopter.fullName["bullet0"]; a++;
+							}
+							else
+							{
+								type[i] = helicopter.fullName["bullet1"]; b++;
+							}
 						}
 						else
 						{
-							type = helicopter.fullName["bullet1"];
+							
 						}
 
-						bullet[i]->play(bulletHitLocker, type, "NULL", "NULL", helicopter.bulletHitFactor);
+						bullet[i]->play(bulletHitLocker, type[i], "NULL", "NULL", helicopter.bulletHitFactor);
 
 						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
 						{
@@ -2195,6 +2203,8 @@ int main(int argc, char *argv[])
 					}
 				}
 			}
+
+			cout << a << " " << b << "\r";
 		}
 		else
 		{
