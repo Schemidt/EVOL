@@ -105,8 +105,8 @@ void Helicopter::setPath(string pathToFile)
 	shortName["nar8"] = "s8.wav";//!<имя файла звука НАР 8
 	shortName["nar13"] = "s13.wav";//!<имя файла звука НАР 13
 	shortName["rocket"] = "rocket.wav";//!<имя файла звука попадания ракеты
-	shortName["bullet0"] = "bullet0.wav";//!<имя файла звука попадания ракеты
-	shortName["bullet1"] = "bullet1.wav";//!<имя файла звука попадания ракеты
+	shortName["bullet0"] = "bullet_1.wav";//!<имя файла звука попадания ракеты
+	shortName["bullet1"] = "bullet_2.wav";//!<имя файла звука попадания ракеты
 	shortName["upk"] = "gun_loop.wav";//!<имя файла звука выстрелов УПК
 	shortName["ppu"] = "gun_loop.wav";//!<имя файла звука выстрелов ППУ
 	shortName["shoot"] = "shoot.wav";//!<имя файла звука выстрелов ППУ
