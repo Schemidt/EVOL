@@ -1202,7 +1202,6 @@ int main(int argc, char* argv[])
 						break;
 					}
 
-					//TODO: подготовить тесты для всех бортов, и организовать файлы
 					if (helicopter.modelName == "mi_8_mtv5")
 					{
 						if (hovering)
@@ -1268,9 +1267,33 @@ int main(int argc, char* argv[])
 					}
 					if (helicopter.modelName == "mi_28")
 					{
-						// skv printf(" TEST:\n 1) 0 - 260\n 2) 261 - 691\n 3) 692 - 992\n 4) [custom time]\n");
-
-						// std printf(" TEST:\n 1) 0 - 100\n 2) 101 - 441\n 3) 442 - 852\n 4) 853 - 1283\n 5) 1284 - 1484\n 6) [custom time]\n");
+						if (hovering)
+						{
+							tests =
+							{
+								{ 0, 160 }
+							};
+						}
+						else if (skv)
+						{
+							tests =
+							{
+								{ 0, 260 },
+								{ 261, 691 },
+								{ 692, 992 }
+							};
+						}
+						else
+						{
+							tests =
+							{
+								{ 0, 100 },
+								{ 101, 441 },
+								{ 442, 852 },
+								{ 853, 1283 },
+								{ 1284, 1484 }
+							};
+						}
 					}
 					if (helicopter.modelName == "mi_26")
 					{
@@ -1382,7 +1405,37 @@ int main(int argc, char* argv[])
 					}
 					if (helicopter.modelName == "ka_226")
 					{
-						// std printf(" TEST:\n 1) 0 - 120\n 2) 121 - 271\n 3) 272 - 442\n 4) 443 - 553\n 5) 554 - 814\n 6) 815 - 985\n 7) 815 - 1136\n 8) 1137 - 1377\n 9) 1378 - 1728\n 10) 1729 - 1879\n 11) 1880 - 2080\n 0) [custom]\n ");
+						if (hovering)
+						{
+							tests =
+							{
+								{ 0, 0 }
+							};
+						}
+						else if (skv)
+						{
+							tests =
+							{
+								{ 0, 0 }
+							};
+						}
+						else
+						{
+							tests =
+							{
+								{ 0, 120 },
+								{ 121, 271 },
+								{ 272, 442 },
+								{ 443, 553 },
+								{ 554, 814 },
+								{ 815, 985 },
+								{ 986, 1136 },
+								{ 1137, 1377 },
+								{ 1378, 1728 },
+								{ 1729, 1879 },
+								{ 1880, 2080 }
+							};
+						}
 					}
 					if (helicopter.modelName == "ansat")
 					{
@@ -1572,7 +1625,7 @@ int main(int argc, char* argv[])
 			}
 
 			//Стук плит
-			if (soundFFT.hight == 0)
+			/*if (soundFFT.hight == 0)
 			{
 				router += soundFFT.v_surf_x * deltaTime;
 				if (router != 0)
@@ -1603,7 +1656,7 @@ int main(int argc, char* argv[])
 					}
 				}
 			}
-			soundFFT.time = currentTime;
+			soundFFT.time = currentTime;*/
 		}
 		else
 		{
