@@ -60,6 +60,9 @@ double singleSturmTimer = 0;
 bool singleRocket = 0;
 double singleRocketTimer = 0;
 
+bool singleBullet = 0;
+double singleBulletTimer = 0;
+
 int main(int argc, char* argv[])
 {
 	//Только 1на копия приложения может быть запущена одновременно
@@ -1118,7 +1121,7 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				//Пуск иглы
+				//Попадание ракеты
 				if (singleRocket)
 				{
 					singleRocketTimer += deltaTime;
@@ -1130,6 +1133,21 @@ int main(int argc, char* argv[])
 					{
 						singleRocket = 0;
 						soundFFT.p_rocket_hit = 0;
+					}
+				}
+
+				//Попадание пули
+				if (singleBullet)
+				{
+					singleBulletTimer += deltaTime;
+					if (singleBulletTimer < 0.01/*максимальная длиина сигнала 1го нара*/)
+					{
+						soundFFT.p_bullet_hit = 1;
+					}
+					else
+					{
+						singleBullet = 0;
+						soundFFT.p_bullet_hit = 0;
 					}
 				}
 
@@ -1787,6 +1805,10 @@ void kbHit()
 			break;
 		case 'Z':
 			soundFFT.p_rain = !soundFFT.p_rain;//Дождь
+			break;
+		case 'z':
+			singleBullet = 1;
+			singleBulletTimer = 0;//Признак попадания пулей
 			break;
 		case '/':
 			soundFFT.accumulator = !soundFFT.accumulator;//Аккумулятор
