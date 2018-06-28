@@ -5016,9 +5016,9 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 				* interpolation({ -0.25, 1 }, { 0, 0.5 }, { 0.25, 0 }, velocityY);//переходит в усиление нч по vy
 		}
 
-		// только для 1-го условия хлопков добавляем огибающую по Vy: при изменении Vy от -4 м/с до -2 м/с громкость хлопков падает на ~10 dB
+		// только для 1-го условия хлопков добавляем огибающую по Vy: при изменении Vy от -5 м/с до -2 м/с громкость хлопков падает на ~16 dB
 		double envelopVelY = 1;
-		envelopVelY = (flapIndicator == 1 || (!flapIndicator && ModeSequence[1] == "1")) ? getValue({ -4, 1 }, { -2, 0.263 }, velocityY, 0.263, 1) : 1;
+		envelopVelY = (flapIndicator == 1 || (!flapIndicator && ModeSequence[1] == "1")) ? getValue({ -5, 1 }, { -2, 0.14 }, velocityY, 0.14, 1) : 1;
 
 		//рассчитываем результирующую громкость хлопков в каждый момент времени
 		double flapAGain = (flapOn * off * turnsGain * envelopVelY) * (flapA * flapABStep * flapABVX)  * masterGain * h.vintFlapFactor;
