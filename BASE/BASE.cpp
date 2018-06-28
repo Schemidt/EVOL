@@ -3220,7 +3220,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 			stepNominal = 6;
 		}
 
-		double takeOffGain = toCoef(min(getParameterFromVector(vector<point>{ { 0, -12 }, { 3, -5 }, { 7, 0 }}, stepNominal),
+		double takeOffGain = toCoef(min(getParameterFromVector(vector<point>{ { 0, -12 }, { 3, -5 }, { stepNominal, 0 }}, step),
 			getParameterFromVector(vector<point>{ { 0, 0 }, { 8, -12 } }, hight)))
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor);
 
@@ -4516,7 +4516,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 	const double accelerationXBorder = 0.28;//!<мс/с*с
 	const double velocityYBorder = -2;//!<мс/с
 	const double dashBorder = -0.672;
-	
+
 	if (velocityVectorXZ < 0)
 	{
 		//dv>1 и vy<-2
@@ -5033,18 +5033,6 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 		alSourcef(source[0], AL_GAIN, flapAGain);//равномерные
 		alSourcef(source[1], AL_GAIN, flapBGain);//неравномерные
 		alSourcef(source[2], AL_GAIN, flapCGain);//тупые
-
-		/*cout.precision(3);
-		cout << fixed
-			<< " FLAG: " << flapAGain
-			<< " FLBG: " << flapBGain
-			<< " FLCG: " << flapCGain
-			<< " AVXZ: " << accelerationVectorXZ
-			<< " DASH: " << dashVectorXZ
-			<< " ACCY: " << accelerationVy
-			<< " VELY: " << velocityY
-			<< " VELX: " << velocityVectorXZ
-			<< "\t\t\r";*/
 	}
 	//Хлопки ми 26
 	else if (h.modelName == "mi_26")

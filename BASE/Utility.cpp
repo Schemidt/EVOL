@@ -521,3 +521,5 @@ double getPitch(double maxPar, double currentPar, double supposedPar)
 		return 1;
 	}
 }
+
+

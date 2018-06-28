@@ -314,7 +314,9 @@ public:
 	int prevFlapIndicator = 0;
 	string key[3];/*!< Переменная для однократной загрузки буфера */
 	double flapOn = 0;
+
 	Smoother sm;
+
 	VintFlap();
 
 	/*!
