@@ -561,6 +561,7 @@ int main(int argc, char *argv[])
 	Sound *sturm[50] = { nullptr };
 	Sound *igla[50] = { nullptr };
 	Sound *rocket[50] = { nullptr };
+	Sound *bullet[50] = { nullptr };
 	Sound *ppu = nullptr;
 	Sound *upk = nullptr;
 	Sound *nar8[50] = { nullptr };
@@ -575,7 +576,7 @@ int main(int argc, char *argv[])
 	Sound *shock[4][50] = { nullptr };
 	Sound *trim = nullptr;
 	Sound *frict = nullptr;
-
+	
 	SOUNDREAD localdata = soundread;//локальная копия общего с USPO файла
 
 	double timerPodk = 0;
@@ -598,6 +599,9 @@ int main(int argc, char *argv[])
 
 	int rocketHitLocker = 0;
 	int counterRocketHit = 0;
+
+	int bulletHitLocker = 0;
+	int counterBulletHit = 0;
 
 	double timerAvr = 0;
 	const double window = 1;//При вычислении приближенной производной берем изменение значения за секунду 
@@ -1511,27 +1515,55 @@ int main(int argc, char *argv[])
 				{
 					if (rocket[i])
 					{
-						switch (rocketHitLocker)
-						{
-						case 1:
-							rocket[i]->channel[0] = 1;//L
-							rocket[i]->channel[1] = 0;
-							break;
-						case 2:
-							rocket[i]->channel[0] = 0;//R
-							rocket[i]->channel[1] = 1;
-							break;
-						case 3:
-							rocket[i]->channel[0] = 1;//centre
-							rocket[i]->channel[1] = 1;
-							break;
-						}
-
-						rocket[i]->play(rocketHitLocker, helicopter.fullName["rocket"], "NULL", "NULL", helicopter.rocketSturmFactor);
+						rocket[i]->play(rocketHitLocker, helicopter.fullName["rocket"], "NULL", "NULL", helicopter.rocketHitFactor);
 
 						if (rocket[i]->sourceStatus[rocket[i]->id] != AL_PLAYING)
 						{
 							Free(rocket[i]);
+						}
+					}
+				}
+			}
+			//Если звук попадания ракеты включен в проект
+			if (helicopter.bulletHitFactor)
+			{
+				if (localdata.p_bullet_hit)//Условие создания объекта
+				{
+					if (!bullet[counterBulletHit] && !bulletHitLocker)
+					{
+						bullet[counterBulletHit] = new Sound;//Создаем объект
+						counterBulletHit++;
+						bulletHitLocker = localdata.p_bullet_hit;
+					}
+					if (counterBulletHit >= 50)
+					{
+						counterBulletHit = 0;
+					}
+				}
+				else
+				{
+					bulletHitLocker = 0;
+				}
+
+				for (size_t i = 0; i < 50; i++)
+				{
+					if (bullet[i])
+					{
+						string type = 0;
+						if (rand()%10 > 5)
+						{
+							type = helicopter.fullName["bullet0"];
+						}
+						else
+						{
+							type = helicopter.fullName["bullet1"];
+						}
+
+						bullet[i]->play(bulletHitLocker, type, "NULL", "NULL", helicopter.bulletHitFactor);
+
+						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
+						{
+							Free(bullet[i]);
 						}
 					}
 				}
