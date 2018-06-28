@@ -310,6 +310,8 @@ class VintFlap : public Sound
 {
 public:
 
+	int flapIndicator = 0;
+	int prevFlapIndicator = 0;
 	string key[3];/*!< Переменная для однократной загрузки буфера */
 	double flapOn = 0;
 	Smoother sm;

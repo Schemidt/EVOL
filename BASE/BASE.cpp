@@ -4516,7 +4516,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 	const double accelerationXBorder = 0.28;//!<мс/с*с
 	const double velocityYBorder = -2;//!<мс/с
 	const double dashBorder = -0.672;
-	int flapIndicator = 0;
+	
 	if (velocityVectorXZ < 0)
 	{
 		//dv>1 и vy<-2
@@ -4619,6 +4619,18 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 			{
 				flapIndicator = 0;
 			}
+		}
+	}
+
+	//Записываем историю хлопков
+	mode = to_string(flapIndicator);
+
+	if (ModeSequence.back() != mode)
+	{
+		ModeSequence.push_back(mode);
+		if (ModeSequence.size() >= 4)
+		{
+			ModeSequence.erase(ModeSequence.begin());
 		}
 	}
 
@@ -4960,14 +4972,13 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 		}
 		double resFlapCGain = max(hiSpeedGain, accelerationGain);//из двух показателей громкости НЧ хлопков выбираем преобладающий
 
-		double turnsGain = 0;
-		if (sr.reduktor_gl_obor <= 91)
-		{
-			turnsGain = (91 - sr.reduktor_gl_obor) * (-3);//расчитываем усиление от оборотов винта - 3дб на оборот
-		}
+		//расчитываем усиление от оборотов винта - 3дб на оборот
+		double turnsGain = toCoef((sr.reduktor_gl_obor - 91) * 3);
+		turnsGain = (turnsGain > 1) ? 1 : turnsGain;
 
 		//Условие затухания хлопков
 		double off = interpolation({ 14, 1 }, { 0, 0 }, abs(velocityVectorXZ));
+
 		//Условие выбора равномерных-неравномерных хлопков
 		double flapA = 0;
 		double flapB = 0;
@@ -5004,16 +5015,16 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 			flapCGainAccX = interpolation({ 0.56, 0 }, { 1, 1 }, abs(accelerationVectorXZ))
 				* interpolation({ -0.25, 1 }, { 0, 0.5 }, { 0.25, 0 }, velocityY);//переходит в усиление нч по vy
 		}
-		
+
 		// только для 1-го условия хлопков добавляем огибающую по Vy: при изменении Vy от -4 м/с до -2 м/с громкость хлопков падает на ~10 dB
 		double envelopVelY = 1;
-		envelopVelY = (flapIndicator == 1 || !flapIndicator) ? getValue ({ -4, 1 }, { -2, 0.263 }, velocityY, 0.263, 1) : 1;
+		envelopVelY = (flapIndicator == 1 || (!flapIndicator && ModeSequence[1] == "1")) ? getValue({ -4, 1 }, { -2, 0.263 }, velocityY, 0.263, 1) : 1;
 
 		//рассчитываем результирующую громкость хлопков в каждый момент времени
-		double flapAGain = flapA * flapOn * off * masterGain * h.vintFlapFactor * flapABStep * flapABVX * pow(10, turnsGain*0.05) * envelopVelY;
-		double flapBGain = flapB * flapOn * off * masterGain * h.vintFlapFactor * flapABStep * flapABVX * pow(10, turnsGain*0.05) * envelopVelY;
+		double flapAGain = (flapOn * off * turnsGain * envelopVelY) * (flapA * flapABStep * flapABVX)  * masterGain * h.vintFlapFactor;
+		double flapBGain = (flapOn * off * turnsGain * envelopVelY) * (flapB * flapABStep * flapABVX)  * masterGain * h.vintFlapFactor;
 		double flapCGain = ((flapIndicator) ?
-			(flapCGainAccX * flapCStep * flapCVX * flapOn * off * pow(10, turnsGain*0.05)
+			(flapCGainAccX * flapCStep * flapCVX * flapOn * off * turnsGain
 				* masterGain
 				* (h.vintFlapFactor + (1 - h.vintFlapFactor)*0.5))
 			: (masterGain
