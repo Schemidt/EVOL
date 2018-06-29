@@ -5733,11 +5733,7 @@ int Skv::play(Helicopter &h, SOUNDREAD &sr)
 
 Runway::Runway() : Sound(2, 2, 1)
 {
-	/*for (size_t i = 0; i < 2; i++)
-	{
-		sm[i].firstAttempt = 0;
-		sm[i].newDbGain = -30;
-	}*/
+	
 }
 
 int Runway::play(Helicopter &h, SOUNDREAD &sr)
@@ -5801,20 +5797,6 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		gain[0] = toCoef(drivingGain) * getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch) * 0.707;
 		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
 			* interpolation({ 78, 0.71 }, { 84, 1 }, sr.reduktor_gl_obor);
-
-		/*static double period = 0;
-		if (period == 0)
-		{
-			remove("driv.txt");
-		}
-		period += deltaTime;
-		if (period > 0.05)
-		{
-			FILE *f = fopen("driv.txt", "at");
-			fprintf(f, "%.3lf\t%.3lf\t%.3lf\t%.3lf\t\n", Sound::currentTime, gain[0], gain[1], groundTouch);
-			fclose(f);
-			period = 0.01;
-		}*/
 	}
 	else if (h.modelName == "ka_226")
 	{
@@ -5849,7 +5831,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 
 	for (size_t i = 0; i < sourceNumber; i++)
 	{
-		alSourcef(source[i], AL_GAIN, masterGain * h.runwayFactor * /*sm[i].delay(*/gain[i]/*, deltaTime)*/);
+		alSourcef(source[i], AL_GAIN, masterGain * h.runwayFactor * gain[i]);
 	}
 
 	return 1;
