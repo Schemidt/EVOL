@@ -566,6 +566,7 @@ void Helicopter::setBufferMap()
 			it.first == "red_mg_avt_w" ||
 			it.first == "red_w_avt_w" ||
 			it.first == "red_avt_mg_w" ||
+			it.first == "red_w_avt_fly" ||
 			it.first == "red_off_w")
 		{
 			alGenBuffers(1, &buffers[i]);
