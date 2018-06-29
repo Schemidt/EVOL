@@ -1809,9 +1809,14 @@ void kbHit()
 			perek[1] = !perek[1];//Правый кран
 			perekTimer[1] = 0;
 			break;
+		case '-':
+			soundFFT.v_surf_x -= 14;//
+			break;
+		case '=':
+			soundFFT.v_surf_x += 14;//
+			break;
 		case 's':
 			soundFFT.v_surf_x += 0.277;//Увеличить скорость
-			soundFFT.v_surf_x = (soundFFT.v_surf_x > 100.) ? 100. : soundFFT.v_surf_x;
 			break;
 		case 'x':
 			soundFFT.v_surf_x -= 0.277;//Уменьшить скорость
@@ -1916,7 +1921,7 @@ void kbHit()
 		case '9':
 			soundFFT.p_skv_on = !soundFFT.p_skv_on;//СКВ
 			break;
-		case '-':
+		case 'a':
 			soundFFT.zoomer = !soundFFT.zoomer;//бибиби
 			break;
 		case '8':

@@ -673,7 +673,7 @@ int main(int argc, char *argv[])
 
 			//printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tEIU: %i\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, Sound::effectSlotsInUse);
 
-			printf(" Time: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
+			//printf(" Time: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
 
 			//Среднее время цикла
 			avrDeltaTime = 0;
@@ -5733,7 +5733,11 @@ int Skv::play(Helicopter &h, SOUNDREAD &sr)
 
 Runway::Runway() : Sound(2, 2, 1)
 {
-
+	for (size_t i = 0; i < 2; i++)
+	{
+		sm[i].firstAttempt = 0;
+		sm[i].newDbGain = -30;
+	}
 }
 
 int Runway::play(Helicopter &h, SOUNDREAD &sr)
@@ -5777,13 +5781,15 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		alSourcei(source[0], AL_LOOPING, AL_TRUE);
 
-		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, { 11.2, 0 }, abs(sr.v_surf_x))
+		gain[1] = interpolation({ 0, 0 }, { 11.2, 1 }, abs(sr.v_surf_x))
 			* 0.25
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);/*Уменьшаем движение по полосе*/
 																						  //alSourcef(source[1], AL_GAIN, 0);//
 		gain[0] = interpolation({ 8.3, 0 }, { 11.2, 1 }, abs(sr.v_surf_x))
 			* 0.854
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
+
+		printf_s(" delay: %.3lf\tgain: %.3lf\r", sm[0].newDbGain, gain[0]);
 	}
 	else if (h.modelName == "mi_26")
 	{
@@ -5854,13 +5860,6 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 	{
 		alSourcef(source[i], AL_GAIN, masterGain * h.runwayFactor * sm[i].delay(gain[i], deltaTime));
 	}
-
-	/*float g[3];
-	for (size_t i = 0; i < sourceNumber; i++)
-	{
-		alGetSourcef(source[i], AL_GAIN, &g[i]);
-	}
-	printf("%.3lf\t%.3lf\t%.3lf\t%.3lf\r", g[1], g[2], g[3]);*/
 
 	return 1;
 }
