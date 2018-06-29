@@ -5772,7 +5772,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 
 		alEffectf(effect[0], AL_EQUALIZER_HIGH_CUTOFF, 4000);
 
-		alEffectf(effect[0], AL_EQUALIZER_HIGH_GAIN, interpolation({ 11.2, 0.126 }, { 14, 1 }, sr.v_surf_x));//
+		alEffectf(effect[0], AL_EQUALIZER_HIGH_GAIN, interpolation({ 8.3, 0.126 }, { 11.2, 1 }, sr.v_surf_x));//
 
 		alAuxiliaryEffectSloti(effectSlot[0], AL_EFFECTSLOT_EFFECT, effect[0]);//помещаем эффект в слот (в 1 слот можно поместить 1 эффект)
 
@@ -5781,15 +5781,13 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		alSourcei(source[0], AL_LOOPING, AL_TRUE);
 
-		gain[1] = interpolation({ 0, 0 }, { 11.2, 1 }, abs(sr.v_surf_x))
+		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
 			* 0.25
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);/*Уменьшаем движение по полосе*/
 
-		gain[0] = interpolation({ 8.3, 0 }, { 11.2, 1 }, abs(sr.v_surf_x))
+		gain[0] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
 			* 0.854
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
-
-		printf_s(" delay: %.3lf\tgain: %.3lf\tgrto: %.3lf\r", sm[0].newDbGain, toDb(gain[0]), groundTouch);
 	}
 	else if (h.modelName == "mi_26")
 	{
@@ -5841,7 +5839,6 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		filetoBuffer[1] = h.fullName["runway"];
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		gain[1] = toCoef(drivingGain) * getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
-
 	}
 	else
 	{
