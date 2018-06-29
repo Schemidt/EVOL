@@ -131,6 +131,9 @@
   <ItemGroup>
     <ResourceCompile Include="USPO.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="USPO.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

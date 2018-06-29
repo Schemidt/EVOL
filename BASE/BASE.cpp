@@ -4666,7 +4666,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 		//Усиление от оборотов
 		//только если атака больше 2х
 		//делает огибающую атаки более динамичной
-		double turnsGain = 0;
+		double turnsGain = 1;
 		if (atkXvel >= 2)
 		{
 			//усиление от оборотов
@@ -5746,7 +5746,7 @@ int Skv::play(Helicopter &h, SOUNDREAD &sr)
 
 Runway::Runway() : Sound(2, 2, 1)
 {
-	
+
 }
 
 int Runway::play(Helicopter &h, SOUNDREAD &sr)
