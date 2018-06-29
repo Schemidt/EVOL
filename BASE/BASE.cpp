@@ -2848,7 +2848,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		mode = "avt";
 	}
 	//לד2הג -> 0
-	else if (sr.p_eng1_ostanov && sr.p_eng2_ostanov && redTurnAcc < 0 && sr.reduktor_gl_obor > 0)
+	else if (sr.p_eng1_ostanov && sr.p_eng2_ostanov && redTurnAcc < 0/* && sr.reduktor_gl_obor > 0*/)
 	{
 		if (mode == "w_hp" || mode == "on_hp" || mode == "off_hp")
 		{
