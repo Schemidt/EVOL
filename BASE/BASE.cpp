@@ -3000,6 +3000,12 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		rise = max(timeGain[id], turnGain[id]);
 		fade = min(timeGain[!id], turnGain[!id]);
 	}
+	else if ((filetoBuffer[!id] == h.fullName["red_w_avt_fly"]) && (filetoBuffer[id] == h.fullName["red_w_avt_w"]) 
+		||(filetoBuffer[!id] == h.fullName["red_w_avt_w"]) && (filetoBuffer[id] == h.fullName["red_w_avt_fly"]))
+	{
+		rise = 1;
+		fade = 0;
+	}
 
 	//string modes = "[" + modeSequence[0] + " " + modeSequence[1] + " " + modeSequence[2] + "]";
 	//cout.precision(3);
