@@ -2847,7 +2847,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 	{
 		if (h.modelName == "mi_28")
 		{
-			if (step >= 4)
+			if (step >= 5)
 			{
 				mode = "avt_fly";
 			}
@@ -3000,8 +3000,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		rise = max(timeGain[id], turnGain[id]);
 		fade = min(timeGain[!id], turnGain[!id]);
 	}
-	else if ((filetoBuffer[!id] == h.fullName["red_w_avt_fly"]) && (filetoBuffer[id] == h.fullName["red_w_avt_w"]) 
-		||(filetoBuffer[!id] == h.fullName["red_w_avt_w"]) && (filetoBuffer[id] == h.fullName["red_w_avt_fly"]))
+	else if ((filetoBuffer[!id] == h.fullName["red_w_avt_w"]) && (filetoBuffer[id] == h.fullName["red_w_avt_fly"]))
 	{
 		rise = 1;
 		fade = 0;
