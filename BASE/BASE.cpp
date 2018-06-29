@@ -2614,7 +2614,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		return 0; //Возвращаем 0 - признак окончания работы объекта
 	}
 
-	if (ModeSequence.back() != mode)//Если произошла смена режима
+	if (modeSequence.back() != mode)//Если произошла смена режима
 	{
 		switcher = 0;//Обнуляем таймер кроссфеда
 		id = !id;//Меняем номер активного источника
@@ -2622,10 +2622,10 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		{
 			fileBuffered[id] = "NULL";
 		}
-		ModeSequence.push_back(mode);//Сохраняем режим в историю
-		if (ModeSequence.size() > 3)//Если если история режимов превышает 3 - очищаем лишние режимы
+		modeSequence.push_back(mode);//Сохраняем режим в историю
+		if (modeSequence.size() > 3)//Если если история режимов превышает 3 - очищаем лишние режимы
 		{
-			ModeSequence.erase(ModeSequence.begin());
+			modeSequence.erase(modeSequence.begin());
 		}
 	}
 
@@ -2675,9 +2675,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	//cout << fixed
 	//	<< " FADE: " << a
 	//	<< " RISE: " << b
-	//	<< " " << ModeSequence[0]
-	//	<< " " << ModeSequence[1]
-	//	<< " " << ModeSequence[2]
+	//	<< " " << modeSequence[0]
+	//	<< " " << modeSequence[1]
+	//	<< " " << modeSequence[2]
 	//	<< "\t\t\r";
 
 	/*static double p = 0;
@@ -2867,7 +2867,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		}
 	}
 
-	if (ModeSequence.back() != mode)
+	if (modeSequence.back() != mode)
 	{
 		switcher = 0;
 		id = !id;
@@ -2875,14 +2875,14 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		{
 			fileBuffered[id] = "NULL";
 		}
-		ModeSequence.push_back(mode);
-		if (ModeSequence.size() >= 4)
+		modeSequence.push_back(mode);
+		if (modeSequence.size() >= 4)
 		{
-			ModeSequence.erase(ModeSequence.begin());
+			modeSequence.erase(modeSequence.begin());
 		}
 	}
 
-	else if (mode == "on_hp")
+	if (mode == "on_hp")
 	{
 		filetoBuffer[id] = "NULL";
 	}
@@ -2934,15 +2934,19 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 	}
 	else if (mode == "off")
 	{
-		if (ModeSequence[1] == "avt")
+		if (modeSequence[1] == "avt")
 		{
 			fileBuffered[id] = h.fullName["red_w_mg_w"];
-			ModeSequence[1] = "mg2";
+			modeSequence[1] = "mg2";
 			id = !id;
 			filetoBuffer[id] = h.fullName["red_off_w"];
 		}
 		else
 		{
+			if (modeSequence[1] == "mg2" && filetoBuffer[id] != h.fullName["red_off_w"] && sr.reduktor_gl_obor < (h.redTurnoverMg1 + h.redTurnoverMg2) / 2)
+			{
+				id = !id;
+			}
 			filetoBuffer[id] = h.fullName["red_off_w"];
 		}
 	}
@@ -2993,7 +2997,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		fade = min(timeGain[!id], turnGain[!id]);
 	}
 
-	//string modes = "[" + ModeSequence[0] + " " + ModeSequence[1] + " " + ModeSequence[2] + "]";
+	//string modes = "[" + modeSequence[0] + " " + modeSequence[1] + " " + modeSequence[2] + "]";
 	//cout.precision(3);
 	//cout << fixed
 	//	<< " ID__: " << id
@@ -3884,7 +3888,7 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 		}
 	}
 
-	if (ModeSequence.back() != mode)
+	if (modeSequence.back() != mode)
 	{
 		switcher = 0;
 		id = !id;
@@ -3892,10 +3896,10 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 		{
 			fileBuffered[id] = "NULL";
 		}
-		ModeSequence.push_back(mode);
-		if (ModeSequence.size() >= 4)
+		modeSequence.push_back(mode);
+		if (modeSequence.size() >= 4)
 		{
-			ModeSequence.erase(ModeSequence.begin());
+			modeSequence.erase(modeSequence.begin());
 		}
 	}
 
@@ -3943,10 +3947,10 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 	{
 		//если каким-то неимоверным образом промежуточный этап
 		//был пропущен и после автомата последовало выключение
-		if (ModeSequence[1] == "avt")
+		if (modeSequence[1] == "avt")
 		{
 			fileBuffered[id] = h.fullName["eng_w_w"];
-			ModeSequence[1] = "mg";
+			modeSequence[1] = "mg";
 			id = !id;
 			filetoBuffer[id] = h.fullName["eng_off_w"];
 		}
@@ -4336,7 +4340,7 @@ int Vsu::play(SOUNDREAD &sr, Helicopter &h)
 		mode = "off";
 	}
 
-	if (ModeSequence.back() != mode)
+	if (modeSequence.back() != mode)
 	{
 		switcher = 0;
 		id = !id;
@@ -4344,10 +4348,10 @@ int Vsu::play(SOUNDREAD &sr, Helicopter &h)
 		{
 			fileBuffered[id] = "NULL";
 		}
-		ModeSequence.push_back(mode);
-		if (ModeSequence.size() >= 4)
+		modeSequence.push_back(mode);
+		if (modeSequence.size() >= 4)
 		{
-			ModeSequence.erase(ModeSequence.begin());
+			modeSequence.erase(modeSequence.begin());
 		}
 	}
 
@@ -4504,9 +4508,9 @@ int Vsu::play(SOUNDREAD &sr, Helicopter &h)
 	//cout << fixed
 	//	/*<< " FADE: " << a
 	//	<< " RISE: " << b
-	//	<< " " << ModeSequence[0]
-	//	<< " " << ModeSequence[1]
-	//	<< " " << ModeSequence[2]*/
+	//	<< " " << modeSequence[0]
+	//	<< " " << modeSequence[1]
+	//	<< " " << modeSequence[2]*/
 	//	<< " VSTO: " << vsuTurnover
 	//	<< " offon: " << offsetOn
 	//	<< " offid: " << offset[id]
@@ -4636,12 +4640,12 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 	//Записываем историю хлопков
 	mode = to_string(flapIndicator);
 
-	if (ModeSequence.back() != mode)
+	if (modeSequence.back() != mode)
 	{
-		ModeSequence.push_back(mode);
-		if (ModeSequence.size() >= 4)
+		modeSequence.push_back(mode);
+		if (modeSequence.size() >= 4)
 		{
-			ModeSequence.erase(ModeSequence.begin());
+			modeSequence.erase(modeSequence.begin());
 		}
 	}
 
@@ -5029,7 +5033,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 
 		// только для 1-го условия хлопков добавляем огибающую по Vy: при изменении Vy от -5 м/с до -2 м/с громкость хлопков падает на ~16 dB
 		double envelopVelY = 1;
-		envelopVelY = (flapIndicator == 1 || (!flapIndicator && ModeSequence[1] == "1")) ? getValue({ -5, 1 }, { -2, 0.14 }, velocityY, 0.14, 1) : 1;
+		envelopVelY = (flapIndicator == 1 || (!flapIndicator && modeSequence[1] == "1")) ? getValue({ -5, 1 }, { -2, 0.14 }, velocityY, 0.14, 1) : 1;
 
 		//рассчитываем результирующую громкость хлопков в каждый момент времени
 		double flapAGain = (flapOn * off * turnsGain * envelopVelY) * (flapA * flapABStep * flapABVX)  * masterGain * h.vintFlapFactor;
@@ -5337,7 +5341,7 @@ int VintSwish::play(Helicopter &h, SOUNDREAD &sr)
 			mode = "off";
 		}
 
-		if (ModeSequence.back() != mode)
+		if (modeSequence.back() != mode)
 		{
 			switcher = 0;
 			id = !id;
@@ -5345,10 +5349,10 @@ int VintSwish::play(Helicopter &h, SOUNDREAD &sr)
 			{
 				fileBuffered[id] = "NULL";
 			}
-			ModeSequence.push_back(mode);
-			if (ModeSequence.size() >= 4)
+			modeSequence.push_back(mode);
+			if (modeSequence.size() >= 4)
 			{
-				ModeSequence.erase(ModeSequence.begin());
+				modeSequence.erase(modeSequence.begin());
 			}
 		}
 
@@ -5372,10 +5376,10 @@ int VintSwish::play(Helicopter &h, SOUNDREAD &sr)
 		}
 		else if (mode == "off")
 		{
-			if (ModeSequence[1] == "avt")
+			if (modeSequence[1] == "avt")
 			{
 				fileBuffered[id] = h.fullName["vint_swish_w_mg"];
-				ModeSequence[1] = "mg2";
+				modeSequence[1] = "mg2";
 				id = !id;
 				filetoBuffer[id] = h.fullName["vint_swish_off"];
 			}
@@ -5965,8 +5969,8 @@ Sound::Sound(const Sound &copy) : Sound()
 	soundWork = copy.soundWork;
 	soundOff = copy.soundOff;
 	mode = copy.mode;//"0";
-					 //ModeSequence.clear();
-	ModeSequence = copy.ModeSequence;//{ "0","0","0" };
+					 //modeSequence.clear();
+	modeSequence = copy.modeSequence;//{ "0","0","0" };
 	lengthOn = copy.lengthOn;
 	lengthOff = copy.lengthOff;
 	offsetOn = copy.offsetOn;
@@ -6014,8 +6018,8 @@ Sound & Sound::operator =(const Sound & copy)
 	soundWork = copy.soundWork;
 	soundOff = copy.soundOff;
 	mode = copy.mode;//"0";
-	//ModeSequence.clear();
-	ModeSequence = copy.ModeSequence;//{ "0","0","0" };
+	//modeSequence.clear();
+	modeSequence = copy.modeSequence;//{ "0","0","0" };
 	lengthOn = copy.lengthOn;
 	lengthOff = copy.lengthOff;
 	offsetOn = copy.offsetOn;
@@ -6189,7 +6193,7 @@ int Crane::play(char status, string pathOn, string pathW, string pathOff, double
 		return 0;
 	}
 
-	if (ModeSequence.back() != mode)
+	if (modeSequence.back() != mode)
 	{
 		switcher = 0;
 		id = !id;
@@ -6197,10 +6201,10 @@ int Crane::play(char status, string pathOn, string pathW, string pathOff, double
 		{
 			fileBuffered[id] = "NULL";
 		}
-		ModeSequence.push_back(mode);
-		if (ModeSequence.size() >= 4)
+		modeSequence.push_back(mode);
+		if (modeSequence.size() >= 4)
 		{
-			ModeSequence.erase(ModeSequence.begin());
+			modeSequence.erase(modeSequence.begin());
 		}
 	}
 
@@ -6210,9 +6214,9 @@ int Crane::play(char status, string pathOn, string pathW, string pathOff, double
 	//	<< " ID__: " << id
 	//	<< " OFF0: " << offset[0]
 	//	<< " OFF1: " << offset[1]
-	//	<< " " << ModeSequence[0]
-	//	<< " " << ModeSequence[1]
-	//	<< " " << ModeSequence[2]
+	//	<< " " << modeSequence[0]
+	//	<< " " << modeSequence[1]
+	//	<< " " << modeSequence[2]
 	//	<< "\t\t\r";
 
 	if (mode == "w")

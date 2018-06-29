@@ -93,7 +93,7 @@ public:
 	unique_ptr<ALuint[]> filter;//!< переменная для эффекта
 	unique_ptr<string[]> filetoBuffer;//!< 
 	unique_ptr<string[]> fileBuffered;//!<
-	vector<string> ModeSequence = { "0","0","0" };//Вектор истории режимов 
+	vector<string> modeSequence = { "0","0","0" };//Вектор истории режимов 
 	string mode = "0";//Переменная текущего режима
 	double switcher = 0;//Переменная - таймер, для кроссфейда по времени
 	double crossFadeDuration = 1;//Кроссфейд по времени за crossFadeDuration секунд
