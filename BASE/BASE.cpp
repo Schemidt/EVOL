@@ -5785,7 +5785,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 			* 0.25
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);/*Уменьшаем движение по полосе*/
 
-		gain[0] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
+		gain[0] = interpolation({ 2.77, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
 			* 0.854
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
 	}
@@ -5799,7 +5799,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		double drivingGain = getParameterFromVector(vector<point>{ { 0, -60 }, { 1, -30 }, { 2.77, -8 }, { 5, -5 }, { 8.3, -2 }, { 9, 0 } }, abs(sr.v_surf_x));
 
 		gain[0] = toCoef(drivingGain) * getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch) * 0.707;
-		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, { 14, 0 }, abs(sr.v_surf_x))
+		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
 			* interpolation({ 78, 0.71 }, { 84, 1 }, sr.reduktor_gl_obor);
 
 		/*static double period = 0;
