@@ -5757,6 +5757,11 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 
 	if (h.modelName == "mi_8_amtsh" || h.modelName == "mi_8_mtv5")
 	{
+		filetoBuffer[1] = h.fullName["runway"];
+		filetoBuffer[0] = h.fullName["landing"];
+		alSourcei(source[1], AL_LOOPING, AL_TRUE);
+		alSourcei(source[0], AL_LOOPING, AL_TRUE);
+
 		//Блок настройки эффекта эквалайзер
 		//прямой выход заглушается, остается только звук прошедший через блок эквалайзера
 		if (eq != "set")
@@ -5776,16 +5781,11 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 
 		alAuxiliaryEffectSloti(effectSlot[0], AL_EFFECTSLOT_EFFECT, effect[0]);//помещаем эффект в слот (в 1 слот можно поместить 1 эффект)
 
-		filetoBuffer[1] = h.fullName["runway"];
-		filetoBuffer[0] = h.fullName["landing"];
-		alSourcei(source[1], AL_LOOPING, AL_TRUE);
-		alSourcei(source[0], AL_LOOPING, AL_TRUE);
-
-		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
+		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x)) // driving
 			* 0.25
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);/*Уменьшаем движение по полосе*/
 
-		gain[0] = interpolation({ 2.77, 0 }, { 8.3, 1 }, abs(sr.v_surf_x))
+		gain[0] = interpolation({ 2.77, 0 }, { 8.3, 1 }, abs(sr.v_surf_x)) // landing
 			* 0.854
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
 	}
