@@ -2911,7 +2911,22 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 	}
 	else if (mode == "avt")
 	{
-		filetoBuffer[id] = h.fullName["red_w_avt_w"];
+		if (h.modelName == "mi_28")
+		{
+			if (step >= 5)
+			{
+				filetoBuffer[id] = h.fullName["red_w_avt_fly"];
+			}
+			else
+			{
+				filetoBuffer[id] = h.fullName["red_w_avt_w"];
+			}
+		}
+		else
+		{
+			filetoBuffer[id] = h.fullName["red_w_avt_w"];
+		}
+
 		filetoBuffer[!id] = h.fullName["red_w_mg_w"];
 	}
 	else if (mode == "avtOff")
@@ -2933,8 +2948,6 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 			filetoBuffer[id] = h.fullName["red_off_w"];
 		}
 	}
-
-	//TODO переход на другой лууп автомата в полете МИ-28 по шагу 4-5гр
 
 	double finalGain = h.redFactor * masterGain;
 	double rise = 1;
