@@ -4755,7 +4755,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 		}
 		double vG = vL * low + vH * (1 - low);//Ограничение по скорости 
 
-		double hG = interpolation({ 0, 0 }, { 0.5, 0.5 }, { 1, 1 }, hight);//Ограничение по высоте 
+		double hG = getParameterFromVector(vector<point>{ { 0, 1 }, { 0.625, 0 }}, groundTouch);//Ограничение по высоте 
 
 		double gainAtk = interpolation({ -1, -15 }, { 1, -9 }, { 3, -3 }, atkXvel);
 
@@ -4815,7 +4815,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 		//Игнорируем некорректные значения атаки, при маленьких значениях скоростей
 		double atkXvel = calcA * interpolation({ 0, 0 }, { 16.67, 1 }, abs(velocityVectorXZ));
 
-		h_g = interpolation({ 0, 0 }, { 0.5, 0.5 }, { 1, 1 }, hight);
+		h_g = getParameterFromVector(vector<point>{ { 0, 1 }, { 0.625, 0 }}, groundTouch);
 		v_g = interpolation({ 14, 0 }, { 17, 0.5 }, { 20, 1 }, abs(velocityVectorXZ));//72(1) - 50(0)
 		gain_a = interpolation({ -1 + floor ,  -18 }, { 1 + floor, -12 }, { 3 + floor, -6 }, atkXvel);
 
@@ -5733,11 +5733,11 @@ int Skv::play(Helicopter &h, SOUNDREAD &sr)
 
 Runway::Runway() : Sound(2, 2, 1)
 {
-	for (size_t i = 0; i < 2; i++)
+	/*for (size_t i = 0; i < 2; i++)
 	{
 		sm[i].firstAttempt = 0;
 		sm[i].newDbGain = -30;
-	}
+	}*/
 }
 
 int Runway::play(Helicopter &h, SOUNDREAD &sr)
@@ -5789,7 +5789,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 			* 0.854
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
 
-		printf_s(" delay: %.3lf\tgain: %.3lf\r", sm[0].newDbGain, gain[0]);
+		printf_s(" delay: %.3lf\tgain: %.3lf\tgrto: %.3lf\r", sm[0].newDbGain, toDb(gain[0]), groundTouch);
 	}
 	else if (h.modelName == "mi_26")
 	{
@@ -5842,12 +5842,6 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		gain[1] = toCoef(drivingGain) * getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
 
-		/*cout.precision(3);
-		cout << fixed
-			<< " SMDS: " << sm[1].dbPerSec
-			<< " SMGA: " << sm[1].newDbGain
-			<< " GAN1: " << toDb(gain[1])
-			<< "\t\t\r";*/
 	}
 	else
 	{
@@ -5858,7 +5852,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 
 	for (size_t i = 0; i < sourceNumber; i++)
 	{
-		alSourcef(source[i], AL_GAIN, masterGain * h.runwayFactor * sm[i].delay(gain[i], deltaTime));
+		alSourcef(source[i], AL_GAIN, masterGain * h.runwayFactor * /*sm[i].delay(*/gain[i]/*, deltaTime)*/);
 	}
 
 	return 1;
