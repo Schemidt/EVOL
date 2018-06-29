@@ -671,9 +671,7 @@ int main(int argc, char *argv[])
 				Sound::masterGain = (Sound::masterGain < localdata.master_gain) ? localdata.master_gain : Sound::masterGain;
 			}
 
-			//printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tEIU: %i\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, Sound::effectSlotsInUse);
-
-			//printf(" Time: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
+			printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
 
 			//Среднее время цикла
 			avrDeltaTime = 0;

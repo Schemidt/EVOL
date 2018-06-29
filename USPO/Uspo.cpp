@@ -1076,100 +1076,6 @@ int main(int argc, char* argv[])
 					}
 				}
 
-				//ќдиночный нар8
-				if (singleNar8)
-				{
-					singleNar8Timer += deltaTime;
-					if (singleNar8Timer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
-					{
-						soundFFT.p_nar_s8 = 1;
-					}
-					else
-					{
-						singleNar8 = 0;
-						soundFFT.p_nar_s8 = 0;
-					}
-				}
-
-				//ѕопадание ракетой
-				if (singleNar8)
-				{
-					singleNar8Timer += deltaTime;
-					if (singleNar8Timer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
-					{
-						soundFFT.p_nar_s8 = 1;
-					}
-					else
-					{
-						singleNar8 = 0;
-						soundFFT.p_nar_s8 = 0;
-					}
-				}
-
-				//ѕуск штурма
-				if (singleSturm)
-				{
-					singleSturmTimer += deltaTime;
-					if (singleSturmTimer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
-					{
-						soundFFT.p_ur_ataka = 1;
-					}
-					else
-					{
-						singleSturm = 0;
-						soundFFT.p_ur_ataka = 0;
-					}
-				}
-
-				//ѕопадание ракеты
-				if (singleRocket)
-				{
-					singleRocketTimer += deltaTime;
-					if (singleRocketTimer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
-					{
-						soundFFT.p_rocket_hit = 1;
-					}
-					else
-					{
-						singleRocket = 0;
-						soundFFT.p_rocket_hit = 0;
-					}
-				}
-
-				//ѕопадание пули
-				if (singleBullet)
-				{
-					singleBulletTimer += deltaTime;
-					if (singleBulletTimer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
-					{
-						soundFFT.p_bullet_hit = 1;
-					}
-					else
-					{
-						singleBullet = 0;
-						soundFFT.p_bullet_hit = 0;
-					}
-				}
-
-				//cout замедл€ет программу (в 7 раз 0.002 -> 0.014) использовать с осторожностью
-				/*cout.precision(3);
-				cout << fixed
-					<< " TIME: " << soundFFT.time
-					<< " DELT: " << deltaTime
-					<< " OFFS: " << offsetTest
-					<< " ENG1(%): " << soundFFT.eng1_obor
-					<< " ENG2(%): " << soundFFT.eng2_obor
-					<< " ENG1Z: " << soundFFT.p_eng1_zap
-					<< " ENG2Z: " << soundFFT.p_eng2_zap
-					<< " REDO(%): " << soundFFT.reduktor_gl_obor
-					<< " VSUO(%): " << soundFFT.vsu_obor
-					<< " VELY(%): " << soundFFT.vy
-					<< " TANG(%): " << soundFFT.tangaz
-					<< " STEP(%): " << soundFFT.step
-					<< " VELX(%): " << spd
-					<< " HIGH(%): " << soundFFT.hight
-					<< "\t\r";*/
-
 			}
 			//тестовые циклограммы полетов дл€ некоторых вертолетов
 			else
@@ -1613,6 +1519,81 @@ int main(int argc, char* argv[])
 							}
 						}
 					}
+				}
+			}
+
+			//ќдиночный нар8
+			if (singleNar8)
+			{
+				singleNar8Timer += deltaTime;
+				if (singleNar8Timer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
+				{
+					soundFFT.p_nar_s8 = 1;
+				}
+				else
+				{
+					singleNar8 = 0;
+					soundFFT.p_nar_s8 = 0;
+				}
+			}
+
+			//ѕопадание ракетой
+			if (singleNar8)
+			{
+				singleNar8Timer += deltaTime;
+				if (singleNar8Timer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
+				{
+					soundFFT.p_nar_s8 = 1;
+				}
+				else
+				{
+					singleNar8 = 0;
+					soundFFT.p_nar_s8 = 0;
+				}
+			}
+
+			//ѕуск штурма
+			if (singleSturm)
+			{
+				singleSturmTimer += deltaTime;
+				if (singleSturmTimer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
+				{
+					soundFFT.p_ur_ataka = 1;
+				}
+				else
+				{
+					singleSturm = 0;
+					soundFFT.p_ur_ataka = 0;
+				}
+			}
+
+			//ѕопадание ракеты
+			if (singleRocket)
+			{
+				singleRocketTimer += deltaTime;
+				if (singleRocketTimer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
+				{
+					soundFFT.p_rocket_hit = 1;
+				}
+				else
+				{
+					singleRocket = 0;
+					soundFFT.p_rocket_hit = 0;
+				}
+			}
+
+			//ѕопадание пули
+			if (singleBullet)
+			{
+				singleBulletTimer += deltaTime;
+				if (singleBulletTimer < 0.01/*максимальна€ длиина сигнала 1го нара*/)
+				{
+					soundFFT.p_bullet_hit = 1;
+				}
+				else
+				{
+					singleBullet = 0;
+					soundFFT.p_bullet_hit = 0;
 				}
 			}
 
