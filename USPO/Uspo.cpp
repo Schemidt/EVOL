@@ -1574,16 +1574,8 @@ int main(int argc, char* argv[])
 						soundFFT.step = getParameterFromVector(vectorPar[5], offsetTest);//шаг
 						soundFFT.hight = getParameterFromVector(vectorPar[3], offsetTest);//шаг
 						soundFFT.hight = (soundFFT.hight < 0) ? 0 : soundFFT.hight;
-						if (!soundFFT.hight)
-						{
-							soundFFT.v_surf_x = getParameterFromVector(vectorPar[6], offsetTest);//скорость
-							soundFFT.v_atm_x = 0;
-						}
-						else
-						{
-							soundFFT.v_atm_x = getParameterFromVector(vectorPar[6], offsetTest);//скорость
-							soundFFT.v_surf_x = 0;
-						}
+						soundFFT.v_surf_x = getParameterFromVector(vectorPar[6], offsetTest);//скорость
+						soundFFT.v_atm_x = getParameterFromVector(vectorPar[6], offsetTest);//скорость
 						soundFFT.obj_hv = getParameterFromVector(vector<point>{ { 0, 0.5 }, { 0.5, 0 }}, soundFFT.hight);
 						soundFFT.obj_nos = getParameterFromVector(vector<point>{ { 0, 0.5 }, { 0.5, 0 }}, soundFFT.hight);
 						soundFFT.obj_l = getParameterFromVector(vector<point>{ { 0, 0.75 }, { 0.5, 0 }}, soundFFT.hight);

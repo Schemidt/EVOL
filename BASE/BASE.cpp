@@ -1411,7 +1411,7 @@ int main(int argc, char *argv[])
 			//Если звук хлопков винта включен в проект
 			if (helicopter.vintFlapFactor)
 			{
-				if (Sound::groundTouch == 0)//Условие создания объекта
+				if (Sound::groundTouch <= 0.01)//Условие создания объекта
 					if (!vintFlap)//Если объект не создан 
 						vintFlap = new VintFlap;//Создаем объект
 				if (vintFlap)//Если объект создан - используем его
@@ -4657,17 +4657,17 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 		if (atkXvel >= 2)
 		{
 			//усиление от оборотов
-			turnsGain = (sr.reduktor_gl_obor - averangeTurn) * 2 * avrTurnRestrict;
+			turnsGain = toCoef((sr.reduktor_gl_obor - averangeTurn) * 2) * avrTurnRestrict;
 		}
 
 		//Хлопки плавно появляются
-		double h_g = interpolation({ 0, 0 }, { 0.5, 0.5 }, { 1, 1 }, hight);//К 1 метру по высоте
+		double h_g = getParameterFromVector(vector<point>{ { 0, 1 }, { 0.625, 0 }}, groundTouch);
 		double v_g = interpolation({ 10, 0 }, { 14, 0.25 }, { 28, 1 }, abs(velocityVectorXZ));//К 28 м/с
 
 		//Громкость хлопков зависит от атаки
 		double gain_a = interpolation({ -1, -15 }, { 1, -9 }, { 3, -3 }, atkXvel);
 
-		double atkFls = pow(10, (turnsGain + gain_a)*0.05) * h_g * v_g;
+		double atkFls = turnsGain  * toCoef(gain_a) * h_g * v_g;
 
 		// на висении, используем ускорение в качестве переходной функции хлопков
 		//При а = 6 м/с^2 громкость хлопков номинальная, при условии, что вертолет летит вниз, а скорость ниже 60 км/ч (16.67)
