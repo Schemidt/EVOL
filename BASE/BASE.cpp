@@ -5780,7 +5780,9 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		filetoBuffer[0] = h.fullName["landing"];
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		alSourcei(source[0], AL_LOOPING, AL_TRUE);
-
+		                                               // точку {11.2, 0}, возможно, прийдется убрать с заменой 8.3 на 11.2 в предыдущей точке, поскольку
+		                                               // постепенность в нарастании landing теоретически должна быть учтена в обжиме шасси
+		                                               // gain [0] относится к landing, gain[1] - к runway
 		gain[1] = interpolation({ 0, 0 }, { 11.2, 1 }, abs(sr.v_surf_x))
 			* 0.25
 			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);/*Уменьшаем движение по полосе*/
