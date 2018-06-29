@@ -3105,22 +3105,12 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 		else if (fileBuffered[i] == h.fullName["red_w_avt_w"])
 		{
 			pitch[i] = roundFloat((sr.reduktor_gl_obor / h.redTurnoverAvt), 0.001);
-
-			if (h.modelName == "mi_28")
-			{
-				gain[i] = getParameterFromVector(vector<point>{ {h.redTurnoverMg2, 0}, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor)
-					* getParameterFromVector(vector<point>{ {4, 1}, { 5, 0 } }, step);
-			}
-			else
-			{
-				gain[i] = getParameterFromVector(vector<point>{ {h.redTurnoverMg2, 0}, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor);
-			}
+			gain[i] = getParameterFromVector(vector<point>{ {h.redTurnoverMg2, 0}, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor);
 		}
 		else if (fileBuffered[i] == h.fullName["red_w_avt_fly"])
 		{
 			pitch[i] = roundFloat((sr.reduktor_gl_obor / h.redTurnoverAvt), 0.001);
-			gain[i] = getParameterFromVector(vector<point>{ {h.redTurnoverMg2, 0}, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor)
-				* getParameterFromVector(vector<point>{ {4, 0}, { 5, 1 } }, step);
+			gain[i] = getParameterFromVector(vector<point>{ {h.redTurnoverMg2, 0}, { h.redTurnoverAvt, 1 } }, sr.reduktor_gl_obor);
 		}
 		else if (fileBuffered[i] == h.fullName["red_off_w"])
 		{
