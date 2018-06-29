@@ -4811,7 +4811,7 @@ int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
 
 		//Устанавливаем громкость НЧ и ВЧ хлопков
 		alSourcef(source[0], AL_GAIN, gainF * h.vintFlapFactor * masterGain * (1 - low));
-		alSourcef(source[1], AL_GAIN, gainF * h.vintFlapFactor * masterGain * low);
+		alSourcef(source[1], AL_GAIN, gainF * h.vintFlapFactor * masterGain * low * 0.6);     // 0.5 - уменшенная громкость low-хлопков по отношению к нормальным
 
 	}
 	//Хлопки 28
