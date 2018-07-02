@@ -256,7 +256,7 @@ void Helicopter::setParam(string model)
 		rocketNar13Factor = 1/*НАР13*/;
 		rocketHitFactor = 0.8/*Попадание ракеты*/;
 		upkFactor = 1/*УПК*/;
-		vintSwishFactor = 0.15/*ВИНТ Верх*/;
+		vintSwishFactor = 0.2/*ВИНТ Верх*/;
 		vintBrakeFactor = 0.2/*Винт тормоз*/;
 		vintFlapFactor = 0.794/*Винт хлопки*/;
 		chassisBrakePumpFactor = 0.03/*Тормоз шасси*/;
