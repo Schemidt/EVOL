@@ -1595,7 +1595,7 @@ int main(int argc, char *argv[])
 						{
 							counterNar8 = 0;
 						}
-						timerNar8 = 0.125;
+						timerNar8 = 0.05;
 					}
 				}
 				for (int i = 0; i < 50; i++)
@@ -1655,7 +1655,7 @@ int main(int argc, char *argv[])
 						{
 							counterNar13 = 0;
 						}
-						timerNar13 = 0.15;
+						timerNar13 = 0.125;
 					}
 				}
 				for (int i = 0; i < 50; i++)
