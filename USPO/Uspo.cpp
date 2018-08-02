@@ -393,7 +393,6 @@ int main(int argc, char* argv[])
 								{
 									if ((statusEng2 != "eng_mg_avt") && (statusEng2 != "eng_avt_mg"))
 									{
-
 										if (soundFFT.eng1_obor > ANSAT_ENG_REV_TURN)
 										{
 											if (statusEng2 != "ansatFirstEng")
