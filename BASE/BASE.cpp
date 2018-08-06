@@ -452,7 +452,7 @@ vector<double> Sound::vectorAvrAtk;         // ----------
 double Sound::globalWindow = 50;
 
 /*!\brief ќсновна€ функци€ программы*/
-int main(int argc, char *argv[])
+int main()
 {
 	//“олько 1на копи€ приложени€ может быть запущена одновременно
 	HANDLE hMutex = OpenMutex(
@@ -474,10 +474,10 @@ int main(int argc, char *argv[])
 
 	//ѕолучаем указатели на функции EFX
 	setEFXPointers();
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                   //¬озможные комманды   удалить
-	string model = "ka_29";                                                                                                         //по умолчанию    удалить
+	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                   //¬озможные комманды  -  удалить
+	string model = "ka_29";                                                                                                         //по умолчанию  -  удалить
 	Helicopter helicopter;//ѕеременна€ класса Helicopter дл€ хранени€ параметров выбранного вертолета
-	if (argc > 1)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
+/*	if (argc > 1)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 	{
 		for (size_t i = 0; i < helicoptersNames.size(); i++)
 		{
@@ -487,7 +487,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
+*/
 	ALCdevice *device;
 	ALCcontext *context;
 
@@ -657,7 +657,7 @@ int main(int argc, char *argv[])
 		{
 			noDataFactor = 0;
 		}
-		if (IsProcessPresent("USPO.exe") && !localdata.p_model_stop && noDataFactor < 1 && !stop)//цикл работает пока uspo активно, и признак остановки модели не активен
+		if (IsProcessPresent("USPO112.exe") && !localdata.p_model_stop && noDataFactor < 1 && !stop)//цикл работает пока uspo активно, и признак остановки модели не активен
 		{
 			//ѕлавно нагон€ем актуальную громкость
 			if (Sound::masterGain < localdata.master_gain)
