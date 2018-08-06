@@ -422,33 +422,33 @@ int Sound::sourcesInUse = 0;
 int Sound::effectSlotsInUse = 0;
 double Sound::currentTime = 0;
 double Sound::deltaTime = 0;
-double Sound::step = 0;
-double Sound::tangaz = 0;
-double Sound::derivTangaz = 0;
+double Sound::step = 0;                  //  удалить
+double Sound::tangaz = 0;                //    удалить
+double Sound::derivTangaz = 0;           // ---------
 double Sound::hight = 0;
 double Sound::velocityVectorXZ = 0;
 double Sound::accelerationVectorXZ = 0;
 double Sound::velocityY = 0;
-double Sound::dashVectorXZ = 0;
+double Sound::dashVectorXZ = 0;            // ---------
 double Sound::accelerationVy = 0;
-double Sound::derivStep = 0;
-double Sound::calcA = 0;
-double Sound::redTurnAcc = 0;
+double Sound::derivStep = 0;               // ---------
+double Sound::calcA = 0;                   //  ----------
+double Sound::redTurnAcc = 0;              //  -----------
 double Sound::groundTouch = 0;
 int Engine::engCount = 0;
 
 vector<double> Sound::vectorVy;
 vector<double> Sound::vectorVXZ;
-vector<double> Sound::vectorAccXZ;
-vector<double> Sound::vectorStep;
-vector<double> Sound::vectorTangaz;
+vector<double> Sound::vectorAccXZ;          // ????
+vector<double> Sound::vectorStep;          // -------------
+vector<double> Sound::vectorTangaz;         // ---------
 vector<double> Sound::vectorTime;
-vector<double> Sound::vectorRedTurn;
+vector<double> Sound::vectorRedTurn;        // -----------
 vector<double> Sound::vectorAvrEng1Turn;
 vector<double> Sound::vectorAvrEng2Turn;
-vector<double> Sound::vectorAvrRedTurn;
-vector<double> Sound::vectorAvrStep;
-vector<double> Sound::vectorAvrAtk;
+vector<double> Sound::vectorAvrRedTurn;      // ------------
+vector<double> Sound::vectorAvrStep;         // -----------
+vector<double> Sound::vectorAvrAtk;         // ----------
 double Sound::globalWindow = 50;
 
 /*!\brief Основная функция программы*/
@@ -474,8 +474,8 @@ int main(int argc, char *argv[])
 
 	//Получаем указатели на функции EFX
 	setEFXPointers();
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };//Возможные комманды 
-	string model = "ka_29";//по умолчанию
+	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                   //Возможные комманды   удалить
+	string model = "ka_29";                                                                                                         //по умолчанию    удалить
 	Helicopter helicopter;//Переменная класса Helicopter для хранения параметров выбранного вертолета
 	if (argc > 1)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 	{
