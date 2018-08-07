@@ -131,6 +131,22 @@ void Helicopter::setParam(string model)
 		vsuHPtimeOff = 5;
 
 	}
+	else if (model == "il_112")
+	{
+		//Константы		
+
+		engTurnoverMg = 71;              //  il-112
+		engTurnoverAvt = 92;             // --------
+		redTurnoverMg1 = 44;
+		redTurnoverMg2 = 60;
+		redTurnoverAvt = 90;
+
+		vsuTimeOn = 5;
+		vsuTimeOff = 11;
+		vsuHptimeOn = 5;
+		vsuHPtimeOff = 5;
+
+	}
 	else
 	{
 		cout << " Unknown argument" << endl;

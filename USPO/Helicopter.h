@@ -29,8 +29,12 @@ public:
 		//Двигатель
 		shortName["eng_on"] = "eng_on.txt"; //!<имя файла с переходной функцией разгона двигателя до режима МГ
 		shortName["eng_off"] = "eng_off.txt"; //!<имя файла с переходной функцией остановки двигателя 
-		shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
+/*		shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
 		shortName["eng_avt_mg"] = "eng_avt_mg.txt"; //!<имя файла c переходной функцией остановки до режима малого газа
+*/		
+		shortName["eng_mg_avt"] = "eng_mg_cruis.txt";                         //   il_112
+		shortName["eng_avt_mg"] = "eng_cruis_mg.txt";                         //   ------
+		
 		shortName["ansatFirstEng"] = "eng1_mg.txt"; //!<
 		shortName["ansatSecondEng"] = "eng2_mg.txt"; //!<
 		shortName["ansat1EngOff"] = "eng1_off.txt"; //!<

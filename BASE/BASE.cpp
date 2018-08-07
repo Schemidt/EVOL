@@ -475,7 +475,10 @@ int main()
 	//Получаем указатели на функции EFX
 	setEFXPointers();
 	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                   //Возможные комманды  -  удалить
-	string model = "ka_29";                                                                                                         //по умолчанию  -  удалить
+/*	string model = "ka_29";                                                                                                             //по умолчанию  -  удалить
+*/
+	string model = "il_112";                                                                                                           //  добавлено для умолчания
+	
 	Helicopter helicopter;//Переменная класса Helicopter для хранения параметров выбранного вертолета
 /*	if (argc > 1)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 	{
@@ -770,7 +773,6 @@ int main()
 					Sound::redTurnAcc = (localdata.reduktor_gl_obor - Sound::vectorRedTurn.front()) / periodCalc;
 				}
 			}
-
 			//Звуки устройств эффектов и агрегатов
 			//ВСУ
 			if (helicopter.vsuFactor)//Если ВСУ включено в проект

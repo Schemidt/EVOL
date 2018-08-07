@@ -15,9 +15,13 @@ void Helicopter::setPath(string pathToFile)
 	//Двигатель
 	shortName["eng_on"] = "eng_on.txt"; //!<имя файла с переходной функцией разгона двигателя до режима МГ
 	shortName["eng_off"] = "eng_off.txt"; //!<имя файла с переходной функцией остановки двигателя 
-	shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
+/*	shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
 	shortName["eng_avt_mg"] = "eng_avt_mg.txt"; //!<имя файла c переходной функцией остановки до режима малого газа
-												//Редуктор
+*/												
+	shortName["eng_mg_avt"] = "eng_mg_cruis.txt";                            //         il_112
+	shortName["eng_avt_mg"] = "eng_cruis_mg.txt";                            //         il_112
+
+                                                        //Редуктор
 	shortName["red_on"] = "red_on.txt"; //!<имя файла c переходной функцией разгона редуктора до режима малого газа на 1ом двигателе
 	shortName["red_on_wfe"] = "red_on_wfe.txt"; //!<имя файла c переходной функцией разгона редуктора до режима малого газа на 1ом двигателе
 	shortName["red_on_mg"] = "red_on_mg.txt"; //!<имя файла c переходной функцией разгона редуктора до режима малого газа на 2х двигателях
@@ -27,12 +31,18 @@ void Helicopter::setPath(string pathToFile)
 										  //WAV
 										  //Двигатель
 	shortName["eng_on_w"] = "eng_on.wav"; //!<имя файла звука разгона двигателя до режима МГ
-	shortName["eng_w_w"] = "eng_w.wav"; //!<имя файла звука работы двигателя на режиме МГ
+/*	shortName["eng_w_w"] = "eng_w.wav"; //!<имя файла звука работы двигателя на режиме МГ
+*/
+	shortName["eng_w_w"] = "eng_w_mg.wav";                      //   112
+
 	shortName["eng_off_w"] = "eng_off.wav"; //!<имя файла звука остановки двигателя 
 	shortName["eng_on_hp_w"] = "eng_hp_on.wav"; //!<имя файла звука разгона двигателя до режима ХП
 	shortName["eng_w_hp_w"] = "eng_hp_w.wav"; //!<имя файла звука работы двигателя на режиме ХП
 	shortName["eng_off_hp_w"] = "eng_hp_off.wav"; //!<имя файла звука остановки двигателя из ХП
-	shortName["eng_w_avt_w"] = "eng_w_avt.wav"; //!<имя файла звука работы двигателя на режиме автомат
+/*	shortName["eng_w_avt_w"] = "eng_w_avt.wav"; //!<имя файла звука работы двигателя на режиме автомат
+*/
+	shortName["eng_w_avt_w"] = "eng_cruis_140.wav";              //   il_112
+
 	shortName["eng_on_avt_w"] = "eng_on_avt.wav"; //!<имя файла звука разгона двигателя до режима автомат
 	shortName["eng_avt_mg_w"] = "eng_avt_mg.wav"; //!<имя файла звука остановки до режима малого газа
 	shortName["eng_pomp_on"] = "pomp_on.wav"; //!<имя файла звука помпажа
@@ -421,6 +431,45 @@ void Helicopter::setParam(string model)
 		//Константы		
 		engTurnoverMg = 75;
 		engTurnoverAvt = 85;
+		redTurnoverMg1 = 44;
+		redTurnoverMg2 = 60;
+		redTurnoverAvt = 90;
+		//Множители громкости		
+		vsuFactor = 0.237/*всу*/;//-12.5
+		vsuHpFactor = 0.25/*всу хп*/;//-12
+		vsuCraneFactor = 0.354/*всу кран*/;//-9
+		engFactor = 1/*дв*/; //0
+		engHpFactor = 0.334/*дв хп*/;//-9.5
+		redFactor = 0.794/*Редуктор*/; //-2
+		vpryam = 0.199/*ВУ*/;//-14
+		cutoffCraneFactor = 0.354/*перекр*/;//-9
+		vintBrakeFactor = 0.5/*Винт тормоз*/;
+		vintFlapFactor = 0.5/*Винт хлопки*/;
+		chassisBrakePumpFactor = 0.1/*Тормоз шасси*/;
+		chassisBrakeReleaseFactor = 0.1/*Сброс давления*/;
+		undefinedFactor = 0.25; /*хз1*///-12
+		runwayFactor = 0.63/*ВПП*/;
+		vadd = 1/*Скоростная добавка*/;
+		skvFactor = 1;
+		trim = 0.28;
+		//frict = 1;
+
+		rocketSturmFactor = 1/*ШТУРМ*/;
+		rocketNar8Factor = 1/*НАР8*/;
+		rocketNar13Factor = 1/*НАР13*/;
+		rocketHitFactor = 0.8/*Попадание ракеты*/;
+		upkFactor = 1/*УПК*/;
+		ppuFactor = 1/*ППУ*/;
+
+		rainFactor = 0.5/*Дождь*/;
+
+		fireCraneFactor = 0.354/*Пожарный кран*/;
+	}
+	else if (model == "il_112")
+	{
+		//Константы		
+		engTurnoverMg = 71;              // il_112
+		engTurnoverAvt = 92;              // ------------
 		redTurnoverMg1 = 44;
 		redTurnoverMg2 = 60;
 		redTurnoverAvt = 90;

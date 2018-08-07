@@ -84,9 +84,9 @@ int main(int argc, char* argv[])
 	}
 
 	bool standAlone = 0;//По умолчанию - ждем данных от модели
-
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };
-	string model;
+/*
+	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                    //  удалить
+	string model;                                                                                                                        //  ----------
 	for (size_t i = 1; i < argc; i++)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 	{
 		for (size_t j = 0; j < helicoptersNames.size(); j++)
@@ -101,11 +101,13 @@ int main(int argc, char* argv[])
 		{
 			standAlone = 1;
 		}
+	}  */
+	if (argc > 1 && argv[1] == (string)"standalone") {
+		standAlone = 1;
 	}
-	if (model.empty())
-	{
-		helicopter.setParam("ka_29");
-	}
+/*	helicopter.setParam("ka_29");   */                                                //  по-умолчанию устанавливается в т.ч. helicopter.modelName
+	helicopter.setParam("il_112");
+
 	system("cls");
 	cout << " Using " << helicopter.modelName << endl;
 	helicopter.setPath(helicopter.modelName + "/");
@@ -1721,52 +1723,52 @@ void kbHit()
 			singleNar8 = 1;
 			singleNar8Timer = 0;
 			break;
-		case 'e':		//ВСУ запуск
+		case 'E':		//ВСУ запуск           было "e"
 			vsuOn = 1;
 			vsuOff = 0;
 			vsuHp = 0;
 			break;
-		case 'r':		//ВСУ останов
+		case 'd':		//ВСУ останов         было  "r"
 			vsuOff = 1;
 			vsuOn = 0;
 			vsuHp = 0;
 			break;
-		case 'd':		//ВСУ ХП
+		case 'e':		//ВСУ ХП              было   "d"
 			vsuhpbl = 1;
 			vsuHp = 1;
 			vsuOff = 0;
 			vsuOn = 0;
 			break;
-		case 'y':		//Дв1 запуск
+		case 'Y':		//Дв1 запуск           было "y"
 			eng1hpbl = 0;
 			Eng1On = 1;
 			Eng1Off = 0;
 			Eng1Hp = 0;
 			break;
-		case 't':		//Дв1 hp
+		case 'y':		//Дв1 hp         "t"
 			eng1hpbl = 1;
 			Eng1Hp = 1;
 			Eng1On = 0;
 			Eng1Off = 0;
 			break;
-		case 'u':		//Дв1 останов
+		case 'h':		//Дв1 останов    "u"
 			Eng1Off = 1;
 			Eng1On = 0;
 			Eng1Hp = 0;
 			break;
-		case 'g':		//Дв2 hp
+		case 'u':		//Дв2 hp       "g"
 			eng2hpbl = 1;
 			Eng2Hp = 1;
 			Eng2On = 0;
 			Eng2Off = 0;
 			break;
-		case 'h':		//Дв2 запуск
+		case 'U':		//Дв2 запуск    "h"
 			Eng2On = 1;
 			eng2hpbl = 0;
 			Eng2Off = 0;
 			Eng2Hp = 0;
 			break;
-		case 'j':		//Дв2 останов
+		case 'j':		//Дв2 останов   
 			Eng2Off = 1;
 			Eng2On = 0;
 			Eng2Hp = 0;
@@ -1813,7 +1815,7 @@ void kbHit()
 		case 'k':
 			soundFFT.p_reduktor_gl_crash = !soundFFT.p_reduktor_gl_crash;//Неисправность главного редуктора
 			break;
-		case ';':
+/*		case ';':
 			if (soundFFT.p_nar_s8 == 2)
 			{
 				soundFFT.p_nar_s8 = 0;//НАР 8 правый
@@ -1822,7 +1824,7 @@ void kbHit()
 			{
 				soundFFT.p_nar_s8 = 2;//НАР 8 правый
 			}
-			break;
+			break;  */
 		case 'l':
 			if (soundFFT.p_nar_s8 == 1)
 			{
@@ -1860,12 +1862,12 @@ void kbHit()
 			soundFFT.p_tormoz_press = !soundFFT.p_tormoz_press;//Признак тормоз шасси
 			soundFFT.tormoz = !soundFFT.tormoz;
 			break;
-		case 'f':
+		case ';':
 			singleRocket = 1;
-			singleRocketTimer = 0;//Признак попадания ракетой
+			singleRocketTimer = 0;//Признак попадания ракетой                                было "f"    НАР С-8
 			break;
 		case '6':
-			soundFFT.p_eng1_lkorr = !soundFFT.p_eng1_lkorr;//Правая - левая коррекция
+			soundFFT.p_eng1_lkorr = !soundFFT.p_eng1_lkorr;//Правая - левая коррекция         установка ВВ на упор/с упора
 			soundFFT.p_eng2_lkorr = !soundFFT.p_eng2_lkorr;
 			soundFFT.p_eng1_rkorr = !soundFFT.p_eng1_lkorr;
 			soundFFT.p_eng2_rkorr = !soundFFT.p_eng2_lkorr;
@@ -1929,8 +1931,8 @@ void kbHit()
 		case '$':
 			soundFFT.p_ur_igla = !soundFFT.p_ur_igla;//
 			break;
-		case 'F':
-			test = !test;//Тестовые циклограммы
+		case 'A':
+			test = !test;//Тестовые циклограммы                     ----было   "F"----------
 			break;
 		case 'M'://вернуться в начало (shift + m)
 			soundFFT.reduktor_gl_obor = 0;
