@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 	system("cls");
 	cout << " Using " << helicopter.modelName << endl;
 	helicopter.setPath(helicopter.modelName + "/");
-
+	
 	if (!standAlone)
 	{
 		//Cетевое взаимодействие
@@ -199,12 +199,11 @@ int main(int argc, char* argv[])
 		{
 			avrDeltaTime += tg / adt.size();
 		}
-
 		//Код для автономных тестов - без модели вертолета 
 		if (standAlone)
 		{
 			soundFFT.p_model_stop = 0;
-			//Функция обработки нажатий клавиш	  
+			//Функция обработки нажатий клавиш
 			kbHit();
 			//Блок проверки запуска (и холодной прокрутки) двигателей, редуктора, всу
 			if (!test)
@@ -685,7 +684,7 @@ int main(int argc, char* argv[])
 							turnMgEng2 = getParameterFromFile(helicopter.fullName["eng_off"], offsetMgEng2) * turnAvtEng2 / helicopter.engTurnoverMg;
 							offsetMgEng2 += deltaTime;
 						}
-
+/*
 						//Редуктор
 						if (Eng2On | Eng1On)
 						{
@@ -794,8 +793,8 @@ int main(int argc, char* argv[])
 						soundFFT.reduktor_gl_obor = (soundFFT.reduktor_gl_obor < 0) ? 0 : soundFFT.reduktor_gl_obor;
 						soundFFT.eng1_obor = (soundFFT.eng1_obor < 0) ? 0 : soundFFT.eng1_obor;
 						soundFFT.eng2_obor = (soundFFT.eng2_obor < 0) ? 0 : soundFFT.eng2_obor;
-					}
-
+*/					}
+					
 					if (Eng1On)
 					{
 						if (soundFFT.eng1_obor < helicopter.engTurnoverMg * 0.9333)
@@ -1743,7 +1742,7 @@ void kbHit()
 			eng1hpbl = 0;
 			Eng1On = 1;
 			Eng1Off = 0;
-			Eng1Hp = 0;
+			Eng1Hp = 0;			
 			break;
 		case 'y':		//Дв1 hp         "t"
 			eng1hpbl = 1;

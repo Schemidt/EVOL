@@ -474,35 +474,7 @@ void Helicopter::setParam(string model)
 		redTurnoverMg2 = 60;
 		redTurnoverAvt = 90;
 		//Множители громкости		
-		vsuFactor = 0.237/*всу*/;//-12.5
-		vsuHpFactor = 0.25/*всу хп*/;//-12
-		vsuCraneFactor = 0.354/*всу кран*/;//-9
 		engFactor = 1/*дв*/; //0
-		engHpFactor = 0.334/*дв хп*/;//-9.5
-		redFactor = 0.794/*Редуктор*/; //-2
-		vpryam = 0.199/*ВУ*/;//-14
-		cutoffCraneFactor = 0.354/*перекр*/;//-9
-		vintBrakeFactor = 0.5/*Винт тормоз*/;
-		vintFlapFactor = 0.5/*Винт хлопки*/;
-		chassisBrakePumpFactor = 0.1/*Тормоз шасси*/;
-		chassisBrakeReleaseFactor = 0.1/*Сброс давления*/;
-		undefinedFactor = 0.25; /*хз1*///-12
-		runwayFactor = 0.63/*ВПП*/;
-		vadd = 1/*Скоростная добавка*/;
-		skvFactor = 1;
-		trim = 0.28;
-		//frict = 1;
-
-		rocketSturmFactor = 1/*ШТУРМ*/;
-		rocketNar8Factor = 1/*НАР8*/;
-		rocketNar13Factor = 1/*НАР13*/;
-		rocketHitFactor = 0.8/*Попадание ракеты*/;
-		upkFactor = 1/*УПК*/;
-		ppuFactor = 1/*ППУ*/;
-
-		rainFactor = 0.5/*Дождь*/;
-
-		fireCraneFactor = 0.354/*Пожарный кран*/;
 	}
 	else
 	{
