@@ -22,7 +22,7 @@
     <ProjectGuid>{DFF6E7E4-9A53-4A39-9E2F-596BBF1020C0}</ProjectGuid>
     <RootNamespace>USPO</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>USPO112</ProjectName>
+    <ProjectName>USPO</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

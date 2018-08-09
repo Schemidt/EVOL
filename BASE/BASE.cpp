@@ -474,22 +474,22 @@ int main()
 
 	//ѕолучаем указатели на функции EFX
 	setEFXPointers();
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                   //¬озможные комманды  -  удалить
+	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };                   //¬озможные комманды  -  удалить
 /*	string model = "ka_29";                                                                                                             //по умолчанию  -  удалить
 */
 	string model = "il_112";                                                                                                           //  добавлено дл€ умолчани€
 	
 	Helicopter helicopter;//ѕеременна€ класса Helicopter дл€ хранени€ параметров выбранного вертолета
-/*	if (argc > 1)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
+/*	if (argc > 1)      // если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 	{
 		for (size_t i = 0; i < helicoptersNames.size(); i++)
 		{
 			if (regex_match(argv[1], regex("^(" + helicoptersNames[i] + ")")))
 			{
-				model = argv[1];
+				model = argv[1];   
 			}
 		}
-	}
+	}      
 */
 	ALCdevice *device;
 	ALCcontext *context;
@@ -660,7 +660,7 @@ int main()
 		{
 			noDataFactor = 0;
 		}
-		if (IsProcessPresent("USPO112.exe") && !localdata.p_model_stop && noDataFactor < 1 && !stop)//цикл работает пока uspo активно, и признак остановки модели не активен
+		if (IsProcessPresent("USPO.exe") && !localdata.p_model_stop && noDataFactor < 1 && !stop)//цикл работает пока uspo активно, и признак остановки модели не активен
 		{
 			//ѕлавно нагон€ем актуальную громкость
 			if (Sound::masterGain < localdata.master_gain)
@@ -3907,8 +3907,8 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 			mode = "avtOff";
 		}
 	}
-
-	if (modeSequence.back() != mode)
+	                                         // заполнение истории режимов
+	if (modeSequence.back() != mode)         //   vector<string> modeSequence = { "0","0","0" };//¬ектор истории режимов
 	{
 		switcher = 0;
 		id = !id;
@@ -4084,7 +4084,7 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 		//	//<< " FIB[" << !id << "]: " << fileBuffered[!id]
 		//	<< "\t\t\r";
 
-		//«агружаем буферы и запускам источники
+		//«агружаем буферы и запускаем источники
 		if (fileBuffered[i] != filetoBuffer[i])
 		{
 			//setSource(&buffer[i], &source[i], filetoBuffer[i]);

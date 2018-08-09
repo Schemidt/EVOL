@@ -481,20 +481,20 @@ void Helicopter::setParam(string model)
 		cout << " Unknown argument" << endl;
 		throw 0;
 	}
-
+/*
 	//
 	redLengthOn = getLengthWAV(fullName["red_on_w"]);
 	redLengthOff = getLengthWAV(fullName["red_off_w"]);
 	redLengthMg1 = getLengthWAV(fullName["red_w_w"]);
 	redLengthMg2 = getLengthWAV(fullName["red_w_mg_w"]);
 	redLengthAvt = getLengthWAV(fullName["red_w_avt_w"]);
-	//
-	engLengthOn = getLengthWAV(fullName["eng_on_w"]);
-	engLengthOff = getLengthWAV(fullName["eng_off_w"]);
-	engLengthHpOn = getLengthWAV(fullName["eng_on_hp_w"]);
-	engLengthMg = getLengthWAV(fullName["eng_w_w"]);
-	engLengthWAavt = getLengthWAV(fullName["eng_w_avt_w"]);
-	engLengthHpW = getLengthWAV(fullName["eng_w_hp_w"]);
+*/	//
+	engLengthOn = getLengthWAV(fullName["eng_on_w"]);           //--------------------
+	engLengthOff = getLengthWAV(fullName["eng_off_w"]);         //---------------------
+/*	engLengthHpOn = getLengthWAV(fullName["eng_on_hp_w"]);   */
+	engLengthMg = getLengthWAV(fullName["eng_w_w"]);            //------------------
+	engLengthWAavt = getLengthWAV(fullName["eng_w_avt_w"]);     //------------------
+/*	engLengthHpW = getLengthWAV(fullName["eng_w_hp_w"]);
 	engLengthHpOff = getLengthWAV(fullName["eng_off_hp_w"]);
 	//
 	vsuLengthOn = getLengthWAV(fullName["vsu_on"]);
@@ -506,12 +506,12 @@ void Helicopter::setParam(string model)
 	redFunctionOnSwap = redFunctionOn;
 	redFunctionOff = getVectorFromFile(fullName["red_off"]);
 	redFunctionOffSwap = redFunctionOff;
-	//
+*/	//
 	engFunctionOn = getVectorFromFile(fullName["eng_on"]);
 	engFunctionOnSwap = engFunctionOn;
 	engFunctionOff = getVectorFromFile(fullName["eng_off"]);
 	engFunctionOffSwap = engFunctionOff;
-
+/*
 	for (auto &swp : redFunctionOnSwap)
 	{
 		swp.swap();
@@ -520,7 +520,7 @@ void Helicopter::setParam(string model)
 	{
 		swp.swap();
 	}
-	for (auto &swp : engFunctionOnSwap)
+*/	for (auto &swp : engFunctionOnSwap)
 	{
 		swp.swap();
 	}
@@ -549,13 +549,13 @@ void Helicopter::setBufferMap()
 			it.first == "eng_avt_mg_w")
 		{
 			alGenBuffers(1, &buffers[i]);
-			channel = { 1,-1,0,0,0,0,0 };
+			channel = { 0.7,-1,0,0,0,0,0 };                             // коэффициент громкости в соотв. канале: ЛЕВЫЙ - 0.7
 			setBuffer(buffers[i], it.second, channel);
 			bufferMap[it.second + "l"] = buffers[i];
 			i++;
 
 			alGenBuffers(1, &buffers[i]);
-			channel = { 0,2,0,0,0,0,0 };
+			channel = { 0,2,0,0,0,0,0 };                               // ------------------------- ПРАВЫЙ:  2
 			setBuffer(buffers[i], it.second, channel);
 			bufferMap[it.second + "r"] = buffers[i];
 			i++;

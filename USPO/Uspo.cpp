@@ -84,24 +84,24 @@ int main(int argc, char* argv[])
 	}
 
 	bool standAlone = 0;//По умолчанию - ждем данных от модели
-/*
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29" };                    //  удалить
-	string model;                                                                                                                        //  ----------
+
+	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };                    //  
+/*	string model;    */                                                                                                                    //  ----------
 	for (size_t i = 1; i < argc; i++)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 	{
 		for (size_t j = 0; j < helicoptersNames.size(); j++)
 		{
 			if (regex_match(argv[i], regex("^(" + helicoptersNames[j] + ")")))
 			{
-				model = argv[i];
-				helicopter.setParam(model);
+/*				model = argv[i];
+				helicopter.setParam(model);   */
 			}
 		}
-		if (argv[i] == (string)"standalone")
+/*		if (argv[i] == (string)"standalone")
 		{
-			standAlone = 1;
-		}
-	}  */
+			standAlone = 1;  
+		}   */
+	}  
 	if (argc > 1 && argv[1] == (string)"standalone") {
 		standAlone = 1;
 	}
@@ -773,7 +773,7 @@ int main(int argc, char* argv[])
 							turnMg1 = getParameterFromFile(helicopter.fullName["red_off"], offsetMg1) * turnAvt / helicopter.redTurnoverMg2;
 							offsetMg1 += deltaTime;
 						}
-
+*/
 						if (statusEng1 == "eng_off" || statusEng1 == "eng_on")
 							soundFFT.eng1_obor = turnMgEng1;
 						if (statusEng1 == "eng_mg_avt" || statusEng1 == "eng_avt_mg")
@@ -782,7 +782,7 @@ int main(int argc, char* argv[])
 							soundFFT.eng2_obor = turnMgEng2;
 						if (statusEng2 == "eng_mg_avt" || statusEng2 == "eng_avt_mg")
 							soundFFT.eng2_obor = turnAvtEng2;
-
+/*
 						if (statusRed == "red_off" || statusRed == "red_on_wfe")
 							soundFFT.reduktor_gl_obor = turnMg1;
 						if (statusRed == "red_on_mg")
@@ -791,9 +791,9 @@ int main(int argc, char* argv[])
 							soundFFT.reduktor_gl_obor = turnAvt;
 
 						soundFFT.reduktor_gl_obor = (soundFFT.reduktor_gl_obor < 0) ? 0 : soundFFT.reduktor_gl_obor;
-						soundFFT.eng1_obor = (soundFFT.eng1_obor < 0) ? 0 : soundFFT.eng1_obor;
+*/						soundFFT.eng1_obor = (soundFFT.eng1_obor < 0) ? 0 : soundFFT.eng1_obor;
 						soundFFT.eng2_obor = (soundFFT.eng2_obor < 0) ? 0 : soundFFT.eng2_obor;
-*/					}
+					}
 					
 					if (Eng1On)
 					{
@@ -1671,7 +1671,6 @@ int main(int argc, char* argv[])
 		}
 		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tSPD: %.3lf\tSTP: %.3f\tTNG: %.3f\tVLY: %.3f\tHIG: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, soundFFT.reduktor_gl_obor, soundFFT.vsu_obor, spd, soundFFT.step, soundFFT.tangaz, soundFFT.vy, soundFFT.hight, router, metersToSlitFront);
 		//printf(" %: %.4f\tF: %.4i\r",soundFFT.eng1_obor, soundFFT.p_eng1_zap);
-
 	}
 
 	StopRealTime();
