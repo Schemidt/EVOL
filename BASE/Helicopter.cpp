@@ -184,6 +184,11 @@ void Helicopter::setPath(string pathToFile)
 	//Фрикцион
 	shortName["frict"] = "brake_on.wav";
 
+	// закрылки  ------------------------------------------------------------------------- добавлено
+	shortName["flaps_on"] = "flaps_on.wav";
+	shortName["flaps_w"] = "flaps_w.wav";
+	shortName["flaps_off"] = "flaps_off.wav";
+
 	fullName = shortName;
 
 	map<string, string> ::iterator num;
@@ -473,8 +478,11 @@ void Helicopter::setParam(string model)
 		redTurnoverMg1 = 44;
 		redTurnoverMg2 = 60;
 		redTurnoverAvt = 90;
+
+		flapsChange = { 0,0,0,0,0 };
 		//Множители громкости		
 		engFactor = 1/*дв*/; //0
+		flapsFactor = 1;     // громкость закрылки
 	}
 	else
 	{
@@ -570,11 +578,11 @@ void Helicopter::setBufferMap()
 			alGenBuffers(1, &buffers[i]);
 			if (modelName == "mi_26")
 			{
-				channel = { 0,0,1,1,0,0,0 };
+				channel = { 0,0,1,1,0,0,0 };                     //  возможно, требуется коррекция
 			}
 			else
 			{
-				channel = { 1,1,0,0,0,0,0 };
+				channel = { 1,1,0,0,0,0,0 };                    //  -----------------------------
 			}
 			setBuffer(buffers[i], it.second, channel);
 			bufferMap[it.second] = buffers[i];

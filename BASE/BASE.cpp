@@ -413,6 +413,8 @@ using namespace std;
 
 #define MAX_AUX_SLOTS 16
 
+#define FLAPS_MAX_ANG 40.0
+
 SOUNDREAD soundread;/*!< Переменная класса soundread для хранения управляющих признаков */
 
 int Sound::maxSlots;/*!< Переменная инициализирующаяся максимальным числом источников ,которые могут проигрываться одновременно*/
@@ -580,6 +582,8 @@ int main()
 	Sound *trim = nullptr;
 	Sound *frict = nullptr;
 
+	Crane *flaps = nullptr;                           // закрылки
+
 	SOUNDREAD localdata = soundread;//локальная копия общего с USPO файла
 
 	double timerPodk = 0;
@@ -674,7 +678,7 @@ int main()
 				Sound::masterGain = (Sound::masterGain < localdata.master_gain) ? localdata.master_gain : Sound::masterGain;
 			}
 
-			printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, soundread.eng1_obor, soundread.eng2_obor, soundread.reduktor_gl_obor, soundread.vsu_obor, Sound::masterGain);
+			printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, soundread.eng1_obor, soundread.eng2_obor, (soundread.flaps * FLAPS_MAX_ANG), soundread.vsu_obor, Sound::masterGain);
 
 			//Среднее время цикла
 			avrDeltaTime = 0;
@@ -2197,6 +2201,42 @@ int main()
 						}
 					}
 				}
+			}
+			//  закрылки
+			if (helicopter.flapsFactor)
+			{
+				helicopter.flapsChange.erase(helicopter.flapsChange.begin());        //  стирание первого элемента в массиве flapsChange
+				helicopter.flapsChange.push_back(localdata.flaps);                   //   запись в конец массива  текущего значения flaps
+
+				float avrg = 0;
+				char p_flaps = 0;                                                        //  признак закрылков: "1" - выпуск, "-1" - уборка, "0" - останов
+                for (int i = 0; i < helicopter.flapsChange.size(); i++) {                // если flaps не меняется, то среднее из массива будет равно текущему
+					avrg += helicopter.flapsChange[i];
+				}
+				avrg = avrg / helicopter.flapsChange.size();
+				if (localdata.flaps > avrg) {
+					p_flaps = 1;
+				}
+				else if (localdata.flaps < avrg) {
+					p_flaps = -1;
+				}
+				else {
+					p_flaps = 0;
+				}
+				if (p_flaps)//Условие создания объекта
+					if (!flaps)//Если объект не создан 
+						flaps = new Crane;//Создаем объект
+				if (flaps)//Если объект создан - используем его
+				{
+					if (flaps->play(p_flaps, helicopter.fullName["flaps_on"], helicopter.fullName["flaps_w"], helicopter.fullName["flaps_off"], helicopter.flapsFactor))
+					{
+
+					}
+					else
+					{
+								Free(flaps);//Удаляем объект
+					}						
+				}			
 			}
 		}
 		else

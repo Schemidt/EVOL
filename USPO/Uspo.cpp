@@ -15,6 +15,8 @@
 #define ANSAT_1ENG_TURN 73.00
 #define VSU_MAX_TURN 100.00
 
+#define FLAPS_MAX_ANGLE 40.0          // макимальный угол выпуска закрылков
+
 using namespace std;
 
 SOUNDFFT soundFFT;
@@ -41,6 +43,9 @@ bool Eng2Off = 0;
 bool eng1hpbl = 0;
 bool eng2hpbl = 0;
 bool vsuhpbl = 0;
+
+bool flapsOn = 0;                            //    добавлено  закрылки
+bool flapsOff = 0;
 
 bool perek[2] = { 0, 0 };
 bool kolc = 0;
@@ -138,6 +143,8 @@ int main(int argc, char* argv[])
 	soundFFT.obj_nos = 0.5;
 	soundFFT.obj_l = 0.75;
 	soundFFT.obj_r = 0.75;
+
+	soundFFT.flaps = 0;               // начальное значение
 
 	if (!shaInit())				// »нициализаци€ общей пам€ти 
 		return 0;
@@ -791,7 +798,8 @@ int main(int argc, char* argv[])
 							soundFFT.reduktor_gl_obor = turnAvt;
 
 						soundFFT.reduktor_gl_obor = (soundFFT.reduktor_gl_obor < 0) ? 0 : soundFFT.reduktor_gl_obor;
-*/						soundFFT.eng1_obor = (soundFFT.eng1_obor < 0) ? 0 : soundFFT.eng1_obor;
+*/						
+						soundFFT.eng1_obor = (soundFFT.eng1_obor < 0) ? 0 : soundFFT.eng1_obor;
 						soundFFT.eng2_obor = (soundFFT.eng2_obor < 0) ? 0 : soundFFT.eng2_obor;
 					}
 					
@@ -908,7 +916,25 @@ int main(int argc, char* argv[])
 				}
 
 				double timeSw = 0.5;
-
+				//   закрылки
+				if (flapsOn) {
+					if (soundFFT.flaps < 1) {
+						soundFFT.flaps += deltaTime / 28;       // врем€ выпуска закрылков на 40 град около 30 сек (выбрано 28)
+						if (soundFFT.flaps > 1) {
+							soundFFT.flaps = 1;
+							flapsOn = !flapsOn;
+						}
+					}
+				}
+				if (flapsOff) {
+					if (soundFFT.flaps > 0) {
+						soundFFT.flaps -= deltaTime / 28;       // врем€ уборки закрылков на 40 град около 30 сек (выбрано 28)
+						if (soundFFT.flaps < 0) {
+							soundFFT.flaps = 0;
+							flapsOff = !flapsOff;
+						}
+					}	
+				}
 				// раны пожар
 				for (size_t i = 0; i < 2; i++)
 				{
@@ -1669,7 +1695,7 @@ int main(int argc, char* argv[])
 		{
 			spd = soundFFT.v_atm_x;
 		}
-		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tRED_: %.3f\tVSU: %.3f\tSPD: %.3lf\tSTP: %.3f\tTNG: %.3f\tVLY: %.3f\tHIG: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, soundFFT.reduktor_gl_obor, soundFFT.vsu_obor, spd, soundFFT.step, soundFFT.tangaz, soundFFT.vy, soundFFT.hight, router, metersToSlitFront);
+		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tSPD: %.3lf\tSTP: %.3f\tTNG: %.3f\tVLY: %.3f\tHIG: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, soundFFT.step, soundFFT.tangaz, soundFFT.vy, soundFFT.hight, router, metersToSlitFront);
 		//printf(" %: %.4f\tF: %.4i\r",soundFFT.eng1_obor, soundFFT.p_eng1_zap);
 	}
 
@@ -1770,6 +1796,12 @@ void kbHit()
 			Eng2Off = 1;
 			Eng2On = 0;
 			Eng2Hp = 0;
+			break;
+		case 'F':                                                   // закрылки выпустить
+			flapsOn = !flapsOn;
+			break;
+		case 'f':                                                   // закрылки убрать
+			flapsOff = !flapsOff;
 			break;
 		case 'c':
 			soundFFT.master_gain -= .01f;//”меньшить громкость
@@ -1918,7 +1950,7 @@ void kbHit()
 		case 'V':
 			soundFFT.p_nasos = !soundFFT.p_nasos;//Ќасосна€ станци€
 			break;
-		case 'i':
+		case 'i':                          // перекрывной кран ¬—”
 			perekVsu = !perekVsu;
 			craneVsuTimer = 0;
 			break;

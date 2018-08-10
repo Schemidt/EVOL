@@ -136,6 +136,7 @@ struct SOUNDREAD {
 	bool stove;                 // КО-50
 	bool trim;                  // признак нажатия триммера
 	bool frict;                 // признак нажатия фрикциона
+	float flaps;               // степень выпуска/уборки закрылков (0...1)
 };
 #pragma pack ( pop )
 

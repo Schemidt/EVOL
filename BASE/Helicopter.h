@@ -88,6 +88,9 @@ public:
 	double trim = 0;//!<Триммер
 	double frict = 0;//!>Фрикцион
 
+	double flapsFactor = 0; // множитель громкости закрылков ----------------------------
+	vector<float> flapsChange;
+
 	// Переменные для хранения длительности файлов в секундах
 	double redLengthOn = 0;//!<длительность запуска агрегата
 	double redLengthOff = 0;//!<длительность остановки агрегата
