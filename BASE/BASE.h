@@ -96,7 +96,7 @@ public:
 	vector<string> modeSequence = { "0","0","0" };//Вектор истории режимов 
 	string mode = "0";//Переменная текущего режима
 	double switcher = 0;//Переменная - таймер, для кроссфейда по времени
-	double crossFadeDuration = 0.1;//Кроссфейд по времени за crossFadeDuration секунд
+	double crossFadeDuration = 1;//Кроссфейд по времени за crossFadeDuration секунд
 	int id = 0;//Текущий используемый источник
 
 	bool soundOn = 0;//!< Переменная для определения состояния звука
