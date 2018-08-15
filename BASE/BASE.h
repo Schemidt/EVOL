@@ -96,7 +96,7 @@ public:
 	vector<string> modeSequence = { "0","0","0" };//Вектор истории режимов 
 	string mode = "0";//Переменная текущего режима
 	double switcher = 0;//Переменная - таймер, для кроссфейда по времени
-	double crossFadeDuration = 1;//Кроссфейд по времени за crossFadeDuration секунд
+	double crossFadeDuration = 0.1;//Кроссфейд по времени за crossFadeDuration секунд
 	int id = 0;//Текущий используемый источник
 
 	bool soundOn = 0;//!< Переменная для определения состояния звука
@@ -416,12 +416,6 @@ public:
 	\return Статус источника OpenAL
 	*/
 	int play(char status, string path_on, string path_w, string path_off, double gain_mult);
-
-};
-
-class Flaps : public Sound                                                                              // класс Закрылки
-{
-public:
 
 };
 

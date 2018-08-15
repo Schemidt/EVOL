@@ -197,6 +197,8 @@ int main(int argc, char* argv[])
 	double avrDeltaTime = 0;
 	vector<double> adt;
 
+	bool gearHist = 1;                                                              // история режимов выпуска/уборки шасси:  1 - было выпущено; 0 - было убрано
+
 	while (true)
 	{
 		double deltaTime = rt.timeS - currentTime;
@@ -944,13 +946,18 @@ int main(int argc, char* argv[])
 					}	
 				}
 				//    выпуск/уборка шасси
-				if (gearOn) {                                                                     // время выпуска шасси около 10 с (9.2 с)
-					if (!p_gear_l && soundFFT.vyp_l < 1) {
-						soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 0;
-						p_gear_l = 1;
+				if (gearOn) {
+					if (soundFFT.vyp_l < 1) {
+						if (!p_gear_l) {
+							soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 0;
+							p_gear_l = 1;
+						}
+					}
+					else if (soundFFT.vyp_l == 1) {
+						gearOn = !gearOn;
 					}
 					if (p_gear_l) {
-						/*						soundFFT.vyp_l += deltaTime / 9.2;*/
+						/*						soundFFT.vyp_l += deltaTime / 9.2;*/   // время выпуска шасси около 10 с (9.2 с)
 						soundFFT.vyp_l += deltaTime / 5;
 						if (soundFFT.vyp_l > 1) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 1;
@@ -958,12 +965,17 @@ int main(int argc, char* argv[])
 							p_gear_l = 0;
 						}
 					}
+					gearHist = 1;
 				}
-
-				if (gearOff) {
-					if (!p_gear_l && soundFFT.vyp_l > 0) {
-						soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 1;
-						p_gear_l = 1;
+				else if (gearOff) {
+					if (soundFFT.vyp_l > 0) {
+						if (!p_gear_l) {
+							soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 1;
+							p_gear_l = 1;
+						}
+					}
+					else if (soundFFT.vyp_l == 0) {
+						gearOff = !gearOff;
 					}
 					if (p_gear_l) {
 						/*						soundFFT.vyp_l -= deltaTime / 8.7; */                            // время уборки шасси ок. 9 с (8.7 с)
@@ -974,9 +986,12 @@ int main(int argc, char* argv[])
 							p_gear_l = 0;
 						}
 					}
+					gearHist = 0;
 				}
-				else  p_gear_l = 0;
-
+				else {
+/*					soundFFT.vyp_l = (gearHist) ? 1 : 0;  */
+					p_gear_l = 0;
+				}
 				//Краны пожар
 				for (size_t i = 0; i < 2; i++)
 				{
@@ -1737,7 +1752,7 @@ int main(int argc, char* argv[])
 		{
 			spd = soundFFT.v_atm_x;
 		}
-		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tSPD: %.3lf\tGEAR: %.3f\tgearOn: %i\tp_gear_l: %i\tHIG: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, (soundFFT.vyp_l * 100), gearOn, p_gear_l, soundFFT.hight, router, metersToSlitFront);
+		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tSPD: %.3lf\tGEAR: %.3f\tHIGH: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, (soundFFT.vyp_l * 100), soundFFT.hight, router, metersToSlitFront);
 		//printf(" %: %.4f\tF: %.4i\r",soundFFT.eng1_obor, soundFFT.p_eng1_zap);
 	}
 

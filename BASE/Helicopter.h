@@ -89,7 +89,7 @@ public:
 	double frict = 0;//!>Фрикцион
 
 	double flapsFactor = 0;                                              // множитель громкости закрылков ----------------------------
-	vector<float> flapsChange;                                           // массив для определения признака выпуска/уборки закрылков
+	vector<float> flapsHist;                                           // массив для определения признака выпуска/уборки закрылков
 	double gearFactor = 0;                                               // множитель громкости выпуска/уборки шасси
 	vector<float> vypHist_l;                                            // массивы для определения признака выпуска/уборки шасси left
 	vector<float> vypHist_r;                                            // ----------------                                      right

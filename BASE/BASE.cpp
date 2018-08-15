@@ -582,11 +582,20 @@ int main()
 	Sound *trim = nullptr;
 	Sound *frict = nullptr;
 
-	Flaps *flaps = nullptr;                                                                                          // закрылки
-	Gear *gear_l = nullptr;                                                                                            // шасси выпуск/уборка
+	Sound *flaps = nullptr;                                                                          // закрылки
+	Sound *gearup_l = nullptr;                                                                       // шасси уборка
+	Sound *geardown_l = nullptr;                                                                     // шасси выпуск
+/*	
 	Gear *gear_r = nullptr;
 	Gear *gear_n = nullptr;
-
+*/	
+	bool p_gearOff = 0;                                                                              // признак уборки шасси для запуска функции play
+	bool p_gearOn = 0;                                                                               // признак выпуска шасси -----------------   	
+/*	int gearSwitch = 0;
+	vector<string> gearSwOn = { helicopter.fullName["gearup_on"], helicopter.fullName["geardown_on"] };
+	vector<string> gearSwiW = { helicopter.fullName["gearup_w"], helicopter.fullName["geardown_w"] };
+	vector<string> gearSwOff = { helicopter.fullName["gearup_off"], helicopter.fullName["geardown_off"] };
+*/	
 	SOUNDREAD localdata = soundread;//локальная копия общего с USPO файла
 
 	double timerPodk = 0;
@@ -681,7 +690,7 @@ int main()
 				Sound::masterGain = (Sound::masterGain < localdata.master_gain) ? localdata.master_gain : Sound::masterGain;
 			}
 
-			printf(" Time: %.4lf\tDT__: %.4lf\tSIU: %i\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tGEAR: %.3f\tVSU: %.3f\tMSG: %.3f\t\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, soundread.eng1_obor, soundread.eng2_obor, (soundread.flaps * FLAPS_MAX_ANG), (soundread.vyp_l * 100),soundread.vsu_obor, Sound::masterGain);
+			printf(" Time: %.4lf\tdT__: %.4lf\tSources: %i\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tGEAR: %.3f\tVSU: %.3f\tGAIN: %.3f\t\r", Sound::currentTime, avrDeltaTime, Sound::sourcesInUse, soundread.eng1_obor, soundread.eng2_obor, (soundread.flaps * FLAPS_MAX_ANG), (soundread.vyp_l * 100),soundread.vsu_obor, Sound::masterGain);
 
 			//Среднее время цикла
 			avrDeltaTime = 0;
@@ -2208,21 +2217,21 @@ int main()
 			//  закрылки
 			if (helicopter.flapsFactor)
 			{
-				helicopter.flapsChange.erase(helicopter.flapsChange.begin());        //  стирание первого элемента в массиве flapsChange
-				helicopter.flapsChange.push_back(localdata.flaps);                   //   запись в конец массива  текущего значения flaps
-
+				helicopter.flapsHist.erase(helicopter.flapsHist.begin());        //  стирание первого элемента в массиве flapsHist
+				helicopter.flapsHist.push_back(localdata.flaps);                   //   запись в конец массива  текущего значения flaps
+/*
 				float avrg = 0;
 				bool p_flaps = 0;                                                        //  признак закрылков: "1" - выпуск, "0" - останов
-                for (int i = 0; i < helicopter.flapsChange.size(); i++) {                // если flaps не меняется, то среднее из массива будет равно текущему
-					avrg += helicopter.flapsChange[i];
+                for (int i = 0; i < helicopter.flapsHist.size(); i++) {                // если flaps не меняется, то среднее из массива будет равно текущему
+					avrg += helicopter.flapsHist[i];
 				}
-				avrg = avrg / helicopter.flapsChange.size();
-
-				p_flaps = (localdata.flaps != avrg) ? 1 : 0;
+				avrg = avrg / helicopter.flapsHist.size();
+*/
+				bool p_flaps = (localdata.flaps != helicopter.flapsHist[0]) ? 1 : 0;
 			
 				if (p_flaps)//Условие создания объекта
 					if (!flaps)//Если объект не создан 
-						flaps = new Flaps;//Создаем объект
+						flaps = new Sound;//Создаем объект
 				if (flaps)//Если объект создан - используем его
 				{
 					if (flaps->play(p_flaps, helicopter.fullName["flaps_on"], helicopter.fullName["flaps_w"], helicopter.fullName["flaps_off"], helicopter.flapsFactor))
@@ -2237,89 +2246,49 @@ int main()
 			}
 			//  выпуск/уборка шасси
 			if (helicopter.gearFactor)
-			{
-				helicopter.vypHist_l[0] = helicopter.vypHist_l[1];        //  стирание первого элемента в массиве gearChange_l
-				helicopter.vypHist_l[1] = localdata.vyp_l;                 //   запись в конец массива  текущего значения vyp_l
-
-				helicopter.vypHist_r[0] = helicopter.vypHist_r[1];        //  правая стойка
-				helicopter.vypHist_r[1] = localdata.vyp_r;                   //   
-
-				helicopter.vypHist_n[0] = helicopter.vypHist_n[1];        //  носовая стойка
-				helicopter.vypHist_n[1] = localdata.vyp_n;                   //  
+			{				
+				helicopter.vypHist_l.erase(helicopter.vypHist_l.begin());                               //  стирание первого элемента в массиве vypHist_l  
+				helicopter.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива  текущего значения vyp_l
 				
-				bool p_gearOff = 0;                                                           // признак уборки шасси для запуска функции play
-				bool p_gearOn = 0;                                                            // признак выпуска шасси -----------------
-/*				if (helicopter.vypHist_l[0] == 1 && helicopter.vypHist_l[1] < 1) {
+				if (helicopter.vypHist_l[0] == 1 && localdata.vyp_l < 1) {
 					p_gearOff = 1;
 				}
-				if (helicopter.vypHist_l[0] < 1 && helicopter.vypHist_l[1] < helicopter.vypHist_l[0]) {
-					p_gearOff = 0;
-					localdata.vyp_l = 0;
-				}
-				if (helicopter.vypHist_l[0] == 0 && helicopter.vypHist_l[1] > 0) {
+				else if (helicopter.vypHist_l[0] == 0 && localdata.vyp_l > 0) {
 					p_gearOn = 1;
-				}
-				if (helicopter.vypHist_l[0] > 0 && helicopter.vypHist_l[1] > helicopter.vypHist_l[0]) {
+				}				
+				else if (localdata.vyp_l == helicopter.vypHist_l[0]) {
+					p_gearOff = 0;                                                           // признак уборки шасси для запуска функции play
 					p_gearOn = 0;
-					localdata.vyp_l = 1;
 				}
-/*				
-				float avrg_l = 0;
-				bool p_gear_l = 0;                                                        //  признак выпуска/уборки шасси: "1" - выпуск, "0" - останов
-				for (int i = 0; i < helicopter.gearChange_l.size(); i++) {                // если vyp_l не меняется, то среднее из массива будет равно текущему
-					avrg_l += helicopter.gearChange_l[i];
-				}
-				avrg_l = avrg_l / helicopter.gearChange_l.size();
 
-				float avrg_r = 0;
-				bool p_gear_r = 0;                                                        //  признак выпуска/уборки шасси: "1" - выпуск, "0" - останов
-				for (int i = 0; i < helicopter.gearChange_r.size(); i++) {                // если vyp_r не меняется, то среднее из массива будет равно текущему
-					avrg_r += helicopter.gearChange_r[i];
-				}
-				avrg_r = avrg_r / helicopter.gearChange_r.size();
-
-				float avrg_n = 0;
-				bool p_gear_n = 0;                                                        //  признак выпуска/уборки шасси: "1" - выпуск, "0" - останов
-				for (int i = 0; i < helicopter.gearChange_n.size(); i++) {                // если vyp_n не меняется, то среднее из массива будет равно текущему
-					avrg_n += helicopter.gearChange_n[i];
-				}
-				avrg_n = avrg_n / helicopter.gearChange_n.size();
-
-				
-
-				p_gear_l = (localdata.vyp_l != avrg_l) ? 1 : 0;                           //  признак выпуска/уборки шасси левого: "1" - выпуск, "0" - останов
-				p_gear_r = (localdata.vyp_r != avrg_r) ? 1 : 0;                           //  ----------------------------- правого
-				p_gear_n = (localdata.vyp_n != avrg_n) ? 1 : 0;                           //  ----------------------------- носового
-/*
-				if (p_gearOff)//Условие создания объекта                                уборка шасси: временно используем только левую стойку
-					if (!gear_l)//Если объект не создан 
-						gear_l = new Gear;//Создаем объект
-				if (gear_l)//Если объект создан - используем его
+				if (p_gearOff) //Условие создания объекта                                уборка шасси: временно используем только левую стойку
+					if (!gearup_l)//Если объект не создан 
+						gearup_l = new Sound;//Создаем объект
+				if (p_gearOn) //Условие создания объекта                                 выпуск шасси: временно используем только левую стойку
+					if (!geardown_l)//Если объект не создан 
+						geardown_l = new Sound;//Создаем объект
+				if (gearup_l)//Если объект создан - используем его
 				{
-					if (gear_l->play(p_gearOff, helicopter.fullName["gearup_on"], helicopter.fullName["gearup_w"], helicopter.fullName["gearup_off"], helicopter.gearFactor))
+					if (gearup_l->play(p_gearOff, helicopter.fullName["gearup_on"], helicopter.fullName["gearup_w"], helicopter.fullName["gearup_off"], helicopter.gearFactor))
 					{
 
 					}
 					else
 					{
-						Free(gear_l);//Удаляем объект
+						Free(gearup_l);//Удаляем объект
 					}
 				}
-				if (p_gearOn)//Условие создания объекта                                 выпуск шасси: временно используем только левую стойку
-					if (!gear_l)//Если объект не создан 
-						gear_l = new Gear;//Создаем объект
-				if (gear_l)//Если объект создан - используем его
+				if (geardown_l)//Если объект создан - используем его
 				{
-					if (gear_l->play(p_gearOn, helicopter.fullName["geardown_on"], helicopter.fullName["geardown_w"], helicopter.fullName["geardown_off"], helicopter.gearFactor))
+					if (geardown_l->play(p_gearOn, helicopter.fullName["geardown_on"], helicopter.fullName["geardown_w"], helicopter.fullName["geardown_off"], helicopter.gearFactor))
 					{
 
 					}
 					else
 					{
-						Free(gear_l);//Удаляем объект
+						Free(geardown_l);//Удаляем объект
 					}
-				}
-*/
+				}				
 			}
 		}
 		else
@@ -2644,7 +2613,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	if (pathOn != "NULL" & pathW != "NULL" & pathOff != "NULL")
 	{
 		start = status & !soundOn & !soundWork;
-		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= crossFadeDuration);
+		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= crossFadeDuration);    // crossFadeDuration = 1 сек / unique_ptr<float[]> offset;
 		end = !status & !soundOff;
 		free = !status & soundOff & sourceStatus[id] != AL_PLAYING;
 	}
@@ -2704,7 +2673,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		end = 0;
 		free = 1;
 	}
-
+/*
+	printf(" On: %.3f\tOffset: %.3f\tCross: %.3f\t\r", lengthOn, offset[id], crossFadeDuration);
+*/
 	//Включение (присутствует по крайней мере звук запуска)
 	if (start)
 	{
