@@ -88,8 +88,12 @@ public:
 	double trim = 0;//!<Триммер
 	double frict = 0;//!>Фрикцион
 
-	double flapsFactor = 0; // множитель громкости закрылков ----------------------------
-	vector<float> flapsChange;
+	double flapsFactor = 0;                                              // множитель громкости закрылков ----------------------------
+	vector<float> flapsChange;                                           // массив для определения признака выпуска/уборки закрылков
+	double gearFactor = 0;                                               // множитель громкости выпуска/уборки шасси
+	vector<float> vypHist_l;                                            // массивы для определения признака выпуска/уборки шасси left
+	vector<float> vypHist_r;                                            // ----------------                                      right
+	vector<float> vypHist_n;                                            // --------------------                                  носовой стойки
 
 	// Переменные для хранения длительности файлов в секундах
 	double redLengthOn = 0;//!<длительность запуска агрегата

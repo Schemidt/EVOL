@@ -46,6 +46,11 @@ bool vsuhpbl = 0;
 
 bool flapsOn = 0;                            //    добавлено  закрылки
 bool flapsOff = 0;
+bool gearOn = 0;                             //    добавлено  шасси 
+bool gearOff = 0;
+bool p_gear_l = 0;                           //  признаки выпуска/уборки шасси
+bool p_gear_r = 0;
+bool p_gear_n = 0;
 
 bool perek[2] = { 0, 0 };
 bool kolc = 0;
@@ -144,7 +149,10 @@ int main(int argc, char* argv[])
 	soundFFT.obj_l = 0.75;
 	soundFFT.obj_r = 0.75;
 
-	soundFFT.flaps = 0;               // начальное значение
+	soundFFT.flaps = 0;               // начальное значение: закрылки не выпущены
+	soundFFT.vyp_l = 1;               // нач. значение: шасси выпущено полностью
+	soundFFT.vyp_r = 1;               // -------------
+	soundFFT.vyp_n = 1;
 
 	if (!shaInit())				// Инициализация общей памяти 
 		return 0;
@@ -935,6 +943,40 @@ int main(int argc, char* argv[])
 						}
 					}	
 				}
+				//    выпуск/уборка шасси
+				if (gearOn) {                                                                     // время выпуска шасси около 10 с (9.2 с)
+					if (!p_gear_l && soundFFT.vyp_l < 1) {
+						soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 0;
+						p_gear_l = 1;
+					}
+					if (p_gear_l) {
+						/*						soundFFT.vyp_l += deltaTime / 9.2;*/
+						soundFFT.vyp_l += deltaTime / 5;
+						if (soundFFT.vyp_l > 1) {
+							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 1;
+							gearOn = !gearOn;
+							p_gear_l = 0;
+						}
+					}
+				}
+
+				if (gearOff) {
+					if (!p_gear_l && soundFFT.vyp_l > 0) {
+						soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 1;
+						p_gear_l = 1;
+					}
+					if (p_gear_l) {
+						/*						soundFFT.vyp_l -= deltaTime / 8.7; */                            // время уборки шасси ок. 9 с (8.7 с)
+						soundFFT.vyp_l -= deltaTime / 5;
+						if (soundFFT.vyp_l < 0) {
+							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 0;
+							gearOff = !gearOff;
+							p_gear_l = 0;
+						}
+					}
+				}
+				else  p_gear_l = 0;
+
 				//Краны пожар
 				for (size_t i = 0; i < 2; i++)
 				{
@@ -1695,7 +1737,7 @@ int main(int argc, char* argv[])
 		{
 			spd = soundFFT.v_atm_x;
 		}
-		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tSPD: %.3lf\tSTP: %.3f\tTNG: %.3f\tVLY: %.3f\tHIG: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, soundFFT.step, soundFFT.tangaz, soundFFT.vy, soundFFT.hight, router, metersToSlitFront);
+		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tSPD: %.3lf\tGEAR: %.3f\tgearOn: %i\tp_gear_l: %i\tHIG: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, (soundFFT.vyp_l * 100), gearOn, p_gear_l, soundFFT.hight, router, metersToSlitFront);
 		//printf(" %: %.4f\tF: %.4i\r",soundFFT.eng1_obor, soundFFT.p_eng1_zap);
 	}
 
@@ -1797,11 +1839,17 @@ void kbHit()
 			Eng2On = 0;
 			Eng2Hp = 0;
 			break;
-		case 'F':                                                   // закрылки выпустить
+		case 'F':                                                                                             // закрылки выпустить
 			flapsOn = !flapsOn;
 			break;
-		case 'f':                                                   // закрылки убрать
+		case 'f':                                                                                             // закрылки убрать
 			flapsOff = !flapsOff;
+			break;
+		case 'G':                                                                                             // шасси выпустить
+			gearOn = !gearOn;
+			break;
+		case 'g':                                                                                              // шасси убрать
+			gearOff = !gearOff;
 			break;
 		case 'c':
 			soundFFT.master_gain -= .01f;//Уменьшить громкость
@@ -2181,7 +2229,7 @@ vector<point> getVectorFromFile(string filename)
 	}
 	base.close();
 
-	return vect;
+	return vect;                    
 }
 
 double getOffset(string filename, double parameter)

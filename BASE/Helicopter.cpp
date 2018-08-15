@@ -18,7 +18,7 @@ void Helicopter::setPath(string pathToFile)
 /*	shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
 	shortName["eng_avt_mg"] = "eng_avt_mg.txt"; //!<имя файла c переходной функцией остановки до режима малого газа
 */												
-	shortName["eng_mg_avt"] = "eng_mg_cruis.txt";                            //         il_112
+	shortName["eng_mg_avt"] = "eng_mg_cruis.txt";                            //         il_112 txt
 	shortName["eng_avt_mg"] = "eng_cruis_mg.txt";                            //         il_112
 
                                                         //Редуктор
@@ -184,10 +184,19 @@ void Helicopter::setPath(string pathToFile)
 	//Фрикцион
 	shortName["frict"] = "brake_on.wav";
 
-	// закрылки  ------------------------------------------------------------------------- добавлено
+	// закрылки  ---------------------------------------------------------------------------------------------------------------------- добавлено
 	shortName["flaps_on"] = "flaps_on.wav";
 	shortName["flaps_w"] = "flaps_w.wav";
 	shortName["flaps_off"] = "flaps_off.wav";
+	// выпуск/уборка шасси 112
+	shortName["geardown_on"] = "geardown_on.wav";
+	shortName["geardown_w"] = "geardown_w.wav";
+	shortName["geardown_off"] = "geardown_off.wav";
+	shortName["geardown_off_fal"] = "geardown_off_failed.wav";
+	shortName["gearup_on"] = "gearup_on.wav";
+	shortName["gearup_w"] = "gearup_w.wav";
+	shortName["gearup_off"] = "gearup_off.wav";
+	shortName["gearup_off_fal"] = "gearup_off_failed.wav";
 
 	fullName = shortName;
 
@@ -475,14 +484,19 @@ void Helicopter::setParam(string model)
 		//Константы		
 		engTurnoverMg = 71;              // il_112
 		engTurnoverAvt = 92;              // ------------
+		
 		redTurnoverMg1 = 44;
 		redTurnoverMg2 = 60;
 		redTurnoverAvt = 90;
 
-		flapsChange = { 0,0,0,0,0 };
+		flapsChange = { 0,0,0,0,0 };              // инициализация массивов для определения признака работы закрылков
+		vypHist_l = { 0,0 };                      //  ----------------- выпуска/уборки шасси
+		vypHist_r = { 0,0 };
+		vypHist_n = { 0,0 };
 		//Множители громкости		
 		engFactor = 1/*дв*/; //0
-		flapsFactor = 1;     // громкость закрылки
+		flapsFactor = 1;                          // громкость закрылки
+		gearFactor = 0.3;                            // громкость выпуск/уборка шасси
 	}
 	else
 	{
