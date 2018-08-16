@@ -2607,8 +2607,10 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	if (pathOff != "NULL")
 		lengthOff = getLengthWAV(pathOff);
 
-	alGetSourcei(source[id], AL_SOURCE_STATE, &sourceStatus[id]);//Обновляем статус источника
-
+	alGetSourcei(source[id], AL_SOURCE_STATE, &sourceStatus[id]);//Обновляем статус источника   
+/*
+	                      printf("\n1: id=%i  sourceStatus[%i]=%X  offset[%i]=%.3f\n", id, id, sourceStatus[id], id, offset[id]);
+*/
 	//условие запуска когда все звуки присутствуют
 	if (pathOn != "NULL" & pathW != "NULL" & pathOff != "NULL")
 	{
@@ -2712,7 +2714,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 
 	if (modeSequence.back() != mode)//Если произошла смена режима
 	{
-		switcher = 0;//Обнуляем таймер кроссфеда
+		switcher = 0;//Обнуляем таймер кроссфейда
 		id = !id;//Меняем номер активного источника
 		if (mode == "on" || mode == "off")//Если текущий режим запуск или выключение - перезапускаем с нужного времени
 		{
@@ -2724,22 +2726,21 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 			modeSequence.erase(modeSequence.begin());
 		}
 	}
-
 	//Инициализируем переменные в зависимости от режима
 	if (mode == "w")
 	{
 		filetoBuffer[id] = pathW;
-		alSourcef(source[id], AL_LOOPING, AL_TRUE);
+		alSourcef(source[id], AL_LOOPING, AL_TRUE);                                 // режим "w" может быть LOOPING
 	}
 	else if (mode == "on")
 	{
 		filetoBuffer[id] = pathOn;
-		alSourcef(source[id], AL_LOOPING, AL_FALSE);
+		alSourcef(source[id], AL_LOOPING, AL_FALSE);                                // режим "on" не может быть LOOPING
 	}
 	else if (mode == "off")
 	{
 		filetoBuffer[id] = pathOff;
-		alSourcef(source[id], AL_LOOPING, AL_FALSE);
+		alSourcef(source[id], AL_LOOPING, AL_FALSE);                                // режим "off" не может быть LOOPING
 	}
 
 	double finalGain = gain[id] * gainMult * masterGain;//Вычисляем максимальную громкость 
@@ -2747,7 +2748,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	double fade = 0;
 	switcher += deltaTime;
 	timeCrossfade(fade, rise, crossFadeDuration, switcher);
-
+/*
+	    printf("2:  id=%i  fileBuffered[%i]=%s  gain[%i]=%.3f  switcher=%.3f   fade=%.3f   rise=%.3f\n", id, id, fileBuffered[id], id, gain[id], switcher, fade, rise);
+*/
 	if (fileBuffered[id] == "NULL" && filetoBuffer[id] == "NULL")
 	{
 		rise = 0;
@@ -2788,7 +2791,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 
 	for (size_t i = 0; i < 2; i++)
 	{
-		//Загружаем буферы и запускам источники
+		//Загружаем буферы и запускаем источники
 		if (fileBuffered[i] != filetoBuffer[i])
 		{
 			sourceStatus[i] = setAndDeploySound(&buffer[i], &source[i], offset[i], filetoBuffer[i]);
@@ -2800,7 +2803,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		//Обновляем высоту тона
 		alSourcef(source[i], AL_PITCH, pitch[i]);
 	}
-
+/*
+	printf("3:  fileBuffered[0]=%s   filetoBuffer[0]=%s   sourceStatus[0]=%X   offset[0]=%.3f\n    fileBuffered[1]=%s   filetoBuffer[1]=%s   sourceStatus[1]=%X   offset[1]=%.3f\n", fileBuffered[0], filetoBuffer[0], sourceStatus[0], offset[0], fileBuffered[1], filetoBuffer[1], sourceStatus[1], offset[1]);
+*/
 	//Пока идет запуск - высчитываем точку остановки
 	if (soundOn)
 	{
@@ -2821,7 +2826,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 			offset[!id] = lengthOn * (1 - (offset[id] / lengthOff));
 		}
 	}
-
+/*
+	printf("4:  offsetOn=%.3f   offsetOff=%.3f   offset[%i]=%.3f   offset[%i}=%.3f\n", offsetOn, offsetOff, id, offset[id], !id, offset[!id]);
+*/
 	return 1;
 }
 
