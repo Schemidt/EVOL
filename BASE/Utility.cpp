@@ -21,7 +21,7 @@ double getLengthWAV(string filename)
 	}
 	header = new WAVEHEADER;
 	fread(header, sizeof(WAVEHEADER), 1, in);//считываем заголовочную информацию
-	double length = ((double)header->lDataSize / ((double)header->wfex.wBitsPerSample * (double)header->wfex.nSamplesPerSec)) * 8;//вычисляем длинну в секундах
+	double length = ((double)header->lDataSize / ((double)header->wfex.wBitsPerSample * (double)header->wfex.nSamplesPerSec)) * 8;//вычисляем длину в секундах
 	fclose(in);
 	delete header;
 	return length;

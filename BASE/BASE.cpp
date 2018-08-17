@@ -453,6 +453,8 @@ vector<double> Sound::vectorAvrStep;         // -----------
 vector<double> Sound::vectorAvrAtk;         // ----------
 double Sound::globalWindow = 50;
 
+float ot = 0;                                                               //         проверочная переменная для Sound::play
+
 /*!\brief Основная функция программы*/
 int main()
 {
@@ -2609,14 +2611,16 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		lengthOff = getLengthWAV(pathOff);
 
 	alGetSourcei(source[id], AL_SOURCE_STATE, &sourceStatus[id]);//Обновляем статус источника                       точка 1:
-/*
-	                      printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tid=%i   sS[%i]=%X   ot[%i]=%.3f\r", id, id, sourceStatus[id], id, offset[id]);
-*/
+
+	                      if (offset[id] > ot)   ot = offset[id];
+
+	     printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tid=%i  sS[%i]=%X  ot[%i]=%.3f  ot_max=%.3f  leOn=%.3f\r", id, id, sourceStatus[id], id, offset[id], ot, lengthOn);
+
 	//условие запуска когда все звуки присутствуют
 	if (pathOn != "NULL" & pathW != "NULL" & pathOff != "NULL")
 	{
-		start = status & !soundOn & !soundWork;
-		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= crossFadeDuration);    // crossFadeDuration = 1 сек / unique_ptr<float[]> offset;
+		start = status & !soundOn & !soundWork;                                                   // soundOn = soundOff = soundWork = 0 изначально
+		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= crossFadeDuration);    // crossFadeDuration = 1 сек (?) / unique_ptr<float[]> offset;
 		end = !status & !soundOff;
 		free = !status & soundOff & sourceStatus[id] != AL_PLAYING;
 	}
@@ -2749,10 +2753,10 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	double fade = 0;
 	switcher += deltaTime;
 	timeCrossfade(fade, rise, crossFadeDuration, switcher);                           //  точка 2:
-
+/*
 	    printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tid=%i  g[%i]=%.3f  sw=%.3f   fd=%.3f   rs=%.3f", id, id, gain[id], switcher, fade, rise);
 		cout << "   md=" << mode << "   fB[id]=" << fileBuffered[id] << "\r";
-
+*/
 	if (fileBuffered[id] == "NULL" && filetoBuffer[id] == "NULL")
 	{
 		rise = 0;
@@ -2763,7 +2767,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		rise = 1;
 		fade = 0;
 	}
-
+/*
+	                     cout << "fB[" << !id << "]=" << fileBuffered[!id] << "  ftB[" << !id << "]=" << filetoBuffer[!id] << "\r";
+*/
 	//Применяем результирующую громкость
 	alSourcef(source[!id], AL_GAIN, fade * finalGain);
 	alSourcef(source[id], AL_GAIN, rise * finalGain);
@@ -2805,11 +2811,11 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		//Обновляем высоту тона
 		alSourcef(source[i], AL_PITCH, pitch[i]);
 	}
-/*
-	              cout << "3:  fileBuffered[0]=" << fileBuffered[0] << "   filetoBuffer[0]=" << filetoBuffer[0];
-                  printf("   sourceStatus[0]=%X   offset[0]=%.3f\n", sourceStatus[0], offset[0]);
-	              cout << "  fileBuffered[1]=" << fileBuffered[1] << "   filetoBuffer[1]=" << filetoBuffer[1];
-	              printf("   sourceStatus[1]=%X   offset[1]=%.3f\n\n", sourceStatus[1], offset[1]);
+/*                                                                                                                          //   точка 3:
+	              cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfB[0]=" << fileBuffered[0] << "  ftB[0]=" << filetoBuffer[0];
+                  printf("  sS[0]=%X  ot[0]=%.3f", sourceStatus[0], offset[0]);
+	              cout << " fB[1]=" << fileBuffered[1] << "  ftB[1]=" << filetoBuffer[1];
+	              printf("  sS[1]=%X  ot[1]=%.3f\r", sourceStatus[1], offset[1]);
 */
 	//Пока идет запуск - высчитываем точку остановки
 	if (soundOn)
@@ -2830,9 +2836,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		{
 			offset[!id] = lengthOn * (1 - (offset[id] / lengthOff));
 		}
-	}
+	}                                                                                         // точка 4:
 /*
-	printf("4:  offsetOn=%.3f   offsetOff=%.3f   offset[%i]=%.3f   offset[%i}=%.3f\n\n", offsetOn, offsetOff, id, offset[id], !id, offset[!id]);
+	printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\toffsetOn=%.3f   offsetOff=%.3f   offset[%i]=%.3f   offset[%i}=%.3f\r", offsetOn, offsetOff, id, offset[id], !id, offset[!id]);
 */
 	return 1;
 }
