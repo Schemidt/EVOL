@@ -946,7 +946,7 @@ int main(int argc, char* argv[])
 					}	
 				}
 				//    выпуск/уборка шасси
-				if (gearOn) {
+				if (gearOn) {                                                              // выпуск
 					if (soundFFT.vyp_l < 1) {
 						if (!p_gear_l) {
 							soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 0;
@@ -966,7 +966,7 @@ int main(int argc, char* argv[])
 					}
 					gearHist = 1;
 				}
-				else if (gearOff) {
+				else if (gearOff) {                                                      // уборка
 					if (soundFFT.vyp_l > 0) {
 						if (!p_gear_l) {
 							soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 1;

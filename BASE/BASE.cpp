@@ -591,6 +591,7 @@ int main()
 	Gear *gear_r = nullptr;
 	Gear *gear_n = nullptr;
 */	
+	bool p_flaps = 0;                                                                                // признак изменения угла закрылков
 	bool p_gearOff = 0;                                                                              // признак уборки шасси для запуска функции play
 	bool p_gearOn = 0;                                                                               // признак выпуска шасси -----------------   	
 /*	int gearSwitch = 0;
@@ -2230,7 +2231,7 @@ int main()
 				}
 				avrg = avrg / helicopter.flapsHist.size();
 */
-				bool p_flaps = (localdata.flaps != helicopter.flapsHist[0]) ? 1 : 0;
+				p_flaps = (localdata.flaps != helicopter.flapsHist[0]) ? 1 : 0;
 			
 				if (p_flaps)//Условие создания объекта
 					if (!flaps)//Если объект не создан 
@@ -2251,7 +2252,7 @@ int main()
 			if (helicopter.gearFactor)
 			{				
 				helicopter.vypHist_l.erase(helicopter.vypHist_l.begin());                               //  стирание первого элемента в массиве vypHist_l  
-				helicopter.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива  текущего значения vyp_l
+				helicopter.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива vypHist текущего значения vyp_l
 				
 				if (helicopter.vypHist_l[0] == 1 && localdata.vyp_l < 1) {
 					p_gearOff = 1;
@@ -2611,11 +2612,11 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		lengthOff = getLengthWAV(pathOff);
 
 	alGetSourcei(source[id], AL_SOURCE_STATE, &sourceStatus[id]);//Обновляем статус источника                       точка 1:
-
+/*
 	                      if (offset[id] > ot)   ot = offset[id];
 
 	     printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tid=%i  sS[%i]=%X  ot[%i]=%.3f  ot_max=%.3f  leOn=%.3f\r", id, id, sourceStatus[id], id, offset[id], ot, lengthOn);
-
+*/
 	//условие запуска когда все звуки присутствуют
 	if (pathOn != "NULL" & pathW != "NULL" & pathOff != "NULL")
 	{
