@@ -957,7 +957,7 @@ int main(int argc, char* argv[])
 						gearOn = !gearOn;
 					}
 					if (p_gear_l) {
-						soundFFT.vyp_l += deltaTime / 9.2;                             // время выпуска шасси около 10 с (9.2 с)
+						soundFFT.vyp_l += static_cast<float>(deltaTime) / 9.2;                             // время выпуска шасси около 10 с (9.2 с)
 						if (soundFFT.vyp_l > 1) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 1;
 							gearOn = !gearOn;
@@ -977,7 +977,7 @@ int main(int argc, char* argv[])
 						gearOff = !gearOff;
 					}
 					if (p_gear_l) {
-		                soundFFT.vyp_l -= deltaTime / 8.7;                             // время уборки шасси ок. 9 с (8.7 с)
+		                soundFFT.vyp_l -= static_cast<float>(deltaTime) / 8.7;                             // время уборки шасси ок. 9 с (8.7 с)
 						if (soundFFT.vyp_l < 0) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 0;
 							gearOff = !gearOff;

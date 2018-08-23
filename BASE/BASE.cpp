@@ -454,6 +454,7 @@ vector<double> Sound::vectorAvrAtk;         // ----------
 double Sound::globalWindow = 50;
 
 float ot = 0;                                                               //         проверочная переменная для Sound::play
+int counter = 0;
 
 /*!\brief Основная функция программы*/
 int main()
@@ -2254,15 +2255,16 @@ int main()
 				helicopter.vypHist_l.erase(helicopter.vypHist_l.begin());                               //  стирание первого элемента в массиве vypHist_l  
 				helicopter.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива vypHist текущего значения vyp_l
 				
-				if (helicopter.vypHist_l[0] == 1 && localdata.vyp_l < 1) {
+
+			    if (helicopter.vypHist_l[0] == 0 && localdata.vyp_l > 0) {                               // выпуск
+				    p_gearOn = 1;
+			    }
+				else if (helicopter.vypHist_l[0] == 1 && localdata.vyp_l < 1) {                          // уборка
 					p_gearOff = 1;
-				}
-				else if (helicopter.vypHist_l[0] == 0 && localdata.vyp_l > 0) {
-					p_gearOn = 1;
 				}				
 				else if (localdata.vyp_l == helicopter.vypHist_l[0]) {
 					p_gearOff = 0;                                                           // признак уборки шасси для запуска функции play
-					p_gearOn = 0;
+					p_gearOn = 0;                                                            // признак выпуска шасси ----------------------
 				}
 
 				if (p_gearOff) //Условие создания объекта                                уборка шасси: временно используем только левую стойку
@@ -2613,7 +2615,10 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 
 	alGetSourcei(source[id], AL_SOURCE_STATE, &sourceStatus[id]);//Обновляем статус источника                       точка 1:
 /*
-	                      if (offset[id] > ot)   ot = offset[id];
+	                      if (offset[id] > ot)   {
+							  ot = offset[id];  counter++;
+						  }
+						  printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tofsid[%i]=%.3f  ot_max=%.3f  leOn=%.3f  leOff=%.3f  cnt=%i\r", id, offset[id], ot, lengthOn, lengthOff, counter);
 
 	     printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tid=%i  sS[%i]=%X  ot[%i]=%.3f  ot_max=%.3f  leOn=%.3f\r", id, id, sourceStatus[id], id, offset[id], ot, lengthOn);
 */
@@ -2721,6 +2726,8 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	if (modeSequence.back() != mode)//Если произошла смена режима
 	{
 		switcher = 0;//Обнуляем таймер кроссфейда
+/*		ot = 0;
+/*		counter = 0;   */
 		id = !id;//Меняем номер активного источника
 		if (mode == "on" || mode == "off")//Если текущий режим запуск или выключение - перезапускаем с нужного времени
 		{
@@ -2769,12 +2776,14 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		fade = 0;
 	}
 /*
+	printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   fade=%.3f     rise=%.3f\r", fade, rise);
+/*
 	                     cout << "fB[" << !id << "]=" << fileBuffered[!id] << "  ftB[" << !id << "]=" << filetoBuffer[!id] << "\r";
 */
-	//Применяем результирующую громкость
+/*	//Применяем результирующую громкость
 	alSourcef(source[!id], AL_GAIN, fade * finalGain);
 	alSourcef(source[id], AL_GAIN, rise * finalGain);
-
+*/
 	//float a;
 	//float b;
 	//alGetSourcef(source[0], AL_GAIN, &a);
@@ -2805,6 +2814,8 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		{
 			sourceStatus[i] = setAndDeploySound(&buffer[i], &source[i], offset[i], filetoBuffer[i]);
 			fileBuffered[i] = filetoBuffer[i];
+
+			printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   %i  %X  %.3f  %i\r", ++counter, sourceStatus[i], offset[i], i);
 		}
 
 		alGetSourcei(source[i], AL_SOURCE_STATE, &sourceStatus[i]);
@@ -2812,6 +2823,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		//Обновляем высоту тона
 		alSourcef(source[i], AL_PITCH, pitch[i]);
 	}
+
+	alSourcef(source[!id], AL_GAIN, fade * finalGain);                                              //  перемещены со строк 2781..
+	alSourcef(source[id], AL_GAIN, rise * finalGain);
 /*                                                                                                                          //   точка 3:
 	              cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfB[0]=" << fileBuffered[0] << "  ftB[0]=" << filetoBuffer[0];
                   printf("  sS[0]=%X  ot[0]=%.3f", sourceStatus[0], offset[0]);
@@ -2829,6 +2843,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		}
 	}
 	//Пока идет остановка - высчитываем точку запуска
+	if (soundWork) {
+		offset[id] = offset[!id] = 0;
+	}
 	if (soundOff)
 	{
 		alGetSourcef(source[id], AL_SEC_OFFSET, &offset[id]);
@@ -2837,9 +2854,9 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		{
 			offset[!id] = lengthOn * (1 - (offset[id] / lengthOff));
 		}
-	}                                                                                         // точка 4:
+	}                                                                                          // точка 4:
 /*
-	printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\toffsetOn=%.3f   offsetOff=%.3f   offset[%i]=%.3f   offset[%i}=%.3f\r", offsetOn, offsetOff, id, offset[id], !id, offset[!id]);
+	printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\toffsetOn=%.3f   offsetOff=%.3f   offset[%i]=%.3f   offset[%i]=%.3f\r", offsetOn, offsetOff, id, offset[id], !id, offset[!id]);
 */
 	return 1;
 }
@@ -2892,7 +2909,7 @@ int Sound::setAndDeploySound(ALuint *Buffer, ALuint *Source, double offset, stri
 	alSourcei(*Source, AL_BUFFER, *Buffer);//подключаем буфер к источнику
 	alSourcef(*Source, AL_SEC_OFFSET, offset);//Устанавливаем отступ в сек
 	alSourcef(*Source, AL_GAIN, 0);//Устанавливаем громкость в 0
-	alSourcePlay(*Source);//Запускаем вспроизведение
+	alSourcePlay(*Source);//Запускаем воспроизведение
 	alGetSourcei(*Source, AL_SOURCE_STATE, &play);//Получаем статус воспроизведения
 	return play;//Возвращаем статус воспроизведения
 }
@@ -3170,7 +3187,7 @@ int Reductor::play(Helicopter &h, SOUNDREAD &sr)
 			{
 				alSourcei(source[i], AL_LOOPING, AL_FALSE);
 				offset[i] = getParameterFromVector(h.redFunctionOnSwap, sr.reduktor_gl_obor);
-				crossFadeDuration = 2;
+				crossFadeDuration = 2;                                                                           //  !!!!!!!!!!!!!!!!!!
 			}
 			else if (filetoBuffer[i] == h.fullName["red_w_w"])
 			{
