@@ -2814,8 +2814,6 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 		{
 			sourceStatus[i] = setAndDeploySound(&buffer[i], &source[i], offset[i], filetoBuffer[i]);
 			fileBuffered[i] = filetoBuffer[i];
-
-			printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   %i  %X  %.3f  %i\r", ++counter, sourceStatus[i], offset[i], i);
 		}
 
 		alGetSourcei(source[i], AL_SOURCE_STATE, &sourceStatus[i]);
@@ -2844,7 +2842,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	}
 	//Пока идет остановка - высчитываем точку запуска
 	if (soundWork) {
-		offset[id] = offset[!id] = 0;
+		offset[id] = offset[!id] = 0;                                                                       // исправление
 	}
 	if (soundOff)
 	{

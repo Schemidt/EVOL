@@ -418,12 +418,12 @@ public:
 	int play(char status, string path_on, string path_w, string path_off, double gain_mult);
 
 };
-
+/*
 class Gear : public Sound                                                                              // класс шасси (выпуск/уборка)
 {
 public:
 
-};
+};*/
 #endif
 
 /*!\brief Очищает объекты OpenAL*/
