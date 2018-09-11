@@ -2626,7 +2626,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	if (pathOn != "NULL" & pathW != "NULL" & pathOff != "NULL")
 	{
 		start = status & !soundOn & !soundWork;                                                   // soundOn = soundOff = soundWork = 0 изначально
-		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= crossFadeDuration);    // crossFadeDuration = 1 сек (?) / unique_ptr<float[]> offset;
+		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= cFD);    // crossFadeDuration заменен на cFD
 		end = !status & !soundOff;
 		free = !status & soundOff & sourceStatus[id] != AL_PLAYING;
 	}
@@ -2634,7 +2634,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	if (pathOn != "NULL" & pathW != "NULL" & pathOff == "NULL")
 	{
 		start = status & !soundOn & !soundWork;
-		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= crossFadeDuration);
+		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= cFD);
 		end = 0;
 		free = !status;
 	}
@@ -2760,7 +2760,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	double rise = 0;
 	double fade = 0;
 	switcher += deltaTime;
-	timeCrossfade(fade, rise, crossFadeDuration, switcher);                           //  точка 2:
+	timeCrossfade(fade, rise, cFD, switcher);                           //  точка 2: замена на cFD
 /*
 	    printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tid=%i  g[%i]=%.3f  sw=%.3f   fd=%.3f   rs=%.3f", id, id, gain[id], switcher, fade, rise);
 		cout << "   md=" << mode << "   fB[id]=" << fileBuffered[id] << "\r";
@@ -2842,7 +2842,7 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	}
 	//Пока идет остановка - высчитываем точку запуска
 	if (soundWork) {
-		offset[id] = offset[!id] = 0;                                                                       // исправление
+		offset[id] = offset[!id] = 0;                                                                       // исправление !!!!!!!!!!!
 	}
 	if (soundOff)
 	{
