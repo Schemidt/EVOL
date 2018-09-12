@@ -2743,12 +2743,12 @@ int Sound::play(bool status, string pathOn, string pathW, string pathOff, double
 	if (mode == "w")
 	{
 		filetoBuffer[id] = pathW;
-		alSourcef(source[id], AL_LOOPING, AL_TRUE);                                 // режим "w" может быть LOOPING
+		alSourcef(source[id], AL_LOOPING, AL_TRUE);                                 // режим "w" источник каждый раз снова переводится в режим AL_PLAYING
 	}
 	else if (mode == "on")
 	{
 		filetoBuffer[id] = pathOn;
-		alSourcef(source[id], AL_LOOPING, AL_FALSE);                                // режим "on" не может быть LOOPING
+		alSourcef(source[id], AL_LOOPING, AL_FALSE);                                // режим "on" источник после отыграния переводится в режим AL_STOPPED
 	}
 	else if (mode == "off")
 	{
