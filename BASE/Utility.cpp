@@ -171,7 +171,7 @@ double getValue(point p1, point p2, double x)
 double getParameterFromVector(vector<point> &value, double offset)
 {
 	point p1, p2, p3;
-	double x, a0, a1, a2;
+	
 	int n = value.size();
 	//если вектор из 1ой точки - возвращаем "y" этой точки
 	if (n == 1)

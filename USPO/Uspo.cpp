@@ -306,7 +306,7 @@ int main(int argc, char* argv[])
 				{
 					if (helicopter.modelName == "ansat")
 					{
-						bool case1 = soundFFT.eng1_obor >= ANSAT_ENG_REV_TURN & soundFFT.eng2_obor >= ANSAT_ENG_REV_TURN;//Подъем или спуск
+						bool case1 = (soundFFT.eng1_obor >= ANSAT_ENG_REV_TURN) & (soundFFT.eng2_obor >= ANSAT_ENG_REV_TURN);//Подъем или спуск
 																														 //bool case2 = soundFFT.eng1_obor < ANSAT_ENG_REV_TURN & soundFFT.eng2_obor < ANSAT_ENG_REV_TURN;//Нормальный подъем
 																														 //bool case3 = (soundFFT.eng1_obor < ANSAT_ENG_REV_TURN & soundFFT.eng2_obor >= ANSAT_ENG_REV_TURN) | (soundFFT.eng1_obor >= ANSAT_ENG_REV_TURN & soundFFT.eng2_obor < ANSAT_ENG_REV_TURN);//Нормальный подъем
 
@@ -389,7 +389,7 @@ int main(int argc, char* argv[])
 								offsetAvtEng1 += deltaTime;
 							}
 						}
-						else if (Eng1Off & soundFFT.eng1_obor > 0)
+						else if (Eng1Off && (soundFFT.eng1_obor > 0))
 						{
 							if (statusEng1 != "eng_off")
 							{
@@ -481,7 +481,7 @@ int main(int argc, char* argv[])
 								offsetAvtEng2 += deltaTime;
 							}
 						}
-						else if (Eng2Off & soundFFT.eng2_obor > 0)
+						else if (Eng2Off && (soundFFT.eng2_obor > 0))
 						{
 							if (statusEng2 != "eng_off")
 							{
@@ -2255,7 +2255,7 @@ double getOffset(string filename, double parameter)
 	}
 
 	point p1, p2, p3;
-	double x, a0, a1, a2;
+	
 	int n = value.size();
 	//если вектор из 1ой точки - возвращаем "y" этой точки
 	if (n == 1)
@@ -2386,7 +2386,7 @@ double getOffset(string filename, double parameter)
 double getParameterFromVector(vector<point> &value, double offset)
 {
 	point p1, p2, p3;
-	double x, a0, a1, a2;
+	
 	int n = value.size();
 	//если вектор из 1ой точки - возвращаем "y" этой точки
 	if (n == 1)
