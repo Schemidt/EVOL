@@ -9,6 +9,8 @@ using namespace std;
 
 #pragma once
 
+#define MODEL_PATH "il_112"
+
 #ifndef __SERVER_H__
 #define __SERVER_H__
 

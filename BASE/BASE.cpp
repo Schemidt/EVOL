@@ -4085,11 +4085,11 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 	//мг <-> авт
 	else if (mode == "avt")
 	{
-		if (h.modelName == "ansat")
-		{
-			filetoBuffer[id] = h.fullName["eng_w_w"];
-		}
-		else
+//		if (h.modelName == "ansat")
+//		{
+//			filetoBuffer[id] = h.fullName["eng_w_w"];
+//		}
+//		else
 		{
 			filetoBuffer[id] = h.fullName["eng_w_avt_w"];
 			filetoBuffer[!id] = h.fullName["eng_w_w"];
@@ -4282,12 +4282,12 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 		}
 		else if (fileBuffered[i] == h.fullName["eng_w_w"])
 		{
-			if (h.modelName == "ansat")
-			{
-				pitch[i] = roundFloat((parameter / h.engTurnoverAvt), 0.001);
-				gain[i] = 1;
-			}
-			else
+//			if (h.modelName == "ansat")
+//			{
+//				pitch[i] = roundFloat((parameter / h.engTurnoverAvt), 0.001);
+//				gain[i] = 1;
+//			}
+//			else
 			{
 				pitch[i] = roundFloat((parameter / h.engTurnoverMg), 0.001);
 				gain[i] = getParameterFromVector(vector<point>{ {h.engTurnoverMg, 1}, { h.engTurnoverAvt, 0 } }, parameter);
@@ -4341,7 +4341,7 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 	double avrTurnRestrict = getParameterFromVector(vector<point>{ { 0, 1 }, { 0.625, 0 }}, groundTouch);
 
 	//Полеты 8 мтв5, 8 амтш, ка 27м, ка 29
-	if (h.modelName == "mi_8_amtsh" || h.modelName == "mi_8_mtv5" || h.modelName == "mi_28" || h.modelName == "mi_26" || h.modelName == "ka_27" || h.modelName == "ka_29")
+//	if (h.modelName == "mi_8_amtsh" || h.modelName == "mi_8_mtv5" || h.modelName == "mi_28" || h.modelName == "mi_26" || h.modelName == "ka_27" || h.modelName == "ka_29")
 	{
 		double averageTurn;
 		if (engNum == 1)
@@ -4361,17 +4361,16 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 		mid2FreqGain = turnGain;
 		highFreqGain = turnGain;
 	}
-	else if (h.modelName == "ansat")
-	{
-		//Громкость двигателей в зависимости от оборотов
-		double turnsGainControl = toCoef(getParameterFromVector(vector<point>{ { 60, -6 }, { 80, -4 }, { 100, 0 }}, parameter)
-		);
+//	else if (h.modelName == "ansat")
+//	{
+//		//Громкость двигателей в зависимости от оборотов
+//		double turnsGainControl = toCoef(getParameterFromVector(vector<point>{ { 60, -6 }, { 80, -4 }, { 100, 0 }}, parameter));
 
-		lowFreqGain = turnsGainControl;
-		mid1FreqGain = turnsGainControl;
-		mid2FreqGain = turnsGainControl;
-		highFreqGain = turnsGainControl;
-	}
+//		lowFreqGain = turnsGainControl;
+//		mid1FreqGain = turnsGainControl;
+//		mid2FreqGain = turnsGainControl;
+//		highFreqGain = turnsGainControl;
+//	}
 
 	for (size_t i = 0; i < 2; i++)
 	{
@@ -4427,7 +4426,7 @@ int Vsu::play(SOUNDREAD &sr, Helicopter &h)
 	}
 
 	double vsuGainDown = 1;
-	//Для 27 29 и 8
+/*	//Для 27 29 и 8
 	if (h.modelName == "ka_27" || h.modelName == "ka_29" || h.modelName == "mi_8_mtv5" || h.modelName == "mi_8_amtsh")
 	{
 		//Подсадка ВСУ при запущенном двигателе, но до запуска редуктора
@@ -4453,7 +4452,7 @@ int Vsu::play(SOUNDREAD &sr, Helicopter &h)
 			}
 		}
 	}
-
+*/
 	if (sr.p_vsu_hp && mode != "w_hp")
 	{
 		if (h.vsuLengthHpOn - offsetOn <= crossFadeDuration)
@@ -5920,7 +5919,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 			fileBuffered[i] = filetoBuffer[i];
 		}
 	}
-
+/*
 	if (h.modelName == "mi_8_amtsh" || h.modelName == "mi_8_mtv5")
 	{
 		filetoBuffer[1] = h.fullName["runway"];
@@ -5949,7 +5948,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 
 		gain[1] = interpolation({ 0, 0 }, { 8.3, 1 }, abs(sr.v_surf_x)) // driving
 			* 0.25
-			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);/*Уменьшаем движение по полосе*/
+			* getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);//Уменьшаем движение по полосе
 
 		gain[0] = interpolation({ 2.77, 0 }, { 8.3, 1 }, abs(sr.v_surf_x)) // landing
 			* 0.854
@@ -5992,7 +5991,7 @@ int Runway::play(Helicopter &h, SOUNDREAD &sr)
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		gain[1] = toCoef(drivingGain) * getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
 	}
-	else
+	else*/
 	{
 		filetoBuffer[1] = h.fullName["runway"];
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);

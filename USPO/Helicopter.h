@@ -1,6 +1,8 @@
 #include "string.h"
 #include "map"
+
 using namespace std;
+
 #pragma once
 
 //—труктура дл€ добавлени€ новых вертолетов

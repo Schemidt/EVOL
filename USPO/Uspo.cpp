@@ -95,32 +95,32 @@ int main(int argc, char* argv[])
 
 	bool standAlone = 0;//По умолчанию - ждем данных от модели
 
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };                    //  
-/*	string model;    */                                                                                                                    //  ----------
-	for (size_t i = 1; i < argc; i++)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
-	{
-		for (size_t j = 0; j < helicoptersNames.size(); j++)
-		{
-			if (regex_match(argv[i], regex("^(" + helicoptersNames[j] + ")")))
-			{
-/*				model = argv[i];
-				helicopter.setParam(model);   */
-			}
-		}
-/*		if (argv[i] == (string)"standalone")
-		{
-			standAlone = 1;  
-		}   */
-	}  
+//	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };                      
+	string model = MODEL_PATH;
+//	for (size_t i = 1; i < argc; i++)// если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
+//	{
+//		for (size_t j = 0; j < helicoptersNames.size(); j++)
+//		{
+//			if (regex_match(argv[i], regex("^(" + helicoptersNames[j] + ")")))
+//			{
+//				model = argv[i];                                                         //
+//				helicopter.setParam(model);                                              //
+//			}
+//		}
+//		if (argv[i] == (string)"standalone")
+//		{
+//			standAlone = 1;  
+//		}   
+//	}  
 	if (argc > 1 && argv[1] == (string)"standalone") {
 		standAlone = 1;
 	}
-/*	helicopter.setParam("ka_29");   */                                                //  по-умолчанию устанавливается в т.ч. helicopter.modelName
-	helicopter.setParam("il_112");
+//	helicopter.setParam("ka_29");                                                   //  по-умолчанию устанавливается в т.ч. helicopter.modelName
+	helicopter.setParam();
 
 	system("cls");
-	cout << " Using " << helicopter.modelName << endl;
-	helicopter.setPath(helicopter.modelName + "/");
+	cout << " Using  IL-112" << endl;
+	helicopter.setPath(model + "/");
 	
 	if (!standAlone)
 	{
@@ -304,7 +304,7 @@ int main(int argc, char* argv[])
 				}
 				else
 				{
-					if (helicopter.modelName == "ansat")
+/*					if (helicopter.modelName == "ansat")
 					{
 						bool case1 = (soundFFT.eng1_obor >= ANSAT_ENG_REV_TURN) & (soundFFT.eng2_obor >= ANSAT_ENG_REV_TURN);//Подъем или спуск
 																														 //bool case2 = soundFFT.eng1_obor < ANSAT_ENG_REV_TURN & soundFFT.eng2_obor < ANSAT_ENG_REV_TURN;//Нормальный подъем
@@ -583,7 +583,7 @@ int main(int argc, char* argv[])
 						soundFFT.eng1_obor = (soundFFT.eng1_obor < 0) ? 0 : soundFFT.eng1_obor;
 						soundFFT.eng2_obor = (soundFFT.eng2_obor < 0) ? 0 : soundFFT.eng2_obor;
 					}
-					else
+					else*/
 					{
 						bool oneEng = (((Eng1On & (!Eng2On | Eng2Off))
 							^ (Eng2On & (!Eng1On | Eng1Off)))
@@ -957,7 +957,7 @@ int main(int argc, char* argv[])
 						gearOn = !gearOn;
 					}
 					if (p_gear_l) {
-						soundFFT.vyp_l += static_cast<float>(deltaTime) / 9.2;                             // время выпуска шасси около 10 с (9.2 с)
+						soundFFT.vyp_l += static_cast<float>(deltaTime) / 9.2;        // время выпуска шасси около 10 с (9.2 с)
 						if (soundFFT.vyp_l > 1) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 1;
 							gearOn = !gearOn;
@@ -977,7 +977,7 @@ int main(int argc, char* argv[])
 						gearOff = !gearOff;
 					}
 					if (p_gear_l) {
-		                soundFFT.vyp_l -= static_cast<float>(deltaTime) / 8.7;                             // время уборки шасси ок. 9 с (8.7 с)
+		                soundFFT.vyp_l -= static_cast<float>(deltaTime) / 8.7;         // время уборки шасси ок. 9 с (8.7 с)
 						if (soundFFT.vyp_l < 0) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 0;
 							gearOff = !gearOff;
@@ -987,7 +987,7 @@ int main(int argc, char* argv[])
 					gearHist = 0;
 				}
 				else {
-/*					soundFFT.vyp_l = (gearHist) ? 1 : 0;  */
+//					soundFFT.vyp_l = (gearHist) ? 1 : 0;  
 					p_gear_l = 0;
 				}
 				//Краны пожар
@@ -1188,7 +1188,7 @@ int main(int argc, char* argv[])
 						skv = 1;
 						break;
 					}
-
+/*
 					if (helicopter.modelName == "mi_8_mtv5")
 					{
 						if (hovering)
@@ -1467,7 +1467,7 @@ int main(int argc, char* argv[])
 							};
 						}
 					}
-
+*/
 					soundFFT.p_model_stop = 1;
 					system("cls");
 
@@ -1518,15 +1518,15 @@ int main(int argc, char* argv[])
 						string filename;
 						if (hovering)
 						{
-							filename = "test/" + helicopter.modelName + "/Hovering/test.txt";
+							filename = "test/" + model + "/Hovering/test.txt";
 						}
 						else if (skv)
 						{
-							filename = "test/" + helicopter.modelName + "/Skv/test.txt";
+							filename = "test/" + model + "/Skv/test.txt";
 						}
 						else
 						{
-							filename = "test/" + helicopter.modelName + "/Standart/test.txt";
+							filename = "test/" + model + "/Standart/test.txt";
 						}
 
 						ifstream base(filename);
@@ -2052,7 +2052,7 @@ void kbHit()
 			statusRed = "NULL";
 			break;
 		case '<'://режим мг - редуктора на 1 дв (shift + ,)
-			soundFFT.reduktor_gl_obor = helicopter.redTurnoverMg1;
+//			soundFFT.reduktor_gl_obor = helicopter.redTurnoverMg1;
 			soundFFT.eng1_obor = helicopter.engTurnoverMg;
 			soundFFT.eng2_obor = 0;
 			soundFFT.p_eng1_zap = 0;
@@ -2076,7 +2076,7 @@ void kbHit()
 			statusRed = "NULL";
 			break;
 		case '>'://режим мг - редуктора на 2 дв(shift + .)
-			soundFFT.reduktor_gl_obor = helicopter.redTurnoverMg2;
+//			soundFFT.reduktor_gl_obor = helicopter.redTurnoverMg2;
 			soundFFT.eng1_obor = helicopter.engTurnoverMg;
 			soundFFT.eng2_obor = helicopter.engTurnoverMg;
 			soundFFT.p_eng1_zap = 0;
@@ -2100,7 +2100,7 @@ void kbHit()
 			statusRed = "NULL";
 			break;
 		case '?'://режим автомат - редуктора на 2 дв(shift + /)
-			soundFFT.reduktor_gl_obor = helicopter.redTurnoverAvt;
+//			soundFFT.reduktor_gl_obor = helicopter.redTurnoverAvt;
 			soundFFT.eng1_obor = helicopter.engTurnoverAvt;
 			soundFFT.eng2_obor = helicopter.engTurnoverAvt;
 			soundFFT.p_eng1_zap = 0;
@@ -2275,7 +2275,7 @@ double getOffset(string filename, double parameter)
 		p3 = value[2];
 	}
 	//если вектор состоит из малого числа значений - перебираем их
-	else /*if (n < 8)*/
+	else //if (n < 8)
 	{
 		if (value[0].x <= value[n - 1].x)
 		{
@@ -2406,7 +2406,7 @@ double getParameterFromVector(vector<point> &value, double offset)
 		p3 = value[2];
 	}
 	//если вектор состоит из малого числа значений - перебираем их
-	else /*if (n < 8)*/
+	else //if (n < 8)
 	{
 		if (value[0].x <= value[n - 1].x)
 		{
