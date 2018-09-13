@@ -415,10 +415,10 @@ using namespace std;
 
 #define FLAPS_MAX_ANG 40.0
 
-SOUNDREAD soundread;/*!< Переменная класса soundread для хранения управляющих признаков */
+SOUNDREAD soundread;//!< Переменная класса soundread для хранения управляющих признаков 
 
-int Sound::maxSlots;/*!< Переменная инициализирующаяся максимальным числом источников ,которые могут проигрываться одновременно*/
-int Sound::maxSources;/*!< Переменная инициализирующаяся максимальным числом источников ,которые могут проигрываться одновременно*/
+int Sound::maxSlots;//!< Переменная инициализирующаяся максимальным числом источников ,которые могут проигрываться одновременно
+int Sound::maxSources;//!< Переменная инициализирующаяся максимальным числом источников ,которые могут проигрываться одновременно
 double Sound::masterGain = 1;//!< общая громкость звука
 int Sound::sourcesInUse = 0;
 int Sound::effectSlotsInUse = 0;
@@ -453,8 +453,8 @@ vector<double> Sound::vectorAvrStep;         // -----------
 vector<double> Sound::vectorAvrAtk;         // ----------
 double Sound::globalWindow = 50;
 
-float ot = 0;                                      //         проверочная переменная для Sound::play
-int counter = 0;
+//float ot = 0;                                      //         проверочная переменная для Sound::play
+//int counter = 0;
 
 //!\brief Основная функция программы
 int main()
@@ -479,10 +479,10 @@ int main()
 
 	//Получаем указатели на функции EFX
 	setEFXPointers();
-	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };  //Возможные комманды  -  удалить
+//	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };  //Возможные комманды  -  удалить
 //	string model = "ka_29";                                                                                                //по умолчанию  -  удалить
 
-	string model = "il_112";                                                                              //  добавлено для умолчания
+//  string model = "il_112";	                                                                   //  добавлено для умолчания
 	
 	Helicopter helicopter;//Переменная класса Helicopter для хранения параметров выбранного вертолета
 //	if (argc > 1)      // если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
@@ -509,7 +509,7 @@ int main()
 		cout << alcGetString(device, alcGetError(device)) << endl;
 		return AL_FALSE;
 	}
-	context = alcCreateContext(device, 0);//Инициализируем контекст (т.е. окружение - кабина вертолета)
+	context = alcCreateContext(device, 0);//Инициализируем контекст (т.е. окружение - кабина самолета)
 	if (context == 0)
 	{
 		cout << alcGetString(device, alcGetError(device)) << endl;
@@ -530,9 +530,9 @@ int main()
 	}
 	InitRealTime(1);//инициируется "реальное" время с задержкой в 1мс (чтение распределенной памяти раз в 0.001 с)
 
-	helicopter.setParam(model);//Инициализируем параметры вертолета
+	helicopter.setParam();//Инициализируем параметры вертолета
 	system("cls");
-	cout << " Using " << helicopter.modelName << endl;
+	cout << " Using IL-112" << endl;
 
 	//Указатели на объекты определяющие параметры выводимого звука
 	Vsu *vsu = nullptr;
@@ -819,28 +819,7 @@ int main()
 			//Аккумулятор
 			if (helicopter.accumFactor)
 			{
-				if (helicopter.modelName != "ansat")//226
-				{
-					if (localdata.accumulator)//Условие создания объекта
-					{
-						if (!accum)//Если объект не создан 
-						{
-							accum = new Sound;//Создаем объект
-						}
-					}
-					if (accum)//Если объект создан - используем его
-					{
-						if (accum->play(localdata.accumulator, "NULL", helicopter.fullName["accum"], "NULL", helicopter.accumFactor))
-						{
-
-						}
-						else
-						{
-							Free(accum);//Удаляем объект
-						}
-					}
-				}
-				if (helicopter.modelName == "ka_226" || helicopter.modelName == "ansat")//226
+/*				if (helicopter.modelName == "ka_226" || helicopter.modelName == "ansat")//226
 				{
 					if (localdata.accumulator)//Условие создания объекта
 					{
@@ -858,6 +837,27 @@ int main()
 						else
 						{
 							Free(accumTr);//Удаляем объект
+						}
+					}
+				}*/
+//			    else (helicopter.modelName != "ansat")//226
+				{
+					if (localdata.accumulator)//Условие создания объекта
+					{
+						if (!accum)//Если объект не создан 
+						{
+							accum = new Sound;//Создаем объект
+						}
+					}
+					if (accum)//Если объект создан - используем его
+					{
+						if (accum->play(localdata.accumulator, "NULL", helicopter.fullName["accum"], "NULL", helicopter.accumFactor))
+						{
+
+						}
+						else
+						{
+							Free(accum);//Удаляем объект
 						}
 					}
 				}
@@ -990,7 +990,7 @@ int main()
 					{
 						double p1 = 1, p2 = 1;
 						//Если включено ВУ, то высота тона повышается на 1.5%
-						if (helicopter.modelName == "mi_26")
+/*						if (helicopter.modelName == "mi_26")
 						{
 							if (localdata.p_vu1)
 							{
@@ -1000,9 +1000,9 @@ int main()
 							{
 								p1 = 1;
 							}
-						}
+						}*/
 						//Прокрутка и запуск ВСУ просаживают НИП по тону
-						if (localdata.p_vsu_hp || localdata.p_vsu_zap)
+/*						if (localdata.p_vsu_hp || localdata.p_vsu_zap)
 						{
 
 							nip->offset[0] += Sound::deltaTime;
@@ -1017,13 +1017,13 @@ int main()
 							//Сразу провал
 							p2 = interpolation({ 0, 1 }, { 1.5, 0.946 }, { 2, 0.977 }, nip->offset[0]);
 
-						}
+						}*/
 						//Прокрутка и запуск ВСУ просаживают НИП по тону
-						if (!localdata.p_vsu_hp && !localdata.p_vsu_zap)
-						{
-							nip->offset[0] = 0;
-							p2 = 1;
-						}
+//						if (!localdata.p_vsu_hp && !localdata.p_vsu_zap)
+//						{
+//							nip->offset[0] = 0;
+//							p2 = 1;
+//						}
 
 						for (size_t i = 0; i < 2; i++)
 						{
@@ -1095,7 +1095,7 @@ int main()
 				{
 					podk1->channel[0] = 1;//L
 					podk1->channel[1] = 0;
-					if ("ka_226" == helicopter.modelName)
+/*					if ("ka_226" == helicopter.modelName)
 					{
 						for (size_t i = 0; i < 2; i++)
 						{
@@ -1121,8 +1121,8 @@ int main()
 						{
 							Free(podk1);//Удаляем объект
 						}
-					}
-					else
+					}*/
+//					else
 					{
 						if (podk1->play(localdata.p_nasos_podk_1, helicopter.fullName["podk_l_on"], helicopter.fullName["podk_l_w"], "NULL", helicopter.pumpLeftFactor))
 						{
@@ -1148,7 +1148,7 @@ int main()
 				{
 					podk2->channel[0] = 0;//R
 					podk2->channel[1] = 1;
-					if ("ka_226" == helicopter.modelName)
+/*					if ("ka_226" == helicopter.modelName)
 					{
 						for (size_t i = 0; i < 2; i++)
 						{
@@ -1174,8 +1174,8 @@ int main()
 						{
 							Free(podk2);//Удаляем объект
 						}
-					}
-					else
+					}*/
+//					else
 					{
 						if (podk2->play(localdata.p_nasos_podk_2, helicopter.fullName["podk_l_on"], helicopter.fullName["podk_l_w"], "NULL", helicopter.pumpRightFactor))
 						{
@@ -1449,7 +1449,7 @@ int main()
 						brake = new Sound;//Создаем объект
 				if (brake)//Если объект создан - используем его
 				{
-					if (helicopter.modelName == "ka_27" | helicopter.modelName == "ka_29")
+/*					if (helicopter.modelName == "ka_27" || helicopter.modelName == "ka_29")
 					{
 						if (brake->play(localdata.p_tormoz_press || localdata.frict, "NULL", helicopter.fullName["brake"], "NULL", helicopter.chassisBrakePumpFactor))
 						{
@@ -1461,8 +1461,8 @@ int main()
 							Free(brake);//Удаляем объект
 						}
 
-					}
-					else
+					}*/
+//					else
 					{
 						if (brake->play(localdata.p_tormoz_press, helicopter.fullName["brake"], "NULL", helicopter.fullName["poff"], helicopter.chassisBrakePumpFactor))
 						{
@@ -1592,7 +1592,7 @@ int main()
 				}
 			}
 			//Если НАР8 имеется на борту
-			if (helicopter.rocketNar8Factor)
+/*			if (helicopter.rocketNar8Factor)
 			{
 				timerNar8 -= Sound::deltaTime;
 				if (timerNar8 <= 0)
@@ -1710,6 +1710,7 @@ int main()
 					}
 				}
 			}
+*/
 			//Если ППУ имеется на борту
 			if (helicopter.ppuFactor)
 			{
@@ -1779,7 +1780,7 @@ int main()
 				}
 			}
 			//Если УР ШТУРМ имеется на борту
-			if (helicopter.rocketSturmFactor)
+/*			if (helicopter.rocketSturmFactor)
 			{
 				if (localdata.p_ur_ataka)//Условие создания объекта
 				{
@@ -1878,6 +1879,7 @@ int main()
 					}
 				}
 			}
+*/
 			//Редуктор
 //			if (helicopter.redFactor)
 //			{
@@ -1980,6 +1982,7 @@ int main()
 				if (vadd)//Если объект создан - используем его
 				{
 					double g = 0;
+/*
 					if (helicopter.modelName == "mi_28")
 					{
 						if (abs(localdata.v_atm_x) < 60)
@@ -2014,8 +2017,8 @@ int main()
 					else if (helicopter.modelName == "ansat")
 					{
 						g = getParameterFromVector(vector<point>{ { 28, -60 }, { 44.44, -15 }, { 56, -6 }, { 61.11, -1 }, { 70, 0 } }, abs(localdata.v_atm_x));
-					}
-					else
+					}*/
+//					else
 					{
 						g = -60;
 					}
@@ -2121,7 +2124,7 @@ int main()
 						vsuKran = new Crane;//Создаем объект
 				if (vsuKran)//Если объект создан - используем его
 				{
-					if (helicopter.modelName == "ka_27" | helicopter.modelName == "ka_29")
+/*					if (helicopter.modelName == "ka_27" | helicopter.modelName == "ka_29")
 					{
 						if (vsuKran->play(localdata.p_kran_perekr_vsu, helicopter.fullName["vsu_kran_on"], "NULL", helicopter.fullName["vsu_kran_on"], helicopter.vsuCraneFactor))
 						{
@@ -2131,8 +2134,8 @@ int main()
 						{
 							Free(vsuKran);//Удаляем объект
 						}
-					}
-					else
+					}*/
+//					else
 					{
 						if (vsuKran->play(localdata.p_kran_perekr_vsu, helicopter.fullName["vsu_kran_on"], helicopter.fullName["vsu_kran_w"], helicopter.fullName["vsu_kran_on"], helicopter.vsuCraneFactor))
 						{
@@ -2164,7 +2167,7 @@ int main()
 				}
 			}
 			//Неопределенный 1
-			if (helicopter.undefinedFactor)
+/*			if (helicopter.undefinedFactor)
 			{
 				if (helicopter.modelName == "mi_28")
 				{
@@ -2218,7 +2221,7 @@ int main()
 					}
 				}
 			}
-
+*/
 			//  закрылки
 			if (helicopter.flapsFactor)
 			{
