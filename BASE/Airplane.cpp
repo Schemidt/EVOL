@@ -1,15 +1,15 @@
 /*!
 \file
-\brief Класс Helicopter / определение
+\brief Класс Airplane / определение
 
 Данный файл определяет работу методов класса Helicopter
 */
 
-#include "helicopter.h"
+#include "airplane.h"
 
 using namespace std;
 
-void Helicopter::setPath(string pathToFile)
+void Airplane::setPath(string pathToFile)
 {
 	//TXT
 	//Двигатель
@@ -207,7 +207,7 @@ void Helicopter::setPath(string pathToFile)
 	}
 }
 
-void Helicopter::setParam()
+void Airplane::setParam()
 {
 //	modelName = model;
 	string model = MODEL_PATH;
@@ -430,7 +430,7 @@ void Helicopter::setParam()
 	}
 }
 
-void Helicopter::setBufferMap()
+void Airplane::setBufferMap()
 {
 	buffers = new ALuint[fullName.size() * 2];
 	vector<double> channel = { 1,1,0,0,0,0,0 };
@@ -500,12 +500,12 @@ void Helicopter::setBufferMap()
 	bufferMap["NULL"] = -1;//служебное значение
 }
 
-Helicopter::Helicopter()
+Airplane::Airplane()
 {
 
 }
 
-Helicopter::~Helicopter()
+Airplane::~Airplane()
 {
 
 }

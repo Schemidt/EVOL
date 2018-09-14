@@ -27,7 +27,7 @@
 //звук
 #include "EFXptr.h"
 #include "Sound.h"
-#include "Helicopter.h"
+#include "airplane.h"
 
 using namespace std;
 
@@ -172,18 +172,18 @@ public:
 \date  06.03.2018
 
 Класс определяющий работу объекта - редуктора
-*/
+
 class Reductor : public Sound
 {
 public:
 
 	//bool setup = 0;
 
-	bool hovering = 0;/*!< Переменная для статуса полета на висении */
-	string eq[2];/*!< Переменная для однократной загрузки буфера */
-	string pinkNoise;/*!< Переменная для однократной загрузки буфера */
-	string beats;/*!< Переменная для однократной загрузки буфера */
-	string takeOff;/*!< Переменная для однократной загрузки буфера */
+	bool hovering = 0;//!< Переменная для статуса полета на висении 
+	string eq[2];//!< Переменная для однократной загрузки буфера 
+	string pinkNoise;//!< Переменная для однократной загрузки буфера 
+	string beats;//!< Переменная для однократной загрузки буфера 
+	string takeOff;//!< Переменная для однократной загрузки буфера 
 	Smoother sm;
 	double flapOn = 0;
 	double reperTurn = 0;
@@ -192,16 +192,16 @@ public:
 	Reductor();
 
 	~Reductor();
-	/*!
-	\brief Определяет логику вывода звука
-	\details определяет логику изменения параметров акустических объектов OpenAL
-	\param[in] h Объект хранящий характеристики вертолета
-	\param[in] sr Объект хранящий текущие параметры вертолета
-	\return Статус источника OpenAL
-	*/
-	int play(Helicopter &h, SOUNDREAD &sr);
+	//!
+//	\brief Определяет логику вывода звука
+//	\details определяет логику изменения параметров акустических объектов OpenAL
+//	\param[in] h Объект хранящий характеристики вертолета
+//	\param[in] sr Объект хранящий текущие параметры вертолета
+//	\return Статус источника OpenAL
+	
+	int play(Airplane &h, SOUNDREAD &sr);
 };
-
+*/
 /*!
 \brief Класс объекта двигателя
 \author Самсонов А.В.
@@ -214,11 +214,11 @@ class Engine : public Sound
 {
 public:
 
-	static int engCount;/*!< Переменная для количества инициализированных двигателей в программе */
+	static int engCount;//!< Переменная для количества инициализированных двигателей в программе 
 	double phase;//!<Фаза для двигателей, чтобы их звуки не сливались(0-1, смещаем на 0.33 для каждого нового объекта, т.е. запускаем с 33% * n процентов длительности)
 	int engNum;//!<Номер двигателя
 	char angle;
-	string eq[2];/*!< Переменная для однократной загрузки буфера */
+	string eq[2];//!< Переменная для однократной загрузки буфера 
 	double reperTurn = 0;
 	string reperSet;
 
@@ -234,7 +234,7 @@ public:
 	\param[in] h Объект хранящий характеристики вертолета
 	\return Статус источника OpenAL
 	*/
-	int play(bool status_on, bool status_off, bool status_hp, double parameter, Helicopter &h);
+	int play(bool status_on, bool status_off, bool status_hp, double parameter, Airplane &h);
 };
 
 /*!
@@ -269,7 +269,7 @@ public:
 	\param[in] h Объект хранящий характеристики вертолета
 	\return Статус источника OpenAL
 	*/
-	int play(SOUNDREAD &sr, Helicopter &h);
+	int play(SOUNDREAD &sr, Airplane &h);
 };
 
 /*!
@@ -296,7 +296,7 @@ public:
 	\param[in] sr Объект хранящий текущие параметры вертолета
 	\return Статус источника OpenAL
 	*/
-	int play(Helicopter &h, SOUNDREAD &sr);
+	int play(Airplane &h, SOUNDREAD &sr);
 };
 
 /*!
@@ -306,30 +306,30 @@ public:
 \date  06.03.2018
 
 Класс определяющий логику звука хлопков винта
-*/
+
 class VintFlap : public Sound
 {
 public:
 
 	int flapIndicator = 0;
 	int prevFlapIndicator = 0;
-	string key[3];/*!< Переменная для однократной загрузки буфера */
+	string key[3];//!< Переменная для однократной загрузки буфера 
 	double flapOn = 0;
 
 	Smoother sm;
 
 	VintFlap();
 
-	/*!
+	//!
 	\brief Определяет логику вывода звука
 	\details определяет логику изменения параметров акустических объектов OpenAL
 	\param[in] h Объект хранящий характеристики вертолета
 	\param[in] sr Объект хранящий текущие параметры вертолета
 	\return Статус источника OpenAL
-	*/
-	int play(Helicopter &h, SOUNDREAD &sr);
+	
+	int play(Airplane &h, SOUNDREAD &sr);
 };
-
+*/
 /*!
 \brief Класс объекта - свиста винта
 \author Самсонов А.В.
@@ -337,7 +337,7 @@ public:
 \date  06.03.2018
 
 Класс определяющий логику звука свиста винта
-*/
+
 class VintSwish : public Sound
 {
 public:
@@ -346,16 +346,16 @@ public:
 	string reperSet;
 	VintSwish();
 
-	/*!
+	//!
 	\brief Определяет логику вывода звука
 	\details определяет логику изменения параметров акустических объектов OpenAL
 	\param[in] h Объект хранящий характеристики вертолета
 	\param[in] sr Объект хранящий текущие параметры вертолета
 	\return Статус источника OpenAL
-	*/
-	int play(Helicopter &h, SOUNDREAD &sr);
+	
+	int play(Airplane &h, SOUNDREAD &sr);
 };
-
+*/
 /*!
 \brief Класс объекта - СКВ
 \author Самсонов А.В.
@@ -379,7 +379,7 @@ public:
 	\param[in] sr Объект хранящий текущие параметры вертолета
 	\return Статус источника OpenAL
 	*/
-	int play(Helicopter &h, SOUNDREAD &sr);
+	int play(Airplane &h, SOUNDREAD &sr);
 
 };
 
@@ -427,7 +427,7 @@ public:
 };*/
 #endif
 
-/*!\brief Очищает объекты OpenAL*/
+//!\brief Очищает объекты OpenAL
 void freeOpenAL();
 
 /*!
@@ -466,7 +466,7 @@ int parametricalCrossfade(double *fadeGain, double *riseGain, double parameter, 
 \return 1 ,если громкость затухающей записи равняется 0, а нарастающей 1
 */
 int timeCrossfade(double &fadeGain, double &riseGain, double crossFadeDuration, double timer);
-/*!\brief Определяет указатели на функции расширений EFX*/
+//!\brief Определяет указатели на функции расширений EFX
 void setEFXPointers();
 
 /*!
@@ -494,7 +494,7 @@ calcA = calcA * 180 / M_PI;
 \param[in] periodCalc Разница по времени между выбранными моментами
 \return Значение атаки при данных параметрах
 */
-double attack(double velocityVectorXZ, double velocityXPrevious, double tangaz, double velocityY);
+//double attack(double velocityVectorXZ, double velocityXPrevious, double tangaz, double velocityY);
 
 
 

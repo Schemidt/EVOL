@@ -123,7 +123,7 @@
   <ItemGroup>
     <ClInclude Include="BASE.h" />
     <ClInclude Include="EFXptr.h" />
-    <ClInclude Include="Helicopter.h" />
+    <ClInclude Include="Airplane.h" />
     <ClInclude Include="Mono2channels.h" />
     <ClInclude Include="RealTime.h" />
     <ClInclude Include="resource.h" />
@@ -134,7 +134,7 @@
   <ItemGroup>
     <ClCompile Include="BASE.cpp" />
     <ClCompile Include="EFXptr.cpp" />
-    <ClCompile Include="Helicopter.cpp" />
+    <ClCompile Include="Airplane.cpp" />
     <ClCompile Include="Mono2channels.cpp" />
     <ClCompile Include="RealTime.cpp" />
     <ClCompile Include="Shared.cpp" />

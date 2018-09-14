@@ -479,12 +479,12 @@ int main()
 
 	//Получаем указатели на функции EFX
 	setEFXPointers();
-//	vector <string> helicoptersNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };  //Возможные комманды  -  удалить
+//	vector <string> AirplanesNames = { "mi_8_mtv5","mi_8_amtsh","mi_26","mi_28","ka_226","ansat","ka_27","ka_29","il_112" };  //Возможные комманды  -  удалить
 //	string model = "ka_29";                                                                                                //по умолчанию  -  удалить
 
 //  string model = "il_112";	                                                                   //  добавлено для умолчания
 	
-	Helicopter helicopter;//Переменная класса Helicopter для хранения параметров выбранного вертолета
+	Airplane airplane;//Переменная класса Airplane для хранения параметров выбранного самолета
 //	if (argc > 1)      // если передаем аргументы, то argc будет больше 1(в зависимости от кол-ва аргументов)
 //	{
 //		for (size_t i = 0; i < helicoptersNames.size(); i++)
@@ -530,7 +530,7 @@ int main()
 	}
 	InitRealTime(1);//инициируется "реальное" время с задержкой в 1мс (чтение распределенной памяти раз в 0.001 с)
 
-	helicopter.setParam();//Инициализируем параметры вертолета
+	airplane.setParam();//Инициализируем параметры вертолета
 	system("cls");
 	cout << " Using IL-112" << endl;
 
@@ -561,9 +561,9 @@ int main()
 	Sound *pstat = nullptr;
 	Runway *runway = nullptr;
 	Sound *crash = nullptr;
-	VintSwish *vintSwish = nullptr;
+//	VintSwish *vintSwish = nullptr;
 	Sound *vintBrake = nullptr;
-	VintFlap *vintFlap = nullptr;
+//	VintFlap *vintFlap = nullptr;
 	Sound *brake = nullptr;
 	Sound *rain = nullptr;
 	Sound *sturm[50] = { nullptr };
@@ -575,7 +575,7 @@ int main()
 	Sound *nar8[50] = { nullptr };
 	Sound *nar13[50] = { nullptr };
 	Engine *eng[2] = { nullptr };
-	Reductor *red = nullptr;
+//	Reductor *red = nullptr;
 	Sound *beep = nullptr;
 	Sound *undefined1 = nullptr;
 	Crane *kranKolc = nullptr;
@@ -795,7 +795,7 @@ int main()
 			}
 			//Звуки устройств эффектов и агрегатов
 			//ВСУ
-			if (helicopter.vsuFactor)//Если ВСУ включено в проект
+			if (airplane.vsuFactor)//Если ВСУ включено в проект
 			{
 				if (localdata.vsu_obor > 0 || localdata.p_vsu_hp || localdata.p_vsu_ostanov || localdata.p_vsu_zap)
 				{
@@ -806,7 +806,7 @@ int main()
 				}
 				if (vsu)
 				{
-					if (vsu->play(localdata, helicopter))
+					if (vsu->play(localdata, airplane))
 					{
 
 					}
@@ -817,7 +817,7 @@ int main()
 				}
 			}
 			//Аккумулятор
-			if (helicopter.accumFactor)
+			if (airplane.accumFactor)
 			{
 /*				if (helicopter.modelName == "ka_226" || helicopter.modelName == "ansat")//226
 				{
@@ -851,7 +851,7 @@ int main()
 					}
 					if (accum)//Если объект создан - используем его
 					{
-						if (accum->play(localdata.accumulator, "NULL", helicopter.fullName["accum"], "NULL", helicopter.accumFactor))
+						if (accum->play(localdata.accumulator, "NULL", airplane.fullName["accum"], "NULL", airplane.accumFactor))
 						{
 
 						}
@@ -863,7 +863,7 @@ int main()
 				}
 			}
 			//ПТС
-			if (helicopter.ptsFactor)
+			if (airplane.ptsFactor)
 			{
 				if (localdata.p_pts)//Условие создания объекта
 				{
@@ -874,7 +874,7 @@ int main()
 				}
 				if (pts)//Если объект создан - используем его
 				{
-					if (pts->play(localdata.p_pts, helicopter.fullName["pts_on"], helicopter.fullName["pts_w"], helicopter.fullName["pts_off"], helicopter.ptsFactor))
+					if (pts->play(localdata.p_pts, airplane.fullName["pts_on"], airplane.fullName["pts_w"], airplane.fullName["pts_off"], airplane.ptsFactor))
 					{
 
 					}
@@ -885,7 +885,7 @@ int main()
 				}
 			}
 			//ПТС тон
-			if (helicopter.ptsToneFactor)
+			if (airplane.ptsToneFactor)
 			{
 				//ПТС Тон
 				if (localdata.p_pts)//Условие создания объекта
@@ -897,7 +897,7 @@ int main()
 				}
 				if (ptsTone)//Если объект создан - используем его
 				{
-					if (ptsTone->play(localdata.p_pts, "NULL", helicopter.fullName["pts_tone"], "NULL", helicopter.ptsToneFactor))
+					if (ptsTone->play(localdata.p_pts, "NULL", airplane.fullName["pts_tone"], "NULL", airplane.ptsToneFactor))
 					{
 
 					}
@@ -908,7 +908,7 @@ int main()
 				}
 			}
 			//ВУ
-			if (helicopter.vpryam)
+			if (airplane.vpryam)
 			{
 				//ВУ
 				if (localdata.p_vu1)//Условие создания объекта
@@ -920,7 +920,7 @@ int main()
 				}
 				if (vpryam)//Если объект создан - используем его
 				{
-					if (vpryam->play(localdata.p_vu1, "NULL", helicopter.fullName["vpryam"], "NULL", helicopter.vpryam))
+					if (vpryam->play(localdata.p_vu1, "NULL", airplane.fullName["vpryam"], "NULL", airplane.vpryam))
 					{
 
 					}
@@ -931,7 +931,7 @@ int main()
 				}
 			}
 			//Если Трансформатор 36В присутствует на Борту
-			if (helicopter.tr36Factor)
+			if (airplane.tr36Factor)
 			{
 				if (localdata.p_trans_36_osn || localdata.p_trans_36_rez)//Условие создания объекта
 				{
@@ -942,7 +942,7 @@ int main()
 				}
 				if (tr36)//Если объект создан - используем его
 				{
-					if (tr36->play(localdata.p_trans_36_osn || localdata.p_trans_36_rez, helicopter.fullName["tr36_on"], helicopter.fullName["tr36_w"], helicopter.fullName["tr36_off"], helicopter.tr36Factor))
+					if (tr36->play(localdata.p_trans_36_osn || localdata.p_trans_36_rez, airplane.fullName["tr36_on"], airplane.fullName["tr36_w"], airplane.fullName["tr36_off"], airplane.tr36Factor))
 					{
 
 					}
@@ -953,7 +953,7 @@ int main()
 				}
 			}
 			//Если Трансформатор 115В присутствует на Борту
-			if (helicopter.tr115Factor)
+			if (airplane.tr115Factor)
 			{
 				if (localdata.p_po500)//Условие создания объекта
 				{
@@ -964,7 +964,7 @@ int main()
 				}
 				if (tr115)//Если объект создан - используем его
 				{
-					if (tr115->play(localdata.p_po500, helicopter.fullName["tr115_on"], helicopter.fullName["tr115_w"], helicopter.fullName["tr115_off"], helicopter.tr115Factor))
+					if (tr115->play(localdata.p_po500, airplane.fullName["tr115_on"], airplane.fullName["tr115_w"], airplane.fullName["tr115_off"], airplane.tr115Factor))
 					{
 
 					}
@@ -975,7 +975,7 @@ int main()
 				}
 			}
 			//НИП
-			if (helicopter.nipFactor)
+			if (airplane.nipFactor)
 			{
 				if (localdata.ground_power_supply)//Условие создания объекта
 				{
@@ -986,7 +986,7 @@ int main()
 				}
 				if (nip)//Если объект создан - используем его
 				{
-					if (nip->play(localdata.ground_power_supply, "NULL", helicopter.fullName["nip_tone"], "NULL", helicopter.nipFactor))
+					if (nip->play(localdata.ground_power_supply, "NULL", airplane.fullName["nip_tone"], "NULL", airplane.nipFactor))
 					{
 						double p1 = 1, p2 = 1;
 						//Если включено ВУ, то высота тона повышается на 1.5%
@@ -1037,7 +1037,7 @@ int main()
 				}
 			}
 			//Гировертикаль
-			if (helicopter.girovertFactor)
+			if (airplane.girovertFactor)
 			{
 				if (nip)//Условие создания объекта
 				{
@@ -1048,13 +1048,13 @@ int main()
 				}
 				if (girovert)//Если объект создан - используем его
 				{
-					girovert->lengthOn = getLengthWAV(helicopter.fullName["girovert_on"]);
+					girovert->lengthOn = getLengthWAV(airplane.fullName["girovert_on"]);
 					if (girovert->pitch[girovert->id] < 1 && girovert->soundOn)
 					{
 						girovert->offset[girovert->id] = girovert->lengthOn * girovert->pitch[girovert->id];//Включаем запись с текущего уровня оборотов
 					}
 
-					if (girovert->play(nip, helicopter.fullName["girovert_on"], helicopter.fullName["girovert_w"], helicopter.fullName["girovert_w"], helicopter.ptsFactor))
+					if (girovert->play(nip, airplane.fullName["girovert_on"], airplane.fullName["girovert_w"], airplane.fullName["girovert_w"], airplane.ptsFactor))
 					{
 						if (girovert->soundOn)
 						{
@@ -1068,7 +1068,7 @@ int main()
 							//если pitch <= 0.8 - звук пропал, источник можно отключить
 							if (girovert->pitch[girovert->id] <= 0.8)
 							{
-								if (!girovert->play(localdata.ground_power_supply, "NULL", "NULL", "NULL", helicopter.ptsFactor))
+								if (!girovert->play(localdata.ground_power_supply, "NULL", "NULL", "NULL", airplane.ptsFactor))
 								{
 									Free(girovert);//Удаляем объект
 								}
@@ -1082,7 +1082,7 @@ int main()
 				}
 			}
 			//Если насосы подкачки присутствуют на Борту
-			if (helicopter.pumpLeftFactor)
+			if (airplane.pumpLeftFactor)
 			{
 				if (localdata.p_nasos_podk_1)//Условие создания объекта
 				{
@@ -1124,7 +1124,7 @@ int main()
 					}*/
 //					else
 					{
-						if (podk1->play(localdata.p_nasos_podk_1, helicopter.fullName["podk_l_on"], helicopter.fullName["podk_l_w"], "NULL", helicopter.pumpLeftFactor))
+						if (podk1->play(localdata.p_nasos_podk_1, airplane.fullName["podk_l_on"], airplane.fullName["podk_l_w"], "NULL", airplane.pumpLeftFactor))
 						{
 
 						}
@@ -1135,7 +1135,7 @@ int main()
 					}
 				}
 			}
-			if (helicopter.pumpRightFactor)
+			if (airplane.pumpRightFactor)
 			{
 				if (localdata.p_nasos_podk_2)//Условие создания объекта
 				{
@@ -1177,7 +1177,7 @@ int main()
 					}*/
 //					else
 					{
-						if (podk2->play(localdata.p_nasos_podk_2, helicopter.fullName["podk_l_on"], helicopter.fullName["podk_l_w"], "NULL", helicopter.pumpRightFactor))
+						if (podk2->play(localdata.p_nasos_podk_2, airplane.fullName["podk_l_on"], airplane.fullName["podk_l_w"], "NULL", airplane.pumpRightFactor))
 						{
 
 						}
@@ -1189,7 +1189,7 @@ int main()
 				}
 			}
 			//Если кран кольцевания присутствует на Борту
-			if (helicopter.circlingCraneFactor)
+			if (airplane.circlingCraneFactor)
 			{
 				if (localdata.p_kran_kolcev)//Условие создания объекта
 				{
@@ -1203,7 +1203,7 @@ int main()
 					kranKolc->channel[0] = 1;
 					kranKolc->channel[1] = 1;
 
-					if (kranKolc->play(localdata.p_kran_kolcev, helicopter.fullName["kran_circle"], "NULL", helicopter.fullName["kran_circle"], helicopter.circlingCraneFactor))
+					if (kranKolc->play(localdata.p_kran_kolcev, airplane.fullName["kran_circle"], "NULL", airplane.fullName["kran_circle"], airplane.circlingCraneFactor))
 					{
 
 					}
@@ -1214,7 +1214,7 @@ int main()
 				}
 			}
 			//Если перекрывные краны присутствуют на Борту
-			if (helicopter.cutoffCraneFactor)
+			if (airplane.cutoffCraneFactor)
 			{
 				if (localdata.p_kran_perekr_1)//Условие создания объекта
 				{
@@ -1227,7 +1227,7 @@ int main()
 				{
 					perek1->channel[0] = 1;//L
 					perek1->channel[1] = 0;
-					if (perek1->play(localdata.p_kran_perekr_1, helicopter.fullName["perekr_l"], "NULL", helicopter.fullName["perekr_l"], helicopter.cutoffCraneFactor))
+					if (perek1->play(localdata.p_kran_perekr_1, airplane.fullName["perekr_l"], "NULL", airplane.fullName["perekr_l"], airplane.cutoffCraneFactor))
 					{
 
 					}
@@ -1248,7 +1248,7 @@ int main()
 				{
 					perek2->channel[0] = 0;
 					perek2->channel[1] = 1;//R
-					if (perek2->play(localdata.p_kran_perekr_2, helicopter.fullName["perekr_r"], "NULL", helicopter.fullName["perekr_r"], helicopter.cutoffCraneFactor))
+					if (perek2->play(localdata.p_kran_perekr_2, airplane.fullName["perekr_r"], "NULL", airplane.fullName["perekr_r"], airplane.cutoffCraneFactor))
 					{
 
 					}
@@ -1259,14 +1259,14 @@ int main()
 				}
 			}
 			//Если СКВ присутствует на Борту
-			if (helicopter.skvFactor)
+			if (airplane.skvFactor)
 			{
 				if (localdata.p_skv_on)//Условие создания объекта
 					if (!skv)//Если объект не создан 
 						skv = new Skv;//Создаем объект
 				if (skv)//Если объект создан - используем его
 				{
-					if (skv->play(helicopter, localdata))
+					if (skv->play(airplane, localdata))
 					{
 
 					}
@@ -1278,14 +1278,14 @@ int main()
 				}
 			}
 			//Если КО-50 присутствует на Борту
-			if (helicopter.ko50Factor)
+			if (airplane.ko50Factor)
 			{
 				if (localdata.stove)//Условие создания объекта
 					if (!ko50)//Если объект не создан 
 						ko50 = new Sound;//Создаем объект
 				if (ko50)//Если объект создан - используем его
 				{
-					if (ko50->play(localdata.stove, helicopter.fullName["ko50_on"], helicopter.fullName["ko50_w"], helicopter.fullName["ko50_off"], helicopter.ko50Factor))
+					if (ko50->play(localdata.stove, airplane.fullName["ko50_on"], airplane.fullName["ko50_w"], airplane.fullName["ko50_off"], airplane.ko50Factor))
 					{
 
 					}
@@ -1296,14 +1296,14 @@ int main()
 				}
 			}
 			//Если насос расходного бака
-			if (helicopter.consumTankFactor)
+			if (airplane.consumTankFactor)
 			{
 				if (localdata.dis_tank_pump)//Условие создания объекта
 					if (!consTank)//Если объект не создан 
 						consTank = new Sound;//Создаем объект
 				if (consTank)//Если объект создан - используем его
 				{
-					if (consTank->play(localdata.dis_tank_pump, helicopter.fullName["cons_tank_on"], helicopter.fullName["cons_tank_w"], "NULL", helicopter.consumTankFactor))
+					if (consTank->play(localdata.dis_tank_pump, airplane.fullName["cons_tank_on"], airplane.fullName["cons_tank_w"], "NULL", airplane.consumTankFactor))
 					{
 
 					}
@@ -1314,7 +1314,7 @@ int main()
 				}
 			}
 			//Пожарный кран
-			if (helicopter.fireCraneFactor)
+			if (airplane.fireCraneFactor)
 			{
 				if (localdata.p_kran_poj_l)//Условие создания объекта
 					if (!fire1)//Если объект не создан 
@@ -1323,7 +1323,7 @@ int main()
 				{
 					fire1->channel[0] = 1;//L
 					fire1->channel[1] = 0;
-					if (fire1->play(localdata.p_kran_poj_l, helicopter.fullName["kran_fire_l"], "NULL", helicopter.fullName["kran_fire_l"], helicopter.fireCraneFactor))
+					if (fire1->play(localdata.p_kran_poj_l, airplane.fullName["kran_fire_l"], "NULL", airplane.fullName["kran_fire_l"], airplane.fireCraneFactor))
 					{
 
 					}
@@ -1340,7 +1340,7 @@ int main()
 				{
 					fire2->channel[0] = 0;
 					fire2->channel[1] = 1;//R
-					if (fire2->play(localdata.p_kran_poj_r, helicopter.fullName["kran_fire_r"], "NULL", helicopter.fullName["kran_fire_r"], helicopter.fireCraneFactor))
+					if (fire2->play(localdata.p_kran_poj_r, airplane.fullName["kran_fire_r"], "NULL", airplane.fullName["kran_fire_r"], airplane.fireCraneFactor))
 					{
 
 					}
@@ -1351,14 +1351,14 @@ int main()
 				}
 			}
 			//Насосная станция
-			if (helicopter.pumpStationFactor)
+			if (airplane.pumpStationFactor)
 			{
 				if (localdata.p_nasos)//Условие создания объекта
 					if (!pstat)//Если объект не создан 
 						pstat = new Sound;//Создаем объект
 				if (pstat)//Если объект создан - используем его
 				{
-					if (pstat->play(localdata.p_nasos, helicopter.fullName["pstat_on"], helicopter.fullName["pstat_w"], helicopter.fullName["pstat_off"], helicopter.ko50Factor))
+					if (pstat->play(localdata.p_nasos, airplane.fullName["pstat_on"], airplane.fullName["pstat_w"], airplane.fullName["pstat_off"], airplane.ko50Factor))
 					{
 
 					}
@@ -1369,40 +1369,40 @@ int main()
 				}
 			}
 			//Если звуки движения по ВПП включены в проект борта
-			if (helicopter.runwayFactor)
+			if (airplane.runwayFactor)
 			{
 				if (localdata.v_surf_x != 0 && Sound::groundTouch > 0)//Условие создания объекта
 					if (!runway)//Если объект не создан 
 						runway = new Runway;//Создаем объект
 				if (runway)//Если объект создан - используем его
 				{
-					runway->play(helicopter, localdata);//Воспроизводим звук - записываем состояние звука в play
+					runway->play(airplane, localdata);//Воспроизводим звук - записываем состояние звука в play
 					if (localdata.v_surf_x == 0 || !(Sound::groundTouch > 0))//Условие удаления объекта
 						Free(runway);//Удаляем объект
 				}
 			}
 			//Винт
-//			if (helicopter.vintSwishFactor)
+//			if (airplane.vintSwishFactor)
 //			{
 //				if (localdata.reduktor_gl_obor != 0)//Условие создания объекта
 //					if (!vintSwish)//Если объект не создан 
 //						vintSwish = new VintSwish;//Создаем объект
 //				if (vintSwish)//Если объект создан - используем его
 //				{
-//					vintSwish->play(helicopter, localdata);
+//					vintSwish->play(airplane, localdata);
 //					if (localdata.reduktor_gl_obor == 0)//Условие удаления объекта
 //						Free(vintSwish);//Удаляем объект
 //				}
 //			}
 			//Если звук тормоза винта включен в проект
-			if (helicopter.vintBrakeFactor)
+			if (airplane.vintBrakeFactor)
 			{
 				if (localdata.tormoz_vint)//Условие создания объекта
 					if (!vintBrake)//Если объект не создан 
 						vintBrake = new Sound;//Создаем объект
 				if (vintBrake)//Если объект создан - используем его
 				{
-					if (vintBrake->play(localdata.tormoz_vint, helicopter.fullName["vint_torm"], helicopter.fullName["vint_torm"], helicopter.fullName["vint_torm"], helicopter.vintBrakeFactor))
+					if (vintBrake->play(localdata.tormoz_vint, airplane.fullName["vint_torm"], airplane.fullName["vint_torm"], airplane.fullName["vint_torm"], airplane.vintBrakeFactor))
 					{
 						double soundOff = getParameterFromVector(vector<point>{ { 12, 1 }, { 1, 0 } }, localdata.reduktor_gl_obor);
 						for (size_t i = 0; i < 2; i++)
@@ -1442,7 +1442,7 @@ int main()
 //				}
 //			}
 			//Если тормоза включены на борту
-			if (helicopter.chassisBrakePumpFactor)
+			if (airplane.chassisBrakePumpFactor)
 			{
 				if (localdata.p_tormoz_press || localdata.frict)//Условие создания объекта
 					if (!brake)//Если объект не создан 
@@ -1464,7 +1464,7 @@ int main()
 					}*/
 //					else
 					{
-						if (brake->play(localdata.p_tormoz_press, helicopter.fullName["brake"], "NULL", helicopter.fullName["poff"], helicopter.chassisBrakePumpFactor))
+						if (brake->play(localdata.p_tormoz_press, airplane.fullName["brake"], "NULL", airplane.fullName["poff"], airplane.chassisBrakePumpFactor))
 						{
 
 						}
@@ -1476,14 +1476,14 @@ int main()
 				}
 			}
 			//Если триммер включен на борту
-			if (helicopter.trim)
+			if (airplane.trim)
 			{
 				if (localdata.trim)//Условие создания объекта
 					if (!trim)//Если объект не создан 
 						trim = new Sound;//Создаем объект
 				if (trim)//Если объект создан - используем его
 				{
-					if (trim->play(localdata.trim, helicopter.fullName["trim_on"], "NULL", helicopter.fullName["trim_off"], helicopter.trim))
+					if (trim->play(localdata.trim, airplane.fullName["trim_on"], "NULL", airplane.fullName["trim_off"], airplane.trim))
 					{
 
 					}
@@ -1501,7 +1501,7 @@ int main()
 						rain = new Sound;//Создаем объект
 				if (rain)//Если объект создан - используем его
 				{
-					if (rain->play(localdata.p_rain, "NULL", helicopter.fullName["rain"], "NULL", helicopter.rainFactor))
+					if (rain->play(localdata.p_rain, "NULL", airplane.fullName["rain"], "NULL", airplane.rainFactor))
 					{
 
 					}
@@ -1512,7 +1512,7 @@ int main()
 				}
 			}
 			//Если звук попадания ракеты включен в проект
-			if (helicopter.rocketHitFactor)
+			if (airplane.rocketHitFactor)
 			{
 				if (localdata.p_rocket_hit)//Условие создания объекта
 				{
@@ -1536,7 +1536,7 @@ int main()
 				{
 					if (rocket[i])
 					{
-						rocket[i]->play(rocketHitLocker, helicopter.fullName["rocket"], "NULL", "NULL", helicopter.rocketHitFactor);
+						rocket[i]->play(rocketHitLocker, airplane.fullName["rocket"], "NULL", "NULL", airplane.rocketHitFactor);
 
 						if (rocket[i]->sourceStatus[rocket[i]->id] != AL_PLAYING)
 						{
@@ -1546,7 +1546,7 @@ int main()
 				}
 			}
 			//Если звук попадания пули включен в проект
-			if (helicopter.bulletHitFactor)
+			if (airplane.bulletHitFactor)
 			{
 				if (localdata.p_bullet_hit)//Условие создания объекта
 				{
@@ -1574,15 +1574,15 @@ int main()
 						{
 							if (rand() % 10 > 5)
 							{
-								type[i] = helicopter.fullName["bullet0"];
+								type[i] = airplane.fullName["bullet0"];
 							}
 							else
 							{
-								type[i] = helicopter.fullName["bullet1"];
+								type[i] = airplane.fullName["bullet1"];
 							}
 						}
 
-						bullet[i]->play(bulletHitLocker, type[i], "NULL", "NULL", helicopter.bulletHitFactor);
+						bullet[i]->play(bulletHitLocker, type[i], "NULL", "NULL", airplane.bulletHitFactor);
 
 						if (bullet[i]->sourceStatus[bullet[i]->id] != AL_PLAYING)
 						{
@@ -1712,7 +1712,7 @@ int main()
 			}
 */
 			//Если ППУ имеется на борту
-			if (helicopter.ppuFactor)
+			if (airplane.ppuFactor)
 			{
 				if (localdata.p_spo_ppu)//Условие создания объекта
 					if (!ppu)//Если объект не создан 
@@ -1735,7 +1735,7 @@ int main()
 						break;
 					}
 
-					if (ppu->play(localdata.p_spo_ppu, "NULL", helicopter.fullName["ppu"], "NULL", helicopter.ppuFactor))
+					if (ppu->play(localdata.p_spo_ppu, "NULL", airplane.fullName["ppu"], "NULL", airplane.ppuFactor))
 					{
 
 					}
@@ -1746,7 +1746,7 @@ int main()
 				}
 			}
 			//Если УПК имеется на борту
-			if (helicopter.upkFactor)
+			if (airplane.upkFactor)
 			{
 				if (localdata.p_spo_upk)//Условие создания объекта
 					if (!upk)//Если объект не создан 
@@ -1769,7 +1769,7 @@ int main()
 						break;
 					}
 
-					if (upk->play(localdata.p_spo_upk, "NULL", helicopter.fullName["upk"], "NULL", helicopter.upkFactor))
+					if (upk->play(localdata.p_spo_upk, "NULL", airplane.fullName["upk"], "NULL", airplane.upkFactor))
 					{
 
 					}
@@ -1920,7 +1920,7 @@ int main()
 					localdata.styk_hv,
 					localdata.styk_nos,
 					localdata.styk_r };
-			if (helicopter.shock)
+			if (airplane.shock)
 			{
 				for (size_t i = 0; i < 4; i++)
 				{
@@ -1959,7 +1959,7 @@ int main()
 								shock[i][j]->channel[1] = 0;
 							}
 
-							shock[i][j]->play(shockLocker[i], helicopter.fullName["shock"], "NULL", "NULL", helicopter.shock);
+							shock[i][j]->play(shockLocker[i], airplane.fullName["shock"], "NULL", "NULL", airplane.shock);
 
 							if (shock[i][j]->sourceStatus[shock[i][j]->id] != AL_PLAYING)
 							{
@@ -1970,7 +1970,7 @@ int main()
 				}
 			}
 			//Скоростная добавка
-			if (helicopter.vadd)
+			if (airplane.vadd)
 			{
 				if (localdata.v_atm_x != 0)//Условие создания объекта
 				{
@@ -2024,7 +2024,7 @@ int main()
 					}
 					vadd->gain[vadd->id] = toCoef(g);
 
-					vadd->play(localdata.v_atm_x != 0, "NULL", helicopter.fullName["pinkNoise"], "NULL", helicopter.vadd);
+					vadd->play(localdata.v_atm_x != 0, "NULL", airplane.fullName["pinkNoise"], "NULL", airplane.vadd);
 					if (localdata.v_atm_x == 0)//Условие удаления объекта
 					{
 						Free(vadd);//Удаляем объект
@@ -2032,8 +2032,8 @@ int main()
 				}
 			}
 			//Двигатель
-			if (helicopter.engFactor)
-			{
+			if (airplane.engFactor)
+			{                                              // помпаж
 				if (localdata.p_eng1_pomp)//Условие создания объекта
 				{
 					if (!engPomp[0])//Если объект не создан 
@@ -2045,7 +2045,7 @@ int main()
 				{
 					engPomp[0]->channel[0] = 1;//L
 					engPomp[0]->channel[1] = 0;
-					if (engPomp[0]->play(localdata.p_eng1_pomp, helicopter.fullName["eng_pomp_on"], helicopter.fullName["eng_pomp_w"], "NULL", helicopter.engFactor))
+					if (engPomp[0]->play(localdata.p_eng1_pomp, airplane.fullName["eng_pomp_on"], airplane.fullName["eng_pomp_w"], "NULL", airplane.engFactor))
 					{
 
 					}
@@ -2066,7 +2066,7 @@ int main()
 				{
 					engPomp[1]->channel[0] = 0;
 					engPomp[1]->channel[1] = 1;//R
-					if (engPomp[1]->play(localdata.p_eng2_pomp, helicopter.fullName["eng_pomp_on"], helicopter.fullName["eng_pomp_w"], "NULL", helicopter.engFactor))
+					if (engPomp[1]->play(localdata.p_eng2_pomp, airplane.fullName["eng_pomp_on"], airplane.fullName["eng_pomp_w"], "NULL", airplane.engFactor))
 					{
 
 					}
@@ -2075,7 +2075,7 @@ int main()
 						Free(engPomp[1]);//Удаляем объект
 					}
 				}
-
+				                                           // норм. работа 
 				if (localdata.eng1_obor > 0)
 				{
 					if (!eng[0])//Если объект не создан 
@@ -2086,7 +2086,7 @@ int main()
 				if (eng[0])//Если объект создан - используем его
 				{
 					eng[0]->angle = 'l';
-					if (eng[0]->play(localdata.p_eng1_zap, localdata.p_eng1_ostanov, localdata.p_eng1_hp, localdata.eng1_obor, helicopter))
+					if (eng[0]->play(localdata.p_eng1_zap, localdata.p_eng1_ostanov, localdata.p_eng1_hp, localdata.eng1_obor, airplane))
 					{
 
 					}
@@ -2106,7 +2106,7 @@ int main()
 				if (eng[1])//Если объект создан - используем его
 				{
 					eng[1]->angle = 'r';
-					if (eng[1]->play(localdata.p_eng2_zap, localdata.p_eng2_ostanov, localdata.p_eng2_hp, localdata.eng2_obor, helicopter))
+					if (eng[1]->play(localdata.p_eng2_zap, localdata.p_eng2_ostanov, localdata.p_eng2_hp, localdata.eng2_obor, airplane))
 					{
 
 					}
@@ -2117,14 +2117,14 @@ int main()
 				}
 			}
 			//Перекрывной кран ВСУ
-			if (helicopter.vsuCraneFactor)
+			if (airplane.vsuCraneFactor)
 			{
 				if (localdata.p_kran_perekr_vsu)//Условие создания объекта
 					if (!vsuKran)//Если объект не создан 
 						vsuKran = new Crane;//Создаем объект
 				if (vsuKran)//Если объект создан - используем его
 				{
-/*					if (helicopter.modelName == "ka_27" | helicopter.modelName == "ka_29")
+/*					if (airplane.modelName == "ka_27" | helicopter.modelName == "ka_29")
 					{
 						if (vsuKran->play(localdata.p_kran_perekr_vsu, helicopter.fullName["vsu_kran_on"], "NULL", helicopter.fullName["vsu_kran_on"], helicopter.vsuCraneFactor))
 						{
@@ -2137,7 +2137,7 @@ int main()
 					}*/
 //					else
 					{
-						if (vsuKran->play(localdata.p_kran_perekr_vsu, helicopter.fullName["vsu_kran_on"], helicopter.fullName["vsu_kran_w"], helicopter.fullName["vsu_kran_on"], helicopter.vsuCraneFactor))
+						if (vsuKran->play(localdata.p_kran_perekr_vsu, airplane.fullName["vsu_kran_on"], airplane.fullName["vsu_kran_w"], airplane.fullName["vsu_kran_on"], airplane.vsuCraneFactor))
 						{
 
 						}
@@ -2149,14 +2149,14 @@ int main()
 				}
 			}
 			//Зуммер
-			if (helicopter.buzzerFactor)
+			if (airplane.buzzerFactor)
 			{
 				if (localdata.zoomer)//Условие создания объекта
 					if (!beep)//Если объект не создан 
 						beep = new Sound;//Создаем объект
 				if (beep)//Если объект создан - используем его
 				{
-					if (beep->play(localdata.zoomer, "NULL", helicopter.fullName["beep"], "NULL", helicopter.buzzerFactor))
+					if (beep->play(localdata.zoomer, "NULL", airplane.fullName["beep"], "NULL", airplane.buzzerFactor))
 					{
 
 					}
@@ -2223,26 +2223,26 @@ int main()
 			}
 */
 			//  закрылки
-			if (helicopter.flapsFactor)
+			if (airplane.flapsFactor)
 			{
-				helicopter.flapsHist.erase(helicopter.flapsHist.begin());        //  стирание первого элемента в массиве flapsHist
-				helicopter.flapsHist.push_back(localdata.flaps);                   //   запись в конец массива  текущего значения flaps
+				airplane.flapsHist.erase(airplane.flapsHist.begin());        //  стирание первого элемента в массиве flapsHist
+				airplane.flapsHist.push_back(localdata.flaps);                   //   запись в конец массива  текущего значения flaps
 
 //				float avrg = 0;
 //				bool p_flaps = 0;                                                        //  признак закрылков: "1" - выпуск, "0" - останов
-//              for (int i = 0; i < helicopter.flapsHist.size(); i++) {                // если flaps не меняется, то среднее из массива будет равно текущему
-//					avrg += helicopter.flapsHist[i];
+//              for (int i = 0; i < airplane.flapsHist.size(); i++) {                // если flaps не меняется, то среднее из массива будет равно текущему
+//					avrg += airplane.flapsHist[i];
 //				}
-//				avrg = avrg / helicopter.flapsHist.size();
+//				avrg = avrg / airplane.flapsHist.size();
 
-				p_flaps = (localdata.flaps != helicopter.flapsHist[0]) ? 1 : 0;
+				p_flaps = (localdata.flaps != airplane.flapsHist[0]) ? 1 : 0;
 			
 				if (p_flaps)//Условие создания объекта
 					if (!flaps)//Если объект не создан 
 						flaps = new Sound;//Создаем объект
 				if (flaps)//Если объект создан - используем его
 				{
-					if (flaps->play(p_flaps, helicopter.fullName["flaps_on"], helicopter.fullName["flaps_w"], helicopter.fullName["flaps_off"], helicopter.flapsFactor))
+					if (flaps->play(p_flaps, airplane.fullName["flaps_on"], airplane.fullName["flaps_w"], airplane.fullName["flaps_off"], airplane.flapsFactor))
 					{
 
 					}
@@ -2253,19 +2253,19 @@ int main()
 				}			
 			}
 			//  выпуск/уборка шасси
-			if (helicopter.gearFactor)
+			if (airplane.gearFactor)
 			{				
-				helicopter.vypHist_l.erase(helicopter.vypHist_l.begin());                               //  стирание первого элемента в массиве vypHist_l  
-				helicopter.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива vypHist текущего значения vyp_l
+				airplane.vypHist_l.erase(airplane.vypHist_l.begin());                               //  стирание первого элемента в массиве vypHist_l  
+				airplane.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива vypHist текущего значения vyp_l
 				
 
-			    if (helicopter.vypHist_l[0] == 0 && localdata.vyp_l > 0) {                               // выпуск
+			    if (airplane.vypHist_l[0] == 0 && localdata.vyp_l > 0) {                               // выпуск
 				    p_gearOn = 1;
 			    }
-				else if (helicopter.vypHist_l[0] == 1 && localdata.vyp_l < 1) {                          // уборка
+				else if (airplane.vypHist_l[0] == 1 && localdata.vyp_l < 1) {                          // уборка
 					p_gearOff = 1;
 				}				
-				else if (localdata.vyp_l == helicopter.vypHist_l[0]) {
+				else if (localdata.vyp_l == airplane.vypHist_l[0]) {
 					p_gearOff = 0;                                                           // признак уборки шасси для запуска функции play
 					p_gearOn = 0;                                                            // признак выпуска шасси ----------------------
 				}
@@ -2278,7 +2278,7 @@ int main()
 						geardown_l = new Sound;//Создаем объект
 				if (gearup_l)//Если объект создан - используем его
 				{
-					if (gearup_l->play(p_gearOff, helicopter.fullName["gearup_on"], helicopter.fullName["gearup_w"], helicopter.fullName["gearup_off"], helicopter.gearFactor))
+					if (gearup_l->play(p_gearOff, airplane.fullName["gearup_on"], airplane.fullName["gearup_w"], airplane.fullName["gearup_off"], airplane.gearFactor))
 					{
 
 					}
@@ -2289,7 +2289,7 @@ int main()
 				}
 				if (geardown_l)//Если объект создан - используем его
 				{
-					if (geardown_l->play(p_gearOn, helicopter.fullName["geardown_on"], helicopter.fullName["geardown_w"], helicopter.fullName["geardown_off"], helicopter.gearFactor))
+					if (geardown_l->play(p_gearOn, airplane.fullName["geardown_on"], airplane.fullName["geardown_w"], airplane.fullName["geardown_off"], airplane.gearFactor))
 					{
 
 					}
@@ -2430,7 +2430,7 @@ int main()
 					crash = new Sound;//Создаем объект
 			if (crash)//Если объект создан - используем его
 			{
-				if (crash->play(localdata.p_crash, helicopter.fullName["crash"], "NULL", "NULL", 1))
+				if (crash->play(localdata.p_crash, airplane.fullName["crash"], "NULL", "NULL", 1))
 				{
 					stop = 1;
 				}
@@ -3986,7 +3986,7 @@ Engine::~Engine()
 	engCount--;
 }
 
-int Engine::play(bool status_on, bool status_off, bool status_hp, double parameter, Helicopter &h)
+int Engine::play(bool status_on, bool status_off, bool status_hp, double parameter, Airplane &h)
 {
 	if (status_hp)
 	{
@@ -4009,7 +4009,7 @@ int Engine::play(bool status_on, bool status_off, bool status_hp, double paramet
 	}
 	else if (status_on && parameter <= h.engTurnoverMg * 0.9)
 	{
-		if (h.engLengthOn - offsetOn <= crossFadeDuration && offsetOn)
+		if ((h.engLengthOn - offsetOn <= crossFadeDuration) && offsetOn)
 		{
 			mode = "mg";
 		}
@@ -4417,7 +4417,7 @@ Vsu::~Vsu()
 
 }
 
-int Vsu::play(SOUNDREAD &sr, Helicopter &h)
+int Vsu::play(SOUNDREAD &sr, Airplane &h)
 {
 	if (init != "set")
 	{
@@ -4677,7 +4677,7 @@ VintFlap::VintFlap() : Sound(3, 3, 2)
 
 }
 
-int VintFlap::play(Helicopter &h, SOUNDREAD &sr)
+int VintFlap::play(Airplane &h, SOUNDREAD &sr)
 {
 	//Условия хлопков
 	//для отрицательной скорости условия зеркальные
@@ -5766,7 +5766,7 @@ Skv::Skv() : Sound(3, 3, 2)
 
 }
 
-int Skv::play(Helicopter &h, SOUNDREAD &sr)
+int Skv::play(Airplane &h, SOUNDREAD &sr)
 {
 	int status = 0;
 /*
@@ -5905,7 +5905,7 @@ Runway::Runway() : Sound(2, 2, 1)
 
 }
 
-int Runway::play(Helicopter &h, SOUNDREAD &sr)
+int Runway::play(Airplane &h, SOUNDREAD &sr)
 {
 
 	for (size_t i = 0; i < 2; i++)

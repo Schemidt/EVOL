@@ -115,14 +115,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Helicopter.cpp" />
+    <ClCompile Include="Airplane.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Net.cpp" />
     <ClCompile Include="RealTime.cpp" />
     <ClCompile Include="Uspo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Helicopter.h" />
+    <ClInclude Include="Airplane.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Net.h" />
     <ClInclude Include="RealTime.h" />

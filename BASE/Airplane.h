@@ -18,8 +18,8 @@ using namespace std;
 
 #define MODEL_PATH "il_112"
 
-#ifndef Helicopter_h
-#define Helicopter_h
+#ifndef Airplane_h
+#define Airplane_h
 /*!
 \brief Класс параметров вертолета
 \author Самсонов А.В
@@ -29,7 +29,7 @@ using namespace std;
 Класс определяющая формат хранения некоторых констант, определяющих особенности вертолета,
 а также адреса файлов переходных функций некоторых параметров необходимые для корректной работы программы и адреса звуковых файлов .WAV
 */
-class Helicopter
+class Airplane
 {
 public:
 
@@ -155,8 +155,8 @@ public:
 
 	void setBufferMap();
 
-	Helicopter();
-	~Helicopter();
+	Airplane();
+	~Airplane();
 };
 
 #endif

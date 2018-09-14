@@ -6,7 +6,7 @@ using namespace std;
 #pragma once
 
 //—труктура дл€ добавлени€ новых вертолетов
-class Helicopter
+class Airplane
 {
 public:
 //	string modelName;

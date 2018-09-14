@@ -1,8 +1,8 @@
-#include "helicopter.h"
+#include "Airplane.h"
 #include "string.h"
 #include "iostream"
 
-void Helicopter::setParam()
+void Airplane::setParam()
 {
 
 //	modelName = model;

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Helicopter.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="Memory.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -30,11 +27,11 @@
     <ClCompile Include="Uspo.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Airplane.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Helicopter.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="Memory.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
@@ -48,6 +45,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="Uspo.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Airplane.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
