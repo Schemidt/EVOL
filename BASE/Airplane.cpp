@@ -394,7 +394,7 @@ void Airplane::setParam()
 	engLengthOff = getLengthWAV(fullName["eng_off_w"]);         //---------------------
 //	engLengthHpOn = getLengthWAV(fullName["eng_on_hp_w"]);   
 	engLengthMg = getLengthWAV(fullName["eng_w_w"]);            //------------------
-	engLengthRev = getLengthWAV(fullName["eng_w_rev"]);
+	engLengthRev = getLengthWAV(fullName["eng_rev_w"]);
 	engLengthWAavt = getLengthWAV(fullName["eng_w_avt_w"]);     //------------------
 //	engLengthHpW = getLengthWAV(fullName["eng_w_hp_w"]);
 //	engLengthHpOff = getLengthWAV(fullName["eng_off_hp_w"]);

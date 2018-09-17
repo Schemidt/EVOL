@@ -191,7 +191,7 @@ double getParameterFromVector(vector<point> &value, double offset)
 		p3 = value[2];
 	}
 	//если вектор состоит из малого числа значений - перебираем их
-	else /*if (n < 8)*/
+	else //if (n < 8)
 	{
 		if (value[0].x <= value[n - 1].x)
 		{

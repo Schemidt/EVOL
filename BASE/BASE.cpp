@@ -2086,7 +2086,7 @@ int main()
 				if (eng[0])//Если объект создан - используем его
 				{
 					eng[0]->angle = 'l';
-					if (eng[0]->play(localdata.p_eng1_zap, localdata.p_eng1_ostanov, localdata.p_eng_l_rev, localdata.p_eng1_hp, localdata.eng1_obor, airplane))
+					if (eng[0]->play(localdata.p_eng1_zap, localdata.p_eng1_ostanov, localdata.p_eng1_rkorr, localdata.p_eng_l_rev, localdata.p_eng1_hp, localdata.eng1_obor, airplane))
 					{
 
 					}
@@ -2106,7 +2106,7 @@ int main()
 				if (eng[1])//Если объект создан - используем его
 				{
 					eng[1]->angle = 'r';
-					if (eng[1]->play(localdata.p_eng2_zap, localdata.p_eng2_ostanov, localdata.p_eng_r_rev, localdata.p_eng2_hp, localdata.eng2_obor, airplane))
+					if (eng[1]->play(localdata.p_eng2_zap, localdata.p_eng2_ostanov, localdata.p_eng2_rkorr, localdata.p_eng_r_rev, localdata.p_eng2_hp, localdata.eng2_obor, airplane))
 					{
 
 					}
@@ -3986,7 +3986,7 @@ Engine::~Engine()
 	engCount--;
 }
 
-int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_hp, double parameter, Airplane &a)
+int Engine::play (bool status_on, bool status_off, bool status_max, bool status_rev, bool status_hp, double parameter, Airplane &a)
 {
 	if (status_hp)
 	{
@@ -4018,20 +4018,22 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 			mode = "on";
 		}
 	}
-	else if (!status_on && !status_off && !status_hp)
+	else if (!status_on && !status_off && !status_hp && ((parameter <= a.engTurnoverMg) || !status_max))
 	{
-		if (parameter <= a.engTurnoverMg)
-		{
-			mode = "mg";
-		}
-		else
-		{
-			mode = "avt";
-		}
-
-		if (mode == "mg" && status_rev)   mode = "rev";              // условие реверса ????
-
+//		if ((parameter <= a.engTurnoverMg) || !status_max)
+//		{
+			mode = (status_rev) ? "rev" : "mg";
+//			if (status_rev) {                      // условие реверса ????
+//				mode = "rev";
+//			}
+//			else mode = "mg";
+//		}
+//		else
+//		{
+//			mode = "avt";
+//		}
 	}
+	else if (status_max)  mode = "avt";
 	else if (status_off)
 	{
 		if (parameter <= a.engTurnoverMg)
@@ -4043,6 +4045,9 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 			mode = "avtOff";
 		}
 	}
+
+//	cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" << mode << "\r";
+
 	                                         // заполнение истории режимов
 	if (modeSequence.back() != mode)         //   vector<string> modeSequence = { "0","0","0" };//Вектор истории режимов
 	{
@@ -4099,7 +4104,7 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 		}
 	}
 	else if (mode == "rev") {                                  // реверс
-		filetoBuffer[id] = a.fullName["eng_w_rev"];
+		filetoBuffer[id] = a.fullName["eng_rev_w"];
 		filetoBuffer[!id] = a.fullName["eng_w_w"];
 	}
 	//мг -> 0 
@@ -4126,6 +4131,8 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 		filetoBuffer[id] = a.fullName["eng_w_w"];
 	}
 
+	cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" << mode << "\t"<< filetoBuffer[id] << "\t" << filetoBuffer[!id] << "\n";
+
 	double finalGain = 0;
 	if (mode == "on_hp" || mode == "w_hp" || mode == "off_hp")
 	{
@@ -4144,7 +4151,7 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 		|| filetoBuffer[id] == a.fullName["eng_on_hp_w"]
 		|| filetoBuffer[id] == a.fullName["eng_off_hp_w"]
 		|| filetoBuffer[!id] == a.fullName["eng_on_hp_w"]
-		|| filetoBuffer[!id] == a.fullName["eng_off_hp_w"] || filetoBuffer[id] == a.fullName["eng_w_rev"])  // добавлен реверс
+		|| filetoBuffer[!id] == a.fullName["eng_off_hp_w"] || filetoBuffer[id] == a.fullName["eng_rev_w"])  // добавлен реверс
 	{
 		switcher += deltaTime;
 		timeCrossfade(fade, rise, crossFadeDuration, switcher);         // проверить crossFadeDuration ?????
@@ -4188,6 +4195,8 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 		rise = 1;
 		fade = 1;
 	}
+
+//	printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t %.3f\r", rise);
 
 	//Для первых 2х источников
 	for (size_t i = 0; i < 2; i++)
@@ -4246,8 +4255,8 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 				offset[i] = a.engLengthMg * phase;
 				alSourcei(source[i], AL_LOOPING, AL_TRUE);
 			}
-			else if (filetoBuffer[i] == a.fullName["eng_w_rev"]) {          //  реверс
-				offset[i] = a.engLengthMg * phase;                          //
+			else if (filetoBuffer[i] == a.fullName["eng_rev_w"]) {          //  реверс
+				offset[i] = a.engLengthRev * phase;                          //
 				alSourcei(source[i], AL_LOOPING, AL_TRUE);                  //
 			}
 			else if (filetoBuffer[i] == a.fullName["eng_w_hp_w"])
@@ -4304,8 +4313,9 @@ int Engine::play(bool status_on, bool status_off, bool status_rev, bool status_h
 				gain[i] = getParameterFromVector(vector<point>{ {a.engTurnoverMg, 1}, { a.engTurnoverAvt, 0 } }, parameter);
 			}
 		}
-		else if (fileBuffered[i] == a.fullName["eng_w_rev"]) {              //   реверс
+		else if (fileBuffered[i] == a.fullName["eng_rev_w"]) {              //   реверс
 			pitch[i] = roundFloat((parameter / a.engTurnoverMg), 0.001);    //
+			gain[i] = 1;
 		}
 		else if (fileBuffered[i] == a.fullName["eng_w_hp_w"])
 		{
