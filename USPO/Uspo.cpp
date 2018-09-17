@@ -2204,9 +2204,7 @@ double interpolation(point p1, point p2, point p3, double x)
 		a0 = p1.y - a1 * p1.x - a2 * p1.x*p1.x;
 
 		return fx = a0 + a1 * x + a2*x*x;
-
 	}
-
 }
 
 double getParameterFromFile(string filename, double offset)

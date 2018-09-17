@@ -34,6 +34,7 @@ void Airplane::setPath(string pathToFile)
 /*	shortName["eng_w_w"] = "eng_w.wav"; //!<имя файла звука работы двигателя на режиме МГ
 */
 	shortName["eng_w_w"] = "eng_w_mg.wav";                      //   112
+	shortName["eng_rev_w"] = "RVR-2.wav";                   // -----
 
 	shortName["eng_off_w"] = "eng_off.wav"; //!<имя файла звука остановки двигателя 
 	shortName["eng_on_hp_w"] = "eng_hp_on.wav"; //!<имя файла звука разгона двигателя до режима ХП
@@ -393,6 +394,7 @@ void Airplane::setParam()
 	engLengthOff = getLengthWAV(fullName["eng_off_w"]);         //---------------------
 //	engLengthHpOn = getLengthWAV(fullName["eng_on_hp_w"]);   
 	engLengthMg = getLengthWAV(fullName["eng_w_w"]);            //------------------
+	engLengthRev = getLengthWAV(fullName["eng_w_rev"]);
 	engLengthWAavt = getLengthWAV(fullName["eng_w_avt_w"]);     //------------------
 //	engLengthHpW = getLengthWAV(fullName["eng_w_hp_w"]);
 //	engLengthHpOff = getLengthWAV(fullName["eng_off_hp_w"]);

@@ -234,7 +234,7 @@ public:
 	\param[in] h Объект хранящий характеристики вертолета
 	\return Статус источника OpenAL
 	*/
-	int play(bool status_on, bool status_off, bool status_hp, double parameter, Airplane &h);
+	int play(bool status_on, bool status_off, bool status_rev, bool status_hp, double parameter, Airplane &a);
 };
 
 /*!
