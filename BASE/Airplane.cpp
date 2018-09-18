@@ -448,7 +448,7 @@ void Airplane::setBufferMap()
 			it.first == "eng_off_hp_w" ||
 			it.first == "eng_w_avt_w" ||
 			it.first == "eng_on_avt_w" ||
-			it.first == "eng_avt_mg_w")
+			it.first == "eng_avt_mg_w" || it.first == "eng_rev_w")      // добавлен реверс
 		{
 			alGenBuffers(1, &buffers[i]);
 			channel = { 0.7,-1,0,0,0,0,0 };                             // коэффициент громкости в соотв. канале: ЛЕВЫЙ - 0.7
@@ -482,7 +482,7 @@ void Airplane::setBufferMap()
 			bufferMap[it.second] = buffers[i];
 			i++;
 		}
-		else if (it.first == "red_on_w" ||
+/*		else if (it.first == "red_on_w" ||
 			it.first == "red_w_w" ||
 			it.first == "red_on_mg_w" ||
 			it.first == "red_w_mg_w" ||
@@ -497,7 +497,7 @@ void Airplane::setBufferMap()
 			setBuffer(buffers[i], it.second, channel);
 			bufferMap[it.second] = buffers[i];
 			i++;
-		}
+		}*/
 	}
 	bufferMap["NULL"] = -1;//служебное значение
 }

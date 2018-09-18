@@ -108,7 +108,7 @@ public:
 	double engLengthOff = 0;
 	double engLengthHpOn = 0;
 	double engLengthMg = 0;
-	double engLengthRev = 0;
+	double engLengthRev = 0;                    // реверс
 	double engLengthWAavt = 0;
 	double engLengthHpW = 0;
 	double engLengthHpOff = 0;
