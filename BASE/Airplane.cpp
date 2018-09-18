@@ -15,9 +15,9 @@ void Airplane::setPath(string pathToFile)
 	//Двигатель
 	shortName["eng_on"] = "eng_on.txt"; //!<имя файла с переходной функцией разгона двигателя до режима МГ
 	shortName["eng_off"] = "eng_off.txt"; //!<имя файла с переходной функцией остановки двигателя 
-/*	shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
-	shortName["eng_avt_mg"] = "eng_avt_mg.txt"; //!<имя файла c переходной функцией остановки до режима малого газа
-*/												
+//	shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
+//	shortName["eng_avt_mg"] = "eng_avt_mg.txt"; //!<имя файла c переходной функцией остановки до режима малого газа
+												
 	shortName["eng_mg_avt"] = "eng_mg_cruis.txt";                            //         il_112 txt
 	shortName["eng_avt_mg"] = "eng_cruis_mg.txt";                            //         il_112
 
@@ -31,8 +31,8 @@ void Airplane::setPath(string pathToFile)
 										  //WAV
 										  //Двигатель
 	shortName["eng_on_w"] = "eng_on.wav"; //!<имя файла звука разгона двигателя до режима МГ
-/*	shortName["eng_w_w"] = "eng_w.wav"; //!<имя файла звука работы двигателя на режиме МГ
-*/
+//	shortName["eng_w_w"] = "eng_w.wav"; //!<имя файла звука работы двигателя на режиме МГ
+
 	shortName["eng_w_w"] = "eng_w_mg.wav";                      //   112
 	shortName["eng_rev_w"] = "RVR-2.wav";                   // -----
 
@@ -40,8 +40,8 @@ void Airplane::setPath(string pathToFile)
 	shortName["eng_on_hp_w"] = "eng_hp_on.wav"; //!<имя файла звука разгона двигателя до режима ХП
 	shortName["eng_w_hp_w"] = "eng_hp_w.wav"; //!<имя файла звука работы двигателя на режиме ХП
 	shortName["eng_off_hp_w"] = "eng_hp_off.wav"; //!<имя файла звука остановки двигателя из ХП
-/*	shortName["eng_w_avt_w"] = "eng_w_avt.wav"; //!<имя файла звука работы двигателя на режиме автомат
-*/
+//	shortName["eng_w_avt_w"] = "eng_w_avt.wav"; //!<имя файла звука работы двигателя на режиме автомат
+
 	shortName["eng_w_avt_w"] = "eng_cruis_140.wav";              //   il_112
 
 	shortName["eng_on_avt_w"] = "eng_on_avt.wav"; //!<имя файла звука разгона двигателя до режима автомат

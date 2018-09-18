@@ -413,8 +413,6 @@ using namespace std;
 
 #define MAX_AUX_SLOTS 16
 
-#define FLAPS_MAX_ANG 40.0
-
 SOUNDREAD soundread;//!< Переменная класса soundread для хранения управляющих признаков 
 
 int Sound::maxSlots;//!< Переменная инициализирующаяся максимальным числом источников ,которые могут проигрываться одновременно
@@ -424,7 +422,7 @@ int Sound::sourcesInUse = 0;
 int Sound::effectSlotsInUse = 0;
 double Sound::currentTime = 0;
 double Sound::deltaTime = 0;
-double Sound::step = 0;                  //  удалить
+//double Sound::step = 0;                  //  удалить
 double Sound::tangaz = 0;                //    удалить
 double Sound::derivTangaz = 0;           // ---------
 double Sound::hight = 0;
@@ -433,28 +431,30 @@ double Sound::accelerationVectorXZ = 0;
 double Sound::velocityY = 0;
 double Sound::dashVectorXZ = 0;            // ---------
 double Sound::accelerationVy = 0;
-double Sound::derivStep = 0;               // ---------
-double Sound::calcA = 0;                   //  ----------
-double Sound::redTurnAcc = 0;              //  -----------
+//double Sound::derivStep = 0;               // ---------
+//double Sound::calcA = 0;                   //  ----------
+//double Sound::redTurnAcc = 0;              //  -----------
 double Sound::groundTouch = 0;
 int Engine::engCount = 0;
 
 vector<double> Sound::vectorVy;
 vector<double> Sound::vectorVXZ;
 vector<double> Sound::vectorAccXZ;          // ????
-vector<double> Sound::vectorStep;          // -------------
+//vector<double> Sound::vectorStep;          // -------------
 vector<double> Sound::vectorTangaz;         // ---------
 vector<double> Sound::vectorTime;
-vector<double> Sound::vectorRedTurn;        // -----------
+//vector<double> Sound::vectorRedTurn;        // -----------
 vector<double> Sound::vectorAvrEng1Turn;
 vector<double> Sound::vectorAvrEng2Turn;
-vector<double> Sound::vectorAvrRedTurn;      // ------------
-vector<double> Sound::vectorAvrStep;         // -----------
-vector<double> Sound::vectorAvrAtk;         // ----------
+//vector<double> Sound::vectorAvrRedTurn;      // ------------
+//vector<double> Sound::vectorAvrStep;         // -----------
+//vector<double> Sound::vectorAvrAtk;         // ----------
 double Sound::globalWindow = 50;
 
 //float ot = 0;                                      //         проверочная переменная для Sound::play
 //int counter = 0;
+
+int p_gearFailed = 0;                                           // признак недовыпуска/недоуборки шасси
 
 //!\brief Основная функция программы
 int main()
@@ -585,16 +585,17 @@ int main()
 	Sound *trim = nullptr;
 	Sound *frict = nullptr;
 
-	Sound *flaps = nullptr;                                                                          // закрылки
-	Sound *gearup_l = nullptr;                                                                       // шасси уборка
-	Sound *geardown_l = nullptr;                                                                     // шасси выпуск
+	Sound *flaps = nullptr;                                         // закрылки
+	Gear *gearup_l = nullptr;                                       // шасси уборка
+	Gear *geardown_l = nullptr;                                     // шасси выпуск
 	
 //	Gear *gear_r = nullptr;
 //	Gear *gear_n = nullptr;
 	
-	bool p_flaps = 0;                                                                                // признак изменения угла закрылков
-	bool p_gearOff = 0;                                                                              // признак уборки шасси для запуска функции play
-	bool p_gearOn = 0;                                                                               // признак выпуска шасси -----------------   	
+	bool p_flaps = 0;                                               // признак изменения угла закрылков
+	bool p_gearOff = 0;                                             // признак уборки шасси для запуска функции play
+	bool p_gearOn = 0;                                              // признак выпуска шасси -----------------
+
 //	int gearSwitch = 0;
 //	vector<string> gearSwOn = { helicopter.fullName["gearup_on"], helicopter.fullName["geardown_on"] };
 //	vector<string> gearSwiW = { helicopter.fullName["gearup_w"], helicopter.fullName["geardown_w"] };
@@ -710,7 +711,7 @@ int main()
 
 			Sound::tangaz = localdata.tangaz;//тангаж (временно используем параметр инт осадков)
 			Sound::velocityVectorXZ = sqrt(pow(localdata.v_atm_x, 2) + pow(localdata.v_atm_z, 2));//приборная скорость
-			Sound::step = localdata.step; //шаг (временно используем параметр перегрузки)
+//			Sound::step = localdata.step; //шаг (временно используем параметр перегрузки)
 			Sound::hight = localdata.hight;
 			Sound::velocityY = localdata.vy;
 			Sound::groundTouch = (localdata.obj_hv + localdata.obj_l + localdata.obj_nos + localdata.obj_r) / 4;//Признак касания
@@ -2254,31 +2255,46 @@ int main()
 			}
 			//  выпуск/уборка шасси
 			if (airplane.gearFactor)
-			{				
-				airplane.vypHist_l.erase(airplane.vypHist_l.begin());                               //  стирание первого элемента в массиве vypHist_l  
-				airplane.vypHist_l.push_back(localdata.vyp_l);                                        //   запись в конец массива vypHist текущего значения vyp_l
+			{								 
+			    string mode = "0";//Переменная текущего режима
+				
+				airplane.vypHist_l.erase(airplane.vypHist_l.begin());              //  стирание первого элемента в массиве vypHist_l  
+				airplane.vypHist_l.push_back(localdata.vyp_l);                     //   запись в конец массива vypHist текущего значения vyp_l
 				
 
-			    if (airplane.vypHist_l[0] == 0 && localdata.vyp_l > 0) {                               // выпуск
+			    if (airplane.vypHist_l[0] == 0 && localdata.vyp_l > 0) {           // выпуск
 				    p_gearOn = 1;
+					mode = "down";
 			    }
-				else if (airplane.vypHist_l[0] == 1 && localdata.vyp_l < 1) {                          // уборка
+				else if (airplane.vypHist_l[0] == 1 && localdata.vyp_l < 1) {      // уборка
 					p_gearOff = 1;
+					mode = "up";
 				}				
 				else if (localdata.vyp_l == airplane.vypHist_l[0]) {
-					p_gearOff = 0;                                                           // признак уборки шасси для запуска функции play
-					p_gearOn = 0;                                                            // признак выпуска шасси ----------------------
+					p_gearOff = 0;                                                 // признак уборки шасси для запуска функции Gear::play
+					p_gearOn = 0;                                                  // признак выпуска шасси ----------------------
 				}
 
+				if (!p_gearOff && !p_gearOn) {
+					if (mode == "down" && localdata.vyp_l < 1) {                      // шасси было выпущено, но не до конца
+						p_gearFailed = GEAR_DOWN_FAILED;
+					}
+					else if (mode == "up" && localdata.vyp_l > 0) {                   // шасси было убрано не до конца
+						p_gearFailed = GEAR_UP_FAILED;
+					}
+					else if (localdata.vyp_l == 0 || localdata.vyp_l == 1) {
+						p_gearFailed = 0;
+					}
+				}
 				if (p_gearOff) //Условие создания объекта                                уборка шасси: временно используем только левую стойку
 					if (!gearup_l)//Если объект не создан 
-						gearup_l = new Sound;//Создаем объект
+						gearup_l = new Gear;//Создаем объект уборки шасси
 				if (p_gearOn) //Условие создания объекта                                 выпуск шасси: временно используем только левую стойку
 					if (!geardown_l)//Если объект не создан 
-						geardown_l = new Sound;//Создаем объект
+						geardown_l = new Gear;//Создаем объект выпуска шасси
 				if (gearup_l)//Если объект создан - используем его
 				{
-					if (gearup_l->play(p_gearOff, airplane.fullName["gearup_on"], airplane.fullName["gearup_w"], airplane.fullName["gearup_off"], airplane.gearFactor))
+					if (gearup_l->play(p_gearOff, airplane.fullName["gearup_on"], airplane.fullName["gearup_w"], airplane.fullName["gearup_off"], airplane.fullName["gearup_off_fal"], airplane.gearFactor))
 					{
 
 					}
@@ -2289,7 +2305,7 @@ int main()
 				}
 				if (geardown_l)//Если объект создан - используем его
 				{
-					if (geardown_l->play(p_gearOn, airplane.fullName["geardown_on"], airplane.fullName["geardown_w"], airplane.fullName["geardown_off"], airplane.gearFactor))
+					if (geardown_l->play(p_gearOn, airplane.fullName["geardown_on"], airplane.fullName["geardown_w"], airplane.fullName["geardown_off"], airplane.fullName["geardown_off_fal"], airplane.gearFactor))
 					{
 
 					}
@@ -6473,3 +6489,216 @@ int Crane::play(char status, string pathOn, string pathW, string pathOff, double
 
 	return 1;
 }
+
+int Gear::play(bool status, string pathOn, string pathW, string pathOffNormal, string pathOffFailed, double gainMult)
+{
+	bool start;	//Переменная для смены фазы на запуск
+	bool work;	//Переменная для смены фазы на работу
+	bool end;	//Переменная для смены фазы на выключение
+	bool free;	//Переменная для смены фазы на высвобождение памяти
+
+	double lengthOffNorm = 0;
+	double lengthOffFail = 0;
+
+				//Узнаем длинну файлов запуска и остановки
+	if (pathOn != "NULL")
+		lengthOn = getLengthWAV(pathOn);
+	if (pathOffNormal != "NULL")
+		lengthOffNorm = getLengthWAV(pathOffNormal);
+	if (pathOffFailed != "NULL")
+		lengthOffFail = getLengthWAV(pathOffFailed);
+
+	alGetSourcei(source[id], AL_SOURCE_STATE, &sourceStatus[id]);	
+    
+	//условие запуска когда все звуки присутствуют
+	if (pathOn != "NULL" && pathW != "NULL" && (pathOffNormal != "NULL" || pathOffFailed != "NULL"))
+	{
+		start = status & !soundOn & !soundWork;                                     // soundOn = soundOff = soundWork = 0 изначально
+		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= cFD);    // crossFadeDuration заменен на cFD
+		end = !status & !soundOff;
+		free = !status & soundOff & (sourceStatus[id] != AL_PLAYING);
+	}
+	//условие запуска когда отсутствует остановка
+	if (pathOn != "NULL" && pathW != "NULL" && pathOffNormal == "NULL" && pathOffFailed == "NULL")
+	{
+		start = status & !soundOn & !soundWork;
+		work = status & soundOn & !soundWork & ((lengthOn - offset[id]) <= cFD);
+		end = 0;
+		free = !status;
+	}
+	//условие запуска когда отсутствует работа
+	if (pathOn != "NULL" && pathW == "NULL" && (pathOffNormal != "NULL" || pathOffFailed != "NULL"))
+	{
+		start = status & !soundOn;
+		work = 0;
+		end = !status & !soundOff;
+		free = !status & soundOff & (sourceStatus[id] != AL_PLAYING);
+	}
+	//условие запуска когда отсутствует запуск
+	if (pathOn == "NULL" && pathW != "NULL" && (pathOffNormal != "NULL" || pathOffFailed != "NULL"))
+	{
+		start = 0;
+		work = status & !soundWork;
+		end = !status & !soundOff;
+		free = !status & soundOff & (sourceStatus[id] != AL_PLAYING);
+	}
+	//условие запуска когда отсутствует запуск и работа
+	if (pathOn == "NULL" && pathW == "NULL" && (pathOffNormal != "NULL" || pathOffFailed != "NULL"))
+	{
+		start = 0;
+		work = 0;
+		end = !status & !soundOff;
+		free = !status & soundOff & (sourceStatus[id] != AL_PLAYING);
+	}
+	//условие запуска когда отсутствует запуск и выключение
+	if (pathOn == "NULL" && pathW != "NULL" && pathOffNormal == "NULL" && pathOffFailed == "NULL")
+	{
+		start = 0;
+		work = status & !soundWork;
+		end = 0;
+		free = !status;
+	}
+	//условие запуска когда отсутствует работа и выключение
+	if (pathOn != "NULL" && pathW == "NULL" && pathOffNormal == "NULL" && pathOffFailed == "NULL")
+	{
+		start = status & !soundOn;
+		work = 0;
+		end = 0;
+		free = !status & (sourceStatus[id] != AL_PLAYING);
+	}
+	//все 0
+	if (pathOn == "NULL" && pathW == "NULL" && pathOffNormal == "NULL" && pathOffFailed == "NULL")
+	{
+		start = 0;
+		work = 0;
+		end = 0;
+		free = 1;
+	}
+
+	//Включение (присутствует по крайней мере звук запуска)
+	if (start)
+	{
+		soundOn = 1;
+		soundWork = 0;
+		soundOff = 0;
+		mode = "on";
+	}
+	//Работа (присутствует по крайней мере звук работы)
+	if (work)
+	{
+		soundOn = 0;
+		soundWork = 1;
+		soundOff = 0;
+		mode = "w";
+	}
+	//Выключение (присутствует по крайней мере звук выключения)
+	if (end)
+	{
+		soundOn = 0;
+		soundWork = 0;
+		soundOff = 1;
+		mode = "off";
+	}
+	//Освобождение памяти
+	if (free)
+	{
+		soundOn = 0;
+		soundWork = 0;
+		soundOff = 0;
+
+		return 0; //Возвращаем 0 - признак окончания работы объекта
+	}
+
+	if (modeSequence.back() != mode)//Если произошла смена режима
+	{
+		switcher = 0;//Обнуляем таймер кроссфейда  
+		id = !id;//Меняем номер активного источника
+		if (mode == "on" || mode == "off")//Если текущий режим запуск или выключение - перезапускаем с нужного времени
+		{
+			fileBuffered[id] = "NULL";
+		}
+		modeSequence.push_back(mode);//Сохраняем режим в историю
+		if (modeSequence.size() > 3)//Если если история режимов превышает 3 - очищаем лишние режимы
+		{
+			modeSequence.erase(modeSequence.begin());
+		}
+	}
+	//Инициализируем переменные в зависимости от режима
+	if (mode == "w")
+	{
+		filetoBuffer[id] = pathW;
+		alSourcef(source[id], AL_LOOPING, AL_TRUE);         // режим "w" источник каждый раз снова переводится в режим AL_PLAYING
+	}
+	else if (mode == "on")
+	{
+		filetoBuffer[id] = pathOn;
+		alSourcef(source[id], AL_LOOPING, AL_FALSE);        // режим "on" источник после отыграния переводится в режим AL_STOPPED
+	}
+	else if (mode == "off")
+	{
+		filetoBuffer[id] = (p_gearFailed) ? pathOffFailed : pathOffNormal;
+		alSourcef(source[id], AL_LOOPING, AL_FALSE);        // режим "off" не может быть LOOPING
+	}
+
+	double finalGain = gain[id] * gainMult * masterGain;//Вычисляем максимальную громкость 
+	double rise = 0;
+	double fade = 0;
+	switcher += deltaTime;
+	timeCrossfade(fade, rise, cFD, switcher);              //  замена на cFD
+
+	if (fileBuffered[id] == "NULL" && filetoBuffer[id] == "NULL")
+	{
+		rise = 0;
+		fade = 1;
+	}
+	else if ((fileBuffered[!id] == "NULL" && filetoBuffer[!id] == "NULL") || pathW == "NULL")
+	{
+		rise = 1;
+		fade = 0;
+	}
+
+	for (size_t i = 0; i < 2; i++)
+	{
+		//Загружаем буферы и запускаем источники
+		if (fileBuffered[i] != filetoBuffer[i])
+		{
+			sourceStatus[i] = setAndDeploySound(&buffer[i], &source[i], offset[i], filetoBuffer[i]);
+			fileBuffered[i] = filetoBuffer[i];
+		}
+
+		alGetSourcei(source[i], AL_SOURCE_STATE, &sourceStatus[i]);
+
+		//Обновляем высоту тона
+		alSourcef(source[i], AL_PITCH, pitch[i]);
+	}
+
+	alSourcef(source[!id], AL_GAIN, fade * finalGain);         //  перемещены со строк 2781..
+	alSourcef(source[id], AL_GAIN, rise * finalGain);
+
+	//Пока идет запуск - высчитываем точку остановки
+	if (soundOn)
+	{
+		alGetSourcef(source[id], AL_SEC_OFFSET, &offset[id]);
+		offsetOn = offset[id];
+		if (offset[id] != 0)
+		{
+			offset[!id] = ((p_gearFailed) ? lengthOffFail : lengthOffNorm) * (1 - (offset[id] / lengthOn));
+		}
+	}
+	//Пока идет остановка - высчитываем точку запуска
+	if (soundWork) {
+		offset[id] = offset[!id] = 0;                        // исправление !!!!!!!!!!!
+	}
+	if (soundOff)
+	{
+		alGetSourcef(source[id], AL_SEC_OFFSET, &offset[id]);
+		offsetOff = offset[id];
+		if (offset[id] != 0)
+		{
+			offset[!id] = lengthOn * (1 - (offset[id] / ((p_gearFailed) ? lengthOffFail : lengthOffNorm)));
+		}
+	}                         
+
+	return 1;
+}
+

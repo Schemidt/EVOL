@@ -52,7 +52,7 @@ public:
 	static double currentTime;//!< Переменная хранящая текущее время полученное из общей памяти от USPO
 	static double deltaTime;//!< Переменная для отслеживания изменения времени
 
-	static double step; //!< Шаг
+//	static double step; //!< Шаг
 	static double tangaz;//!< Тангаж
 	static double derivTangaz;//!<скорость изменения Тангажа (dtangaz/dt)
 	static double hight;//!< Высота
@@ -61,24 +61,24 @@ public:
 	static double velocityY;//!< вертикальная скорость
 	static double dashVectorXZ;//!< Рывок (d2v/dt)
 	static double accelerationVy;//!< Вертикальное ускорение (dvy/dt)
-	static double derivStep;//!< Скорость изменения шага
-	static double calcA;//!< Атака винта
-	static double redTurnAcc;//!< Ускорение оборотов редуктора (dturn/dt)
+//	static double derivStep;//!< Скорость изменения шага
+//	static double calcA;//!< Атака винта
+//	static double redTurnAcc;//!< Ускорение оборотов редуктора (dturn/dt)
 	static double groundTouch;//!< Признак касания земли
 
 	static vector<double> vectorVy;//!<Массив для рассчета производной от вертикальной скорости
 	static vector<double> vectorVXZ;//!<Массив для рассчета производной от горизонтальной скорости
 	static vector<double> vectorAccXZ;//!<Массив для рассчета производной от горизонтального ускорения
-	static vector<double> vectorStep;//!<Массив для рассчета производной от шага
+//	static vector<double> vectorStep;//!<Массив для рассчета производной от шага
 	static vector<double> vectorTangaz;//!<Массив для рассчета производной от тангажа
 	static vector<double> vectorTime;//!<Массив для рассчета производной
-	static vector<double> vectorRedTurn;//!<Массив для рассчета производной от оборотов редуктора
+//	static vector<double> vectorRedTurn;//!<Массив для рассчета производной от оборотов редуктора
 
 	static vector<double> vectorAvrEng1Turn;//!<Массив для рассчета среднего оборотов первого двигателя
 	static vector<double> vectorAvrEng2Turn;//!<Массив для рассчета среднего оборотов второго двигателя
-	static vector<double> vectorAvrRedTurn;//!<Массив для рассчета среднего оборотов редуктора
-	static vector<double> vectorAvrStep;//!<Массив для рассчета среднего шага
-	static vector<double> vectorAvrAtk;//!<Массив для рассчета средней атаки
+//	static vector<double> vectorAvrRedTurn;//!<Массив для рассчета среднего оборотов редуктора
+//	static vector<double> vectorAvrStep;//!<Массив для рассчета среднего шага
+//	static vector<double> vectorAvrAtk;//!<Массив для рассчета средней атаки
 
 	static double globalWindow;//!<Переменная времени для набора значений в массивы для рассчета среднего
 
@@ -419,12 +419,13 @@ public:
 	int play(char status, string path_on, string path_w, string path_off, double gain_mult);
 
 };
-/*
+
 class Gear : public Sound                                                                              // класс шасси (выпуск/уборка)
 {
 public:
 
-};*/
+	int play (bool status, string pathOn, string pathW, string pathOffNormal, string pathOffFailed, double gainMult);
+};
 #endif
 
 //!\brief Очищает объекты OpenAL
