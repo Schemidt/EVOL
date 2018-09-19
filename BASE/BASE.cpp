@@ -595,6 +595,7 @@ int main()
 	bool p_flaps = 0;                                               // признак изменения угла закрылков
 	bool p_gearOff = 0;                                             // признак уборки шасси для запуска функции play
 	bool p_gearOn = 0;                                              // признак выпуска шасси -----------------
+	string gearmode = "0";                                          //Переменная текущего режима шасси
 
 //	int gearSwitch = 0;
 //	vector<string> gearSwOn = { helicopter.fullName["gearup_on"], helicopter.fullName["geardown_on"] };
@@ -2256,36 +2257,39 @@ int main()
 			//  выпуск/уборка шасси
 			if (airplane.gearFactor)
 			{								 
-			    string mode = "0";//Переменная текущего режима
-				
 				airplane.vypHist_l.erase(airplane.vypHist_l.begin());              //  стирание первого элемента в массиве vypHist_l  
 				airplane.vypHist_l.push_back(localdata.vyp_l);                     //   запись в конец массива vypHist текущего значения vyp_l
 				
 
 			    if (airplane.vypHist_l[0] == 0 && localdata.vyp_l > 0) {           // выпуск
 				    p_gearOn = 1;
-					mode = "down";
+					gearmode = "down";
 			    }
 				else if (airplane.vypHist_l[0] == 1 && localdata.vyp_l < 1) {      // уборка
 					p_gearOff = 1;
-					mode = "up";
+					gearmode = "up";
 				}				
 				else if (localdata.vyp_l == airplane.vypHist_l[0]) {
 					p_gearOff = 0;                                                 // признак уборки шасси для запуска функции Gear::play
 					p_gearOn = 0;                                                  // признак выпуска шасси ----------------------
 				}
 
+//				cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" << "p_gearOn=" << p_gearOn << "\t" << "p_gearOff=" << p_gearOff << "\t"<<"mode="<<gearmode<<"\t";
+
 				if (!p_gearOff && !p_gearOn) {
-					if (mode == "down" && localdata.vyp_l < 1) {                      // шасси было выпущено, но не до конца
+					if (gearmode == "down" && localdata.vyp_l < 1) {                      // шасси было выпущено, но не до конца
 						p_gearFailed = GEAR_DOWN_FAILED;
 					}
-					else if (mode == "up" && localdata.vyp_l > 0) {                   // шасси было убрано не до конца
+					else if (gearmode == "up" && localdata.vyp_l > 0) {                   // шасси было убрано не до конца
 						p_gearFailed = GEAR_UP_FAILED;
 					}
 					else if (localdata.vyp_l == 0 || localdata.vyp_l == 1) {
 						p_gearFailed = 0;
 					}
 				}
+
+//				cout << p_gearFailed << "\r";
+
 				if (p_gearOff) //Условие создания объекта                                уборка шасси: временно используем только левую стойку
 					if (!gearup_l)//Если объект не создан 
 						gearup_l = new Gear;//Создаем объект уборки шасси
@@ -6698,6 +6702,8 @@ int Gear::play(bool status, string pathOn, string pathW, string pathOffNormal, s
 			offset[!id] = lengthOn * (1 - (offset[id] / ((p_gearFailed) ? lengthOffFail : lengthOffNorm)));
 		}
 	}                         
+
+//	cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" << fileBuffered[id] << "\t" << p_gearFailed << "\r";
 
 	return 1;
 }
