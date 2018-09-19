@@ -1,6 +1,11 @@
 #include "string.h"
 #include "map"
 
+#define FLAP_EXT_TIME_40  28                    // время выпуска закрылков на 40 град около 30 сек (выбрано 28)
+#define FLAP_RET_TIME_40  28                    // время уборки закрылков на 40 град около 30 сек (выбрано 28)
+#define GEAR_EXT_TIME     9.2                   // время выпуска шасси около 10 с (9.2 с)
+#define GEAR_RET_TIME     8.7                   // время уборки шасси ок. 9 с (8.7 с)
+
 using namespace std;
 
 #pragma once

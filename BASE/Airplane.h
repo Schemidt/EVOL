@@ -16,10 +16,8 @@
 #pragma pack ( push, 1 )
 using namespace std;
 
-#define MODEL_PATH "il_112"
-
-#define FLAPS_MAX_ANG 40.0
-
+#define MODEL_PATH       "il_112"
+#define FLAPS_MAX_ANG     40.0
 #define GEAR_DOWN_FAILED  0x11
 #define GEAR_UP_FAILED    0x12
 
@@ -96,7 +94,7 @@ public:
 	double frict = 0;//!>Фрикцион
 
 	double flapsFactor = 0;                                              // множитель громкости закрылков ----------------------------
-	vector<float> flapsHist;                                           // массив для определения признака выпуска/уборки закрылков
+	vector<float> flapsHist;                                            // массив для определения признака выпуска/уборки закрылков
 	double gearFactor = 0;                                               // множитель громкости выпуска/уборки шасси
 	vector<float> vypHist_l;                                            // массивы для определения признака выпуска/уборки шасси left
 	vector<float> vypHist_r;                                            // ----------------                                      right

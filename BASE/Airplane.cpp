@@ -116,8 +116,8 @@ void Airplane::setPath(string pathToFile)
 //	shortName["nar8"] = "s8.wav";//!<имя файла звука НАР 8
 //	shortName["nar13"] = "s13.wav";//!<имя файла звука НАР 13
 	shortName["rocket"] = "rocket.wav";//!<имя файла звука попадания ракеты
-	shortName["bullet0"] = "bullet_1.wav";//!<имя файла звука попадания ракеты
-	shortName["bullet1"] = "bullet_2.wav";//!<имя файла звука попадания ракеты
+	shortName["bullet0"] = "bullet_1.wav";//!<имя файла звука попадания пули
+	shortName["bullet1"] = "bullet_2.wav";//!<имя файла звука попадания пули
 	shortName["upk"] = "gun_loop.wav";//!<имя файла звука выстрелов УПК
 	shortName["ppu"] = "gun_loop.wav";//!<имя файла звука выстрелов ППУ
 	shortName["shoot"] = "shoot.wav";//!<имя файла звука выстрелов ППУ
@@ -163,11 +163,11 @@ void Airplane::setPath(string pathToFile)
 								   //Зуммер
 	shortName["beep"] = "beep.wav";//
 								   //Неопознанный звук
-	shortName["undefined0_on"] = "undefined0_on.wav";//
-	shortName["undefined0_w"] = "undefined0_w.wav";//
-	shortName["undefined1_on"] = "undefined1_on.wav";//
-	shortName["undefined1_w"] = "undefined1_w.wav";//
-	shortName["undefined1_off"] = "undefined1_off.wav";
+//	shortName["undefined0_on"] = "undefined0_on.wav";//
+//	shortName["undefined0_w"] = "undefined0_w.wav";//
+//	shortName["undefined1_on"] = "undefined1_on.wav";//
+//	shortName["undefined1_w"] = "undefined1_w.wav";//
+//	shortName["undefined1_off"] = "undefined1_off.wav";
 	//Другое
 	//Шум
 	shortName["pinkNoise"] = "vadd.wav";//

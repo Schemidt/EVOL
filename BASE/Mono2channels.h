@@ -114,7 +114,7 @@ bool mono2channels(T                         *monodata,        /* in  */
 			newSoundData[i*channelsCount + 6] = monodata[i] * channels[6];//side left 
 			newSoundData[i*channelsCount + 7] = monodata[i] * channels[7];//side right
 		}
-	}  /* end for( i = 0;....samples ) */
+	}  // end for( i = 0;....samples ) 
 
 	*returnedData = newSoundData;
 	*returnedSize = newSoundDataSize;
@@ -123,7 +123,7 @@ bool mono2channels(T                         *monodata,        /* in  */
 
 ALenum getFormat(AL_SOUND_CHANNELS chan, int bitsPerSample)
 {
-	/* готовим строковый вид формата */
+	// готовим строковый вид формата 
 	string str = "AL_FORMAT_";
 
 	// does sound card support such a format

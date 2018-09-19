@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	soundFFT.reduktor_gl_obor = 0;
+//	soundFFT.reduktor_gl_obor = 0;
 	soundFFT.eng1_obor = 0;
 	soundFFT.eng2_obor = 0;
 	soundFFT.master_gain = 1;
@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
 	double turnAvtEng1 = 0;
 	double turnMgEng2 = 0;
 	double turnAvtEng2 = 0;
-	double turnRevRedAnsat = 0;
+//	double turnRevRedAnsat = 0;
 	double offsetMgEng1 = 0;
 	double offsetAvtEng1 = 0;
 	double offsetMgEng2 = 0;
@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
 	double offsetMg1 = 0;
 	double offsetMg2 = 0;
 	double offsetAvt = 0;
-	double offsetAnsatRev = 0;
+//	double offsetAnsatRev = 0;
 	double spd = 0;
 	double router = 0;
 	double metersToSlitFront = 3;
@@ -929,7 +929,7 @@ int main(int argc, char* argv[])
 				//   закрылки
 				if (flapsOn) {
 					if (soundFFT.flaps < 1) {
-						soundFFT.flaps += deltaTime / 28;       // время выпуска закрылков на 40 град около 30 сек (выбрано 28)
+						soundFFT.flaps += deltaTime / FLAP_EXT_TIME_40;   
 						if (soundFFT.flaps > 1) {
 							soundFFT.flaps = 1;
 							flapsOn = !flapsOn;
@@ -938,7 +938,7 @@ int main(int argc, char* argv[])
 				}
 				if (flapsOff) {
 					if (soundFFT.flaps > 0) {
-						soundFFT.flaps -= deltaTime / 28;       // время уборки закрылков на 40 град около 30 сек (выбрано 28)
+						soundFFT.flaps -= deltaTime / FLAP_RET_TIME_40;       
 						if (soundFFT.flaps < 0) {
 							soundFFT.flaps = 0;
 							flapsOff = !flapsOff;
@@ -946,7 +946,7 @@ int main(int argc, char* argv[])
 					}	
 				}
 				//    выпуск/уборка шасси
-				if (gearOn) {                                                              // выпуск
+				if (gearOn) {                                                              // выпуск !! только левая стойка
 					if (soundFFT.vyp_l < 1) {
 						if (!p_gear_l) {
 							soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 0;
@@ -957,7 +957,7 @@ int main(int argc, char* argv[])
 						gearOn = !gearOn;
 					}
 					if (p_gear_l) {
-						soundFFT.vyp_l += static_cast<float>(deltaTime) / 9.2;        // время выпуска шасси около 10 с (9.2 с)
+						soundFFT.vyp_l += static_cast<float>(deltaTime) / GEAR_EXT_TIME;        
 						if (soundFFT.vyp_l > 1) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 1;
 							gearOn = !gearOn;
@@ -966,7 +966,7 @@ int main(int argc, char* argv[])
 					}
 					gearHist = 1;
 				}
-				else if (gearOff) {                                                      // уборка
+				else if (gearOff) {                                                      // уборка !! только левая стойка
 					if (soundFFT.vyp_l > 0) {
 						if (!p_gear_l) {
 							soundFFT.vyp_l = soundFFT.vyp_r = soundFFT.vyp_n = 1;
@@ -977,7 +977,7 @@ int main(int argc, char* argv[])
 						gearOff = !gearOff;
 					}
 					if (p_gear_l) {
-		                soundFFT.vyp_l -= static_cast<float>(deltaTime) / 8.7;         // время уборки шасси ок. 9 с (8.7 с)
+		                soundFFT.vyp_l -= static_cast<float>(deltaTime) / GEAR_RET_TIME;         
 						if (soundFFT.vyp_l < 0) {
 							soundFFT.vyp_n = soundFFT.vyp_r = soundFFT.vyp_l = 0;
 							gearOff = !gearOff;
@@ -1783,8 +1783,8 @@ void kbHit()
 			soundFFT.p_eng2_pomp = !soundFFT.p_eng2_pomp;//Помпаж 2го двигателя
 			break;
 		case '4':
-			singleSturm = 1;
-			singleSturmTimer = 0;//Признак применения УР
+//			singleSturm = 1;
+//			singleSturmTimer = 0;//Признак применения УР
 			break;
 		case '5':
 			soundFFT.p_spo_upk = !soundFFT.p_spo_upk;//Признак применения СПО УПК
@@ -1796,11 +1796,11 @@ void kbHit()
 			soundFFT.p_vu1 = !soundFFT.p_vu1;//ВУ
 			break;
 		case 'S':
-			soundFFT.p_vu3 = !soundFFT.p_vu3;//Свист опционально
+//			soundFFT.p_vu3 = !soundFFT.p_vu3;//Свист опционально
 			break;
 		case 'w':
-			singleNar8 = 1;
-			singleNar8Timer = 0;
+//			singleNar8 = 1;
+//			singleNar8Timer = 0;
 			break;
 		case 'E':		//ВСУ запуск           было "e"
 			vsuOn = 1;
@@ -1990,7 +1990,7 @@ void kbHit()
 			soundFFT.p_po500 = !soundFFT.p_po500;//115В
 			break;
 		case 'N':
-			soundFFT.ground_power_supply = !soundFFT.ground_power_supply;//НИП
+			soundFFT.ground_power_supply = !soundFFT.ground_power_supply;//АИП
 			break;
 		case 'T':
 			soundFFT.dis_tank_pump = !soundFFT.dis_tank_pump;//Насос расходного бака
@@ -2007,10 +2007,10 @@ void kbHit()
 			soundFFT.p_skv_on = !soundFFT.p_skv_on;//СКВ
 			break;
 		case 'a':
-			soundFFT.zoomer = !soundFFT.zoomer;//бибиби
+//			soundFFT.zoomer = !soundFFT.zoomer;//бибиби
 			break;
 		case '8':
-			soundFFT.undefined = !soundFFT.undefined;//хз 2
+//			soundFFT.undefined = !soundFFT.undefined;//хз 2
 			break;
 		case 'V':
 			soundFFT.p_nasos = !soundFFT.p_nasos;//Насосная станция
@@ -2024,7 +2024,7 @@ void kbHit()
 			kolcTimer = 0;
 			break;
 		case '$':
-			soundFFT.p_ur_igla = !soundFFT.p_ur_igla;//
+//			soundFFT.p_ur_igla = !soundFFT.p_ur_igla;//
 			break;
 		case 'A':
 			test = !test;//Тестовые циклограммы                     ----было   "F"----------
@@ -2516,6 +2516,7 @@ double getParameterFromVector(vector<point> &value, double offset)
 	return interpolation(p1, p2, p3, offset);
 }
 
+/*
 int binSer(vector<point> &points, double offset)
 {
 	int l = 0;
@@ -2562,7 +2563,7 @@ int binSer(vector<point> &points, double offset)
 	}
 	return n;
 }
-
+*/
 point & point::operator=(const point & copy)
 {
 	this->x = copy.x;

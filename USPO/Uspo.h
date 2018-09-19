@@ -230,4 +230,4 @@ double getParameterFromVector(vector<point> &value, double offset);
 //
 vector <point> getVectorFromFile(string filename);
 
-int binSer(vector<point> &points, double offset);
+//int binSer(vector<point> &points, double offset);

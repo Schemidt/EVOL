@@ -595,7 +595,7 @@ int main()
 	bool p_flaps = 0;                                               // признак изменения угла закрылков
 	bool p_gearOff = 0;                                             // признак уборки шасси для запуска функции play
 	bool p_gearOn = 0;                                              // признак выпуска шасси -----------------
-	string gearmode = "0";                                          //Переменная текущего режима шасси
+	string gearmode = "0";                                          //Переменная текущего режима шасси: "up"/"down"
 
 //	int gearSwitch = 0;
 //	vector<string> gearSwOn = { helicopter.fullName["gearup_on"], helicopter.fullName["geardown_on"] };
@@ -772,7 +772,6 @@ int main()
 //						Sound::vectorAvrAtk.erase(Sound::vectorAvrAtk.begin());
 //					}
 				}
-
 				Sound::vectorAvrEng1Turn.push_back(localdata.eng1_obor);
 				Sound::vectorAvrEng2Turn.push_back(localdata.eng2_obor);
 //				Sound::vectorAvrRedTurn.push_back(localdata.reduktor_gl_obor);
@@ -2244,13 +2243,10 @@ int main()
 						flaps = new Sound;//Создаем объект
 				if (flaps)//Если объект создан - используем его
 				{
-					if (flaps->play(p_flaps, airplane.fullName["flaps_on"], airplane.fullName["flaps_w"], airplane.fullName["flaps_off"], airplane.flapsFactor))
-					{
-
+					if (flaps->play(p_flaps, airplane.fullName["flaps_on"], airplane.fullName["flaps_w"], airplane.fullName["flaps_off"], airplane.flapsFactor))  {
 					}
-					else
-					{
-								Free(flaps);//Удаляем объект
+					else   {
+						Free(flaps);//Удаляем объект
 					}						
 				}			
 			}
@@ -2273,7 +2269,6 @@ int main()
 					p_gearOff = 0;                                                 // признак уборки шасси для запуска функции Gear::play
 					p_gearOn = 0;                                                  // признак выпуска шасси ----------------------
 				}
-
 //				cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" << "p_gearOn=" << p_gearOn << "\t" << "p_gearOff=" << p_gearOff << "\t"<<"mode="<<gearmode<<"\t";
 
 				if (!p_gearOff && !p_gearOn) {
@@ -2287,7 +2282,6 @@ int main()
 						p_gearFailed = 0;
 					}
 				}
-
 //				cout << p_gearFailed << "\r";
 
 				if (p_gearOff) //Условие создания объекта                                уборка шасси: временно используем только левую стойку
@@ -2298,23 +2292,17 @@ int main()
 						geardown_l = new Gear;//Создаем объект выпуска шасси
 				if (gearup_l)//Если объект создан - используем его
 				{
-					if (gearup_l->play(p_gearOff, airplane.fullName["gearup_on"], airplane.fullName["gearup_w"], airplane.fullName["gearup_off"], airplane.fullName["gearup_off_fal"], airplane.gearFactor))
-					{
-
+					if (gearup_l->play(p_gearOff, airplane.fullName["gearup_on"], airplane.fullName["gearup_w"], airplane.fullName["gearup_off"], airplane.fullName["gearup_off_fal"], airplane.gearFactor))  {
 					}
-					else
-					{
+					else  {
 						Free(gearup_l);//Удаляем объект
 					}
 				}
 				if (geardown_l)//Если объект создан - используем его
 				{
-					if (geardown_l->play(p_gearOn, airplane.fullName["geardown_on"], airplane.fullName["geardown_w"], airplane.fullName["geardown_off"], airplane.fullName["geardown_off_fal"], airplane.gearFactor))
-					{
-
+					if (geardown_l->play(p_gearOn, airplane.fullName["geardown_on"], airplane.fullName["geardown_w"], airplane.fullName["geardown_off"], airplane.fullName["geardown_off_fal"], airplane.gearFactor)) {
 					}
-					else
-					{
+					else  {
 						Free(geardown_l);//Удаляем объект
 					}
 				}				
@@ -6132,8 +6120,8 @@ Sound::Sound(int sources, int buffers, int effectslots) : sourceStatus(new int[s
 	{
 		switch (z)
 		{
-		case 256: cout << " Cant gen more sources...\n" << endl; break;
-		case 16: cout << " Cant gen more aux slots...\n" << endl; break;
+		case 256: cout << " Can't gen more sources...\n" << endl; break;
+		case 16: cout << " Can't gen more aux slots...\n" << endl; break;
 		}
 	}
 	sourceNumber = sources;
@@ -6164,9 +6152,9 @@ Sound::Sound(int sources, int buffers, int effectslots) : sourceStatus(new int[s
 
 Sound::Sound(const Sound &copy) : Sound()
 {
-	/*soundOn = 0;
-	soundWork = 0;
-	soundOff = 0;*/
+//	soundOn = 0;
+//	soundWork = 0;
+//	soundOff = 0;
 	soundOn = copy.soundOn;
 	soundWork = copy.soundWork;
 	soundOff = copy.soundOff;
@@ -6213,9 +6201,9 @@ Sound::Sound(const Sound &copy) : Sound()
 
 Sound & Sound::operator =(const Sound & copy)
 {
-	/*soundOn = 0;
-	soundWork = 0;
-	soundOff = 0;*/
+//	soundOn = 0;
+//	soundWork = 0;
+//	soundOff = 0;
 	soundOn = copy.soundOn;
 	soundWork = copy.soundWork;
 	soundOff = copy.soundOff;

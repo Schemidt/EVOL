@@ -78,10 +78,7 @@ public:
 	double x = 0;//Абсцисса
 	double y = 0;//Ордината
 
-	point()
-	{
-
-	}
+	point() { }
 
 	point(double xi, double yi)
 	{
