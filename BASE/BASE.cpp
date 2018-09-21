@@ -5969,14 +5969,14 @@ int Runway::play(Airplane &h, SOUNDREAD &sr)
 			alAuxiliaryEffectSloti(effectSlot[0], AL_EFFECTSLOT_EFFECT, effect[0]);//помещаем эффект в слот (в 1 слот можно поместить 1 эффект)
 			alFilteri(filter[0], AL_FILTER_TYPE, AL_FILTER_LOWPASS);
 			alFilterf(filter[0], AL_LOWPASS_GAIN, 0);
-			alSource3i(source[0], AL_AUXILIARY_SEND_FILTER, effectSlot[0], 0, 0);
-			alSourcei(source[0], AL_DIRECT_FILTER, filter[0]);
+			alSource3i(source[0], AL_AUXILIARY_SEND_FILTER, effectSlot[0], 0, 0);      // ничего не происходит
+			alSourcei(source[0], AL_DIRECT_FILTER, filter[0]);                         // работает LOW_PASS с громкостью 0
 			eq = "set";
 		}
 
 		alEffectf(effect[0], AL_EQUALIZER_HIGH_CUTOFF, 4000);
 
-		alEffectf(effect[0], AL_EQUALIZER_HIGH_GAIN, interpolation({ 8.3, 0.126 }, { 11.2, 1 }, sr.v_surf_x));//
+		alEffectf(effect[0], AL_EQUALIZER_HIGH_GAIN, interpolation({ 8.3, 0.126 }, { 11.2, 1 }, sr.v_surf_x));// V=30 to 40 km/h частоты > 4 к√ц от 0.126 до 1.0
 
 		alAuxiliaryEffectSloti(effectSlot[0], AL_EFFECTSLOT_EFFECT, effect[0]);//помещаем эффект в слот (в 1 слот можно поместить 1 эффект)
 
@@ -6029,7 +6029,7 @@ int Runway::play(Airplane &h, SOUNDREAD &sr)
 	{
 		filetoBuffer[1] = h.fullName["runway"];
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
-		gain[1] = interpolation({ 0, 0 }, { 13.8, 1 }, abs(sr.v_surf_x)) * groundTouch;
+		gain[1] = interpolation({ 0, 0 }, { 13.8, 1 }, abs(sr.v_surf_x)) * groundTouch;    //  нарастает от 0 до 50 км/ч
 	}
 
 	for (size_t i = 0; i < sourceNumber; i++)
