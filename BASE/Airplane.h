@@ -1,8 +1,8 @@
 /*!
 \file
-\brief Класс Helicopter / объявление
+\brief Класс Airplane / объявление
 
-Данный файл объявляет класс Helicopter
+Данный файл объявляет класс Airplane
 */
 #pragma once
 

@@ -4,8 +4,8 @@
 #define FLAPS_MAX_ANGLE   35.0                  // максимальный угол выпуска закрылков
 #define FLAP_EXT_TIME_35  20                    // время выпуска закрылков на 35 град < 20 c
 #define FLAP_RET_TIME_35  20                    // время уборки закрылков на 35 град < 20 c
-#define GEAR_EXT_TIME     11.5                   // время выпуска шасси < 12 с (9.2 с)
-#define GEAR_RET_TIME     11.5                   // время уборки шасси < 12 с (8.7 с)
+#define GEAR_EXT_TIME     11.5                   // время выпуска шасси < 12 с
+#define GEAR_RET_TIME     11.5                   // время уборки шасси < 12 с
 
 using namespace std;
 
