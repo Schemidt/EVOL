@@ -63,7 +63,7 @@ public:
 	double cutoffCraneFactor = 0;//!<Множитель громкости перекрывного крана
 	double ko50Factor = 0;//!<Множитель громкости KO-50
 	double skvFactor = 0;//!<Множитель громкости СКВ
-	double runwayFactor = 1;//!<Множитель громкости звука движения по ВПП и РД
+	double rollFactor = 1;//!<Множитель громкости звука движения по ВПП и РД
 //	double rocketSturmFactor = 0;//!<Множитель громкости ракеты штурм
 //	double rocketNar8Factor = 0;//!<Множитель громкости НАР 8
 //	double rocketNar13Factor = 0;//!<Множитель громкости НАР 13

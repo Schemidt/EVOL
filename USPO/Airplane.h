@@ -10,7 +10,7 @@ using namespace std;
 
 #pragma once
 
-//Структура для добавления новых вертолетов
+//Структура для добавления новых бортов
 class Airplane
 {
 public:
@@ -18,10 +18,10 @@ public:
 
 	double engTurnoverMg; //обороты двигателя на малом газу
 	double engTurnoverAvt; //обороты двигателя на режиме автомат
+
 //	double redTurnoverMg1; //обороты редуктора с 1им двигателем на малом газу
 //	double redTurnoverMg2; //обороты редуктора с 2мя двигателями на малом газу
 //	double redTurnoverAvt; //обороты редуктора на режиме автомат
-
 	double vsuTimeOn;
 	double vsuTimeOff;
 	double vsuHptimeOn;

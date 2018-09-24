@@ -1742,13 +1742,13 @@ int main(int argc, char* argv[])
 
 		if (soundFFT.hight == 0)
 		{
-			spd = soundFFT.v_surf_x;
+			spd = soundFFT.v_surf_x / 0.277777;     //  km/h
 		}
 		else
 		{
-			spd = soundFFT.v_atm_x;
+			spd = soundFFT.v_atm_x / 0.277777;      //   km/h
 		}
-		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tV: %.3lf\tGEAR: %.3f\tHIGH: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, (soundFFT.vyp_l * 100), soundFFT.hight, router, metersToSlitFront);
+		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tV: %.1f%s\tGEAR: %.3f\tHIGH: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, " km/h", (soundFFT.vyp_l * 100), soundFFT.hight, router, metersToSlitFront);
 		//printf(" %: %.4f\tF: %.4i\r",soundFFT.eng1_obor, soundFFT.p_eng1_zap);
 	}
 

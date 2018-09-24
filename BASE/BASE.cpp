@@ -1370,7 +1370,7 @@ int main()
 				}
 			}
 			//Если звуки движения по ВПП включены в проект борта
-			if (airplane.runwayFactor)
+			if (airplane.rollFactor)
 			{
 				if (localdata.v_surf_x != 0 && Sound::groundTouch > 0)//Условие создания объекта
 					if (!runway)//Если объект не создан 
@@ -5934,7 +5934,7 @@ int Skv::play(Airplane &h, SOUNDREAD &sr)
 	return status;
 }
 
-Runway::Runway() : Sound(2, 2, 1)
+Runway::Runway() : Sound(3, 3, 1)
 {
 
 }
@@ -6032,25 +6032,25 @@ int Runway::play(Airplane &a, SOUNDREAD &sr)
 		gain[1] = interpolation({ 0, 0 }, { 13.8, 1 }, abs(sr.v_surf_x)) * groundTouch;    //  нарастает от 0 до 50 км/ч
 	}
 */
-	filetoBuffer[0] = a.fullName["low_roll"];
+	filetoBuffer[0] = a.fullName["runway"];
 	alSourcei(source[0], AL_LOOPING, AL_TRUE);
 	filetoBuffer[1] = a.fullName["slow_roll"];
 	alSourcei(source[1], AL_LOOPING, AL_TRUE);
 	filetoBuffer[2] = a.fullName["fast_roll"];
 	alSourcei(source[2], AL_LOOPING, AL_TRUE);
 
-	gain[0] = interpolation({ 0, 0 }, { 13.8, 1 }, abs(sr.v_surf_x)) * 0.5;   // уменьшаем наполовину вклад НЧ
-	gain[1] = interpolation({ 4.166, 0 }, { 21, 1 }, abs(sr.v_surf_x)) 
-		    * interpolation({ 21, 1 }, { 61, 0 }, abs(sr.v_surf_x));     // 15->75 km/h 0->1, 75->220 km/h 1->0  220-скорость взлета (slow_roll)
-	gain[2] = interpolation({ 13.8, 0 }, { 50, 1 }, abs(sr.v_surf_x));   // 50->180 km/h 0->1     (fast_roll)
+	gain[0] = interpolation({ 0, 0 }, { 20, 1 }, abs(sr.v_surf_x));   // уменьшаем вклад НЧ
+	gain[1] = interpolation({ 11, 0 }, { 28, 1 }, abs(sr.v_surf_x)) 
+		    * interpolation({ 21, 1 }, { 61, 0 }, abs(sr.v_surf_x)) * 0.1;     // 15->75 km/h 0->1, 75->220 km/h 1->0  220-скорость взлета (slow_roll)
+	gain[2] = interpolation({ 13.8, 0 }, { 50, 1 }, abs(sr.v_surf_x)) * 0.5;   // 50->180 km/h 0->1     (fast_roll)
 
 	pitch[0] = 1;
 	pitch[1] = interpolation({ 13.8, 1 }, { 55.6, 2 }, abs(sr.v_surf_x));
 	pitch[2] = interpolation({ 13.8, 0.9 }, { 55.6, 1.3 }, abs(sr.v_surf_x));
 	
-	for (size_t i = 0; i < 3/*sourceNumber*/; i++)
+	for (size_t i = 0; i < sourceNumber; i++)
 	{
-		alSourcef(source[i], AL_GAIN, masterGain * a.runwayFactor * gain[i] * groundTouch);
+		alSourcef(source[i], AL_GAIN, masterGain * a.rollFactor * gain[i] * groundTouch);
 		alSourcef(source[i], AL_PITCH, pitch[i]);
 	}
 

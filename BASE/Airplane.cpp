@@ -109,7 +109,7 @@ void Airplane::setPath(string pathToFile)
 	shortName["skv_off"] = "skv_off.wav";//!<имя файла звука СКВ
 	shortName["skv_harm_29"] = "skv_harm.wav";//!<имя файла гармоники СКВ для Ка-29
 										 //Движение по ВПП и РД
-//	shortName["runway"] = "driving.wav";//!<имя файла звука звука движения по ВПП и РД
+	shortName["runway"] = "driving.wav";//!<имя файла звука звука движения по ВПП и РД
 
 								 //Вооружение
 //	shortName["sturm"] = "sturm.wav";//!<имя файла звука ракеты штурм
@@ -376,7 +376,7 @@ void Airplane::setParam()
 		vypHist_l = { 1,1,1,1,1 };             //  ----------------- выпуска/уборки шасси
 		vypHist_r = { 0,0,0,0,0 };
 		vypHist_n = { 0,0,0,0,0 };
-		//Множители громкости		
+		//Множители громкости
 		engFactor = 1;                      
 		flapsFactor = 1;                          // громкость закрылки
 		gearFactor = 0.3;                         // громкость выпуск/уборка шасси
