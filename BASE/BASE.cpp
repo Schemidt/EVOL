@@ -5939,10 +5939,10 @@ Runway::Runway() : Sound(2, 2, 1)
 
 }
 
-int Runway::play(Airplane &h, SOUNDREAD &sr)
+int Runway::play(Airplane &a, SOUNDREAD &sr)
 {
 
-	for (size_t i = 0; i < 2; i++)
+	for (size_t i = 0; i < 3; i++)  // требуется 3 !! источника
 	{
 		alGetSourcei(source[i], AL_SOURCE_STATE, &sourceStatus[i]);
 
@@ -6025,16 +6025,33 @@ int Runway::play(Airplane &h, SOUNDREAD &sr)
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		gain[1] = toCoef(drivingGain) * getParameterFromVector(vector<point>{ { 0, 0 }, { 0.625, 1 }}, groundTouch);
 	}
-	else*/
+	else
 	{
-		filetoBuffer[1] = h.fullName["runway"];
+		filetoBuffer[1] = a.fullName["runway"];
 		alSourcei(source[1], AL_LOOPING, AL_TRUE);
 		gain[1] = interpolation({ 0, 0 }, { 13.8, 1 }, abs(sr.v_surf_x)) * groundTouch;    //  нарастает от 0 до 50 км/ч
 	}
+*/
+	filetoBuffer[0] = a.fullName["low_roll"];
+	alSourcei(source[0], AL_LOOPING, AL_TRUE);
+	filetoBuffer[1] = a.fullName["slow_roll"];
+	alSourcei(source[1], AL_LOOPING, AL_TRUE);
+	filetoBuffer[2] = a.fullName["fast_roll"];
+	alSourcei(source[2], AL_LOOPING, AL_TRUE);
 
-	for (size_t i = 0; i < sourceNumber; i++)
+	gain[0] = interpolation({ 0, 0 }, { 13.8, 1 }, abs(sr.v_surf_x)) * 0.5;   // уменьшаем наполовину вклад НЧ
+	gain[1] = interpolation({ 4.166, 0 }, { 21, 1 }, abs(sr.v_surf_x)) 
+		    * interpolation({ 21, 1 }, { 61, 0 }, abs(sr.v_surf_x));     // 15->75 km/h 0->1, 75->220 km/h 1->0  220-скорость взлета (slow_roll)
+	gain[2] = interpolation({ 13.8, 0 }, { 50, 1 }, abs(sr.v_surf_x));   // 50->180 km/h 0->1     (fast_roll)
+
+	pitch[0] = 1;
+	pitch[1] = interpolation({ 13.8, 1 }, { 55.6, 2 }, abs(sr.v_surf_x));
+	pitch[2] = interpolation({ 13.8, 0.9 }, { 55.6, 1.3 }, abs(sr.v_surf_x));
+	
+	for (size_t i = 0; i < 3/*sourceNumber*/; i++)
 	{
-		alSourcef(source[i], AL_GAIN, masterGain * h.runwayFactor * gain[i]);
+		alSourcef(source[i], AL_GAIN, masterGain * a.runwayFactor * gain[i] * groundTouch);
+		alSourcef(source[i], AL_PITCH, pitch[i]);
 	}
 
 	return 1;

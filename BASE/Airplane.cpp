@@ -59,7 +59,7 @@ void Airplane::setPath(string pathToFile)
 //	shortName["red_off_w"] = "red_off.wav"; //!<имя файла звука остановки редуктора ниже режима мг
 //	shortName["red_crash"] = "red_crash.wav"; //!<имя файла звука поломки редуктора
 //	shortName["red_w_avt_fly"] = "red_w_avt_fly.wav"; //!<имя файла звука работы редуктора на режиме автомат
-	shortName["red_harm"] = "red_harm.wav"; //!<имя файла гармоники редуктора
+//	shortName["red_harm"] = "red_harm.wav"; //!<имя файла гармоники редуктора
 	//ВСУ
 	shortName["vsu_on"] = "vsu_on.wav";//!<имя файла звука запуска ВСУ
 	shortName["vsu_w"] = "vsu_w.wav";//!<имя файла звука работы ВСУ
@@ -109,7 +109,7 @@ void Airplane::setPath(string pathToFile)
 	shortName["skv_off"] = "skv_off.wav";//!<имя файла звука СКВ
 	shortName["skv_harm_29"] = "skv_harm.wav";//!<имя файла гармоники СКВ для Ка-29
 										 //Движение по ВПП и РД
-	shortName["runway"] = "driving.wav";//!<имя файла звука звука движения по ВПП и РД
+//	shortName["runway"] = "driving.wav";//!<имя файла звука звука движения по ВПП и РД
 
 								 //Вооружение
 //	shortName["sturm"] = "sturm.wav";//!<имя файла звука ракеты штурм
@@ -171,7 +171,7 @@ void Airplane::setPath(string pathToFile)
 	//Другое
 	//Шум
 	shortName["pinkNoise"] = "vadd.wav";//
-	shortName["landing"] = "landing.wav";//
+//	shortName["landing"] = "landing.wav";//
 	shortName["testNoise"] = "testNoise.wav";
 	//бумбум
 	shortName["BumBum"] = "LF_.wav";
@@ -198,6 +198,10 @@ void Airplane::setPath(string pathToFile)
 	shortName["gearup_w"] = "gearup_w.wav";
 	shortName["gearup_off"] = "gearup_off.wav";
 	shortName["gearup_off_fal"] = "gearup_off_failed.wav";
+	// движение по полосе
+	shortName["low_roll"] = "low_roll.wav";
+	shortName["slow_roll"] = "slow_roll_hi.wav";
+	shortName["fast_roll"] = "fast_roll_hi.wav";
 
 	fullName = shortName;
 
