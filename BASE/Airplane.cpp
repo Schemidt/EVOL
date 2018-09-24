@@ -14,7 +14,7 @@ void Airplane::setPath(string pathToFile)
 	//TXT
 	//Двигатель
 	shortName["eng_on"] = "eng_on.txt"; //!<имя файла с переходной функцией разгона двигателя до режима МГ
-	shortName["eng_off"] = "eng_off.txt"; //!<имя файла с переходной функцией остановки двигателя 
+	shortName["eng_off"] = "eng_off.txt"; //!<имя файла с переходной функцией остановки двигателя
 //	shortName["eng_mg_avt"] = "eng_mg_avt.txt"; //!<имя файла с переходной функцией разгона двигателя до режима автомат
 //	shortName["eng_avt_mg"] = "eng_avt_mg.txt"; //!<имя файла c переходной функцией остановки до режима малого газа
 												
@@ -126,6 +126,7 @@ void Airplane::setPath(string pathToFile)
 //	shortName["vint_hi"] = "vint_hi.wav";//!<имя файла звука свиста винта
 //	shortName["vint_hi_avt"] = "vint_hi_avt.wav";//!<имя файла звука свиста винта
 	shortName["vint_torm"] = "tormoz.wav";//!<имя файла звука тормоза винта
+
 //	shortName["vint_flap"] = "vint_flap.wav";//!<имя файла звука равномерных хлопков винта
 //	shortName["vint_flap_hi"] = "vint_flap_hi.wav";//!<имя файла звука винта на низких оборотах
 //	shortName["vint_flap_low"] = "vint_flap_lo.wav";//!<
@@ -199,7 +200,7 @@ void Airplane::setPath(string pathToFile)
 	shortName["gearup_off"] = "gearup_off.wav";
 	shortName["gearup_off_fal"] = "gearup_off_failed.wav";
 	// движение по полосе
-	shortName["low_roll"] = "low_roll.wav";
+//	shortName["low_roll"] = "low_roll.wav";
 	shortName["slow_roll"] = "slow_roll_hi.wav";
 	shortName["fast_roll"] = "fast_roll_hi.wav";
 

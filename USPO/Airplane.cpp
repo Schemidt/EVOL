@@ -1,5 +1,5 @@
 #include "Airplane.h"
-#include "string.h"
+//#include "string.h"
 #include "iostream"
 
 void Airplane::setParam()

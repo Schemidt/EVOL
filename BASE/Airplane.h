@@ -17,7 +17,7 @@
 using namespace std;
 
 #define MODEL_PATH       "il_112"
-#define FLAPS_MAX_ANG     40.0
+#define FLAPS_MAX_ANG     35.0
 #define GEAR_DOWN_FAILED  0x11
 #define GEAR_UP_FAILED    0x12
 

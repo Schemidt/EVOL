@@ -3985,7 +3985,7 @@ Engine::Engine() : Sound(2, 2, 2)
 	//При одновременном запуске двигателей возможен эффект наложения, дающий искажение звука
 	//Поэтому каждый объект двигателя имеет свой параметр фазы запуска
 	engCount++;
-	phase = (engCount - 1) * 0.33;
+	phase = (engCount - 1)/* * 0.33*/;
 	engNum = engCount;
 }
 
@@ -5934,7 +5934,7 @@ int Skv::play(Airplane &h, SOUNDREAD &sr)
 	return status;
 }
 
-Runway::Runway() : Sound(3, 3, 1)
+Runway::Runway() : Sound(3, 3, 1)      // три источника - три буфера
 {
 
 }
@@ -5942,7 +5942,7 @@ Runway::Runway() : Sound(3, 3, 1)
 int Runway::play(Airplane &a, SOUNDREAD &sr)
 {
 
-	for (size_t i = 0; i < 3; i++)  // требуется 3 !! источника
+	for (size_t i = 0; i < sourceNumber; i++)  // требуется 3 !! источника
 	{
 		alGetSourcei(source[i], AL_SOURCE_STATE, &sourceStatus[i]);
 
@@ -6039,10 +6039,12 @@ int Runway::play(Airplane &a, SOUNDREAD &sr)
 	filetoBuffer[2] = a.fullName["fast_roll"];
 	alSourcei(source[2], AL_LOOPING, AL_TRUE);
 
-	gain[0] = interpolation({ 0, 0 }, { 20, 1 }, abs(sr.v_surf_x));   // уменьшаем вклад НЧ
-	gain[1] = interpolation({ 11, 0 }, { 28, 1 }, abs(sr.v_surf_x)) 
-		    * interpolation({ 21, 1 }, { 61, 0 }, abs(sr.v_surf_x)) * 0.1;     // 15->75 km/h 0->1, 75->220 km/h 1->0  220-скорость взлета (slow_roll)
-	gain[2] = interpolation({ 13.8, 0 }, { 50, 1 }, abs(sr.v_surf_x)) * 0.5;   // 50->180 km/h 0->1     (fast_roll)
+	gain[0] = interpolation({ 0, 0 }, { 20, 1 }, abs(sr.v_surf_x));            // driving
+	
+	gain[1] = interpolation({ 11, 0 }, { 28, 1 }, abs(sr.v_surf_x))            // 40...100 km/h  0 -> 1
+		    * interpolation({ 21, 1 }, { 61, 0 }, abs(sr.v_surf_x)) * 0.1;     // 100...220 km/h 1->0  220-скорость взлета (slow_roll)
+	
+	gain[2] = interpolation({ 13.8, 0 }, { 50, 1 }, abs(sr.v_surf_x)) * 0.4;   // 50->180 km/h 0->1     (fast_roll)
 
 	pitch[0] = 1;
 	pitch[1] = interpolation({ 13.8, 1 }, { 55.6, 2 }, abs(sr.v_surf_x));

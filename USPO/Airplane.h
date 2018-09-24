@@ -1,10 +1,11 @@
 #include "string.h"
 #include "map"
 
-#define FLAP_EXT_TIME_40  28                    // время выпуска закрылков на 40 град около 30 сек (выбрано 28)
-#define FLAP_RET_TIME_40  28                    // время уборки закрылков на 40 град около 30 сек (выбрано 28)
-#define GEAR_EXT_TIME     9.2                   // время выпуска шасси около 10 с (9.2 с)
-#define GEAR_RET_TIME     8.7                   // время уборки шасси ок. 9 с (8.7 с)
+#define FLAPS_MAX_ANGLE   35.0                  // максимальный угол выпуска закрылков
+#define FLAP_EXT_TIME_35  20                    // время выпуска закрылков на 35 град < 20 c
+#define FLAP_RET_TIME_35  20                    // время уборки закрылков на 35 град < 20 c
+#define GEAR_EXT_TIME     11.5                   // время выпуска шасси < 12 с (9.2 с)
+#define GEAR_RET_TIME     11.5                   // время уборки шасси < 12 с (8.7 с)
 
 using namespace std;
 

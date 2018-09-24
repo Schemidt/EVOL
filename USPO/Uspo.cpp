@@ -15,8 +15,6 @@
 #define ANSAT_1ENG_TURN 73.00
 #define VSU_MAX_TURN 100.00
 
-#define FLAPS_MAX_ANGLE 40.0          // максимальный угол выпуска закрылков
-
 using namespace std;
 
 SOUNDFFT soundFFT;
@@ -928,7 +926,7 @@ int main(int argc, char* argv[])
 				//   закрылки
 				if (flapsOn) {
 					if (soundFFT.flaps < 1) {
-						soundFFT.flaps += deltaTime / FLAP_EXT_TIME_40;   
+						soundFFT.flaps += deltaTime / FLAP_EXT_TIME_35;   
 						if (soundFFT.flaps > 1) {
 							soundFFT.flaps = 1;
 							flapsOn = !flapsOn;
@@ -937,7 +935,7 @@ int main(int argc, char* argv[])
 				}
 				if (flapsOff) {
 					if (soundFFT.flaps > 0) {
-						soundFFT.flaps -= deltaTime / FLAP_RET_TIME_40;       
+						soundFFT.flaps -= deltaTime / FLAP_RET_TIME_35;       
 						if (soundFFT.flaps < 0) {
 							soundFFT.flaps = 0;
 							flapsOff = !flapsOff;
