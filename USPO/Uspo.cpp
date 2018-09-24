@@ -144,8 +144,7 @@ int main(int argc, char* argv[])
 	soundFFT.p_eng2_lkorr = 1;
 	soundFFT.p_eng1_ostanov = 1;
 	soundFFT.p_eng2_ostanov = 1;
-	soundFFT.obj_hv = 0.5;
-	soundFFT.obj_nos = 0.5;
+	soundFFT.obj_n = 0.5;
 	soundFFT.obj_l = 0.75;
 	soundFFT.obj_r = 0.75;
 
@@ -1579,8 +1578,7 @@ int main(int argc, char* argv[])
 						soundFFT.hight = (soundFFT.hight < 0) ? 0 : soundFFT.hight;
 						soundFFT.v_surf_x = getParameterFromVector(vectorPar[6], offsetTest);//скорость
 						soundFFT.v_atm_x = getParameterFromVector(vectorPar[6], offsetTest);//скорость
-						soundFFT.obj_hv = getParameterFromVector(vector<point>{ { 0, 0.5 }, { 0.5, 0 }}, soundFFT.hight);
-						soundFFT.obj_nos = getParameterFromVector(vector<point>{ { 0, 0.5 }, { 0.5, 0 }}, soundFFT.hight);
+						soundFFT.obj_n = getParameterFromVector(vector<point>{ { 0, 0.5 }, { 0.5, 0 }}, soundFFT.hight);
 						soundFFT.obj_l = getParameterFromVector(vector<point>{ { 0, 0.75 }, { 0.5, 0 }}, soundFFT.hight);
 						soundFFT.obj_r = getParameterFromVector(vector<point>{ { 0, 0.75 }, { 0.5, 0 }}, soundFFT.hight);
 						soundFFT.p_eng1_lkorr = 0;//Правая - левая коррекция
@@ -1750,7 +1748,7 @@ int main(int argc, char* argv[])
 		{
 			spd = soundFFT.v_atm_x;
 		}
-		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tSPD: %.3lf\tGEAR: %.3f\tHIGH: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, (soundFFT.vyp_l * 100), soundFFT.hight, router, metersToSlitFront);
+		printf(" T___: %.4lf\tDT__: %.4lf\tENG1: %.3f\tENG2: %.3f\tFLAPS: %.3f\tVSU: %.3f\tV: %.3lf\tGEAR: %.3f\tHIGH: %.3f\tROU: %.3lf\tMTL: %.3lf\t\r", currentTime, avrDeltaTime, soundFFT.eng1_obor, soundFFT.eng2_obor, (soundFFT.flaps * FLAPS_MAX_ANGLE), soundFFT.vsu_obor, spd, (soundFFT.vyp_l * 100), soundFFT.hight, router, metersToSlitFront);
 		//printf(" %: %.4f\tF: %.4i\r",soundFFT.eng1_obor, soundFFT.p_eng1_zap);
 	}
 
@@ -1771,8 +1769,7 @@ void kbHit()
 			soundFFT.p_crash = !soundFFT.p_crash;//Столкновение с препятствием
 			break;
 		case '1':
-			soundFFT.obj_nos = !soundFFT.obj_nos;//Обжатие левой передней стойки шасси
-			soundFFT.obj_hv = !soundFFT.obj_hv;//Обжатие правой передней стойки шасси
+			soundFFT.obj_n = !soundFFT.obj_n;//Обжатие передней стойки шасси
 			soundFFT.obj_l = !soundFFT.obj_l;//Обжатие левой стойки шасси
 			soundFFT.obj_r = !soundFFT.obj_r;//Обжатие правой стойки шасси
 			break;
@@ -1895,16 +1892,17 @@ void kbHit()
 			perekTimer[1] = 0;
 			break;
 		case '-':
-			soundFFT.v_surf_x -= 14;//
+			soundFFT.v_surf_x -= 2.777;// уменьшить скорость руления на 10 км/ч
+			soundFFT.v_surf_x = (soundFFT.v_surf_x < 0.) ? 0. : soundFFT.v_surf_x;
 			break;
 		case '=':
-			soundFFT.v_surf_x += 14;//
+			soundFFT.v_surf_x += 2.777;// увеличить скорость руления на 10 км/ч
 			break;
 		case 's':
-			soundFFT.v_surf_x += 0.277;//Увеличить скорость
+			soundFFT.v_surf_x += 0.2777;//Увеличить скорость руления на 1 км/ч
 			break;
 		case 'x':
-			soundFFT.v_surf_x -= 0.277;//Уменьшить скорость
+			soundFFT.v_surf_x -= 0.2777;//Уменьшить скорость руления на 1 км/ч
 			soundFFT.v_surf_x = (soundFFT.v_surf_x < 0.) ? 0. : soundFFT.v_surf_x;
 			break;
 		case 'k':

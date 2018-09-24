@@ -715,7 +715,7 @@ int main()
 //			Sound::step = localdata.step; //шаг (временно используем параметр перегрузки)
 			Sound::hight = localdata.hight;
 			Sound::velocityY = localdata.vy;
-			Sound::groundTouch = (localdata.obj_hv + localdata.obj_l + localdata.obj_nos + localdata.obj_r) / 4;//ѕризнак касани€
+			Sound::groundTouch = (localdata.obj_l + localdata.obj_n + localdata.obj_r) / 3;//ѕризнак касани€
 
 			//≈сли не пришел признак остановки модели - вычисл€ем переменные
 			//≈сли необходимый размер окна достигнут - выбрасываем значени€ в начале массива
